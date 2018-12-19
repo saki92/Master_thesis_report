@@ -1,0 +1,34 @@
+\begin{tikzpicture}[auto, node distance=3.5cm,>=latex']
+  \tikzstyle{inner} = [draw, fill=none, rectangle, 
+  minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=center]
+  \tikzstyle{outer} = [draw=gray,dashed,fill=none,thick,inner sep=0.2cm]
+  \tikzstyle{cord} = [coordinate]
+  \tikzstyle{sum} = [draw,circle,node distance=3cm]
+  \draw[step=0.5cm,color=black,thick] (0,0) grid (4,0.5);
+  \node at (+0.25,+0.25) {0};
+  \node at (+0.75,+0.25) {1};
+  \node at (+1.25,+0.25) {1};
+  \node at (+1.75,+0.25) {0};
+  \node at (+2.25,+0.25) {1};
+  \node at (+2.75,+0.25) {0};
+  \node at (+3.25,+0.25) {0};
+  \node at (+3.75,+0.25) {1};
+  \coordinate (A) at (4.25,0.25);
+  \coordinate (B) at (5.25,0.25);
+  \draw [->] (A) -- (B);
+  \draw[step=0.5cm,color=gray,thin] (5.5,0) grid (11.5,0.5);
+  \node at (+5.75,+0.25) {0};
+  \node at (+6.25,+0.25) {1};\draw [fill=gray,fill opacity=0.2] (6.5,0) rectangle (7,0.5);
+  \node at (+7.25,+0.25) {1};
+  \node at (+7.75,+0.25) {0};\draw [fill=gray,fill opacity=0.2] (8,0) rectangle (8.5,0.5);
+  \node at (+8.75,+0.25) {1};
+  \node at (+9.25,+0.25) {0};\draw [fill=gray,fill opacity=0.2] (9.5,0) rectangle (10,0.5);
+  \node at (+10.25,+0.25) {0};
+  \node at (+10.75,+0.25) {1};\draw [fill=gray,fill opacity=0.2] (11,0) rectangle (11.5,0.5);
+  \draw[color=black,thick] (5.5,0) rectangle (7,0.5);
+  \draw[color=black,thick] (7,0) rectangle (8.5,0.5);
+  \draw[color=black,thick] (8.5,0) rectangle (10,0.5);
+  \draw[color=black,thick] (10,0) rectangle (11.5,0.5);
+  \node at (2,0.8) {Input buffer};
+  \node at (8.5,0.8) {Output buffer};
+\end{tikzpicture}

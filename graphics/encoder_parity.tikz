@@ -1,0 +1,44 @@
+\begin{tikzpicture}[auto, node distance=3.5cm,>=latex']
+  \tikzstyle{inner} = [draw, fill=none, rectangle, 
+  minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=center]
+  \tikzstyle{outer} = [draw=gray,dashed,fill=none,thick,inner sep=0.2cm]
+  \tikzstyle{cord} = [coordinate]
+  \tikzstyle{sum} = [draw,circle,radius=0.5cm]
+  \draw[step=0.5cm,color=gray,thin] (0,0) grid (6,0.5);
+  \node at (+0.25,+0.25) {0};
+  \node at (+0.75,+0.25) {1};
+  \node at (+1.25,+0.25) {0};\draw [fill=gray,fill opacity=0.2] (1,0) rectangle (1.5,0.5);
+  \node at (+1.75,+0.25) {1};
+  \node at (+2.25,+0.25) {0};
+  \node at (+2.75,+0.25) {0};\draw [fill=gray,fill opacity=0.2] (2.5,0) rectangle (3,0.5);
+  \node at (+3.25,+0.25) {1};
+  \node at (+3.75,+0.25) {0};
+  \node at (+4.25,+0.25) {1};\draw [fill=gray,fill opacity=0.2] (4,0) rectangle (4.5,0.5);
+  \node at (+4.75,+0.25) {0};
+  \node at (+5.25,+0.25) {1};
+  \node at (+5.75,+0.25) {1};\draw [fill=gray,fill opacity=0.2] (5.5,0) rectangle (6,0.5);
+  \node[circle,draw=black,fill=white,inner sep=0pt,minimum size=5pt] (s4) at (5.25,-1) {+};
+  \node[circle,draw=black,fill=white,inner sep=0pt,minimum size=5pt] (s1) at (1.75,-1) {+};
+  \node[circle,draw=black,fill=white,inner sep=0pt,minimum size=5pt] (s2) at (2.75,-1) {+};
+  \node[circle,draw=black,fill=white,inner sep=0pt,minimum size=5pt] (s3) at (4.25,-1) {+};
+  %\node[sum,below=1cm of p] (ss) {+};
+  \draw[color=black,thick] (0,0) rectangle (1.5,0.5);
+  \draw[color=black,thick] (1.5,0) rectangle (3,0.5);
+  \draw[color=black,thick] (3,0) rectangle (4.5,0.5);
+  \draw[color=black,thick] (4.5,0) rectangle (6,0.5);
+  \coordinate (a) at (0.25,0);
+  \coordinate (b) at (1.75,0);
+  \coordinate (c) at (2.75,0);
+  \coordinate (d) at (4.25,0);
+  \coordinate (e) at (5.25,0);
+  \coordinate (f) at (5.75,0);
+  \draw[->] (a) |- (s1.west);
+  \draw[->] (b) -- (s1.north);
+  \draw[->] (c) -- (s2.north);
+  \draw[->] (d) -- (s3.north);
+  \draw[->] (e) -- (s4.north);
+  \draw[->] (s4.east) -| (f);
+  \draw[->] (s1.east) -- (s2.west);
+  \draw[->] (s2.east) -- (s3.west);
+  \draw[->] (s3.east) -- (s4.west);  
+\end{tikzpicture}

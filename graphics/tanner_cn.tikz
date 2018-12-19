@@ -1,0 +1,17 @@
+\begin{tikzpicture}
+  \node at (0, 0) [circle, draw, label=right:{$\cnval_j$}] (cn) {};
+  \node at (0:1) (empty) {};
+  \node at (180:1) [] (i2) {$\vtoc{2}{j}$};
+  \node at (135:1) [] (i1) {$\ctov{1}{j}$};
+  \node at (-135:1) [] (in) {$\vtoc{d_c}{j}$};
+  \node at (-152:0.7) [] (dot1) {\textbf{.}};
+  \node at (-157:0.7) [] (dot2) {\textbf{.}};
+  \node at (-162:0.7) [] (dot3) {\textbf{.}};
+  
+  \draw (cn.north) -- (cn.south);
+  \draw (cn.east) -- (cn.west);
+  \draw [->] (i2) -- (cn);
+  \draw [->] (cn) -- (i1);
+  \draw [->] (i2) -- (cn);
+  \draw [->] (in) -- (cn);
+\end{tikzpicture}

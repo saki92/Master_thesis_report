@@ -1,0 +1,11 @@
+\begin{tikzpicture}[auto, node distance=3.5cm,>=latex']
+  \tikzstyle{inner} = [draw, fill=none, rectangle, 
+  minimum height=4em, minimum width=7em, node distance=5cm, text width=7em, align=center]
+  \tikzstyle{outer} = [draw=gray,dashed,fill=none,thick,inner sep=0.2cm]
+  \tikzstyle{cord} = [coordinate]
+  \node[inner,name=input] {Input Buffer};
+  \node[inner,right of=input] (spu) {Signal Processing Block};
+  \node[inner,right of=spu] (output) {Output Buffer};
+  \draw[->] (input) -- node[] {\texttt{uint8}} (spu);
+  \draw[->] (spu) -- node[] {\texttt{uint8}} (output);
+\end{tikzpicture}

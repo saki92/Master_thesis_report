@@ -1,0 +1,284 @@
+\section{Background}
+In this section, we provide an overview of channel coding and some selected channel codes. We start by discussing the need for channel coding. We then describe linear block codes, \ac{ldpc} codes and \acp{ldpccc} which are the main focus of this thesis. Then we go on to discuss \ac{bp} and the sliding-window technique used in decoders for \acp{ldpccc}. We finish the section describing our system model.
+
+\subsection{Introduction to Channel Coding}
+The term \emph{coding} is generally associated with the mapping of information to a set of symbols or numbers~\cite{Bossert}. Source coding aims to compress the information whereas channel coding aims to make the information immune to random distortion. A model of a digital communication system is shown in Figure~\ref{fig:chanCoding}. Let us consider that the \emph{source} block produces a sequence of information bits given by the vector $\mathbf{d}$. These bits might stream from any digital information source such as multimedia files, text documents, etc. These vectors of bits are encoded in the \emph{source-encoder} block to produce compressed information bit vectors $\mathbf{m}$ called source codewords. The compression means that the length of $\mathbf{m}$ is at most the length of $\mathbf{d}$. The mapping allow unique reconstruction of the information bits at the receiver. The source encoder is chosen depending on the type of the information source~\cite{proak}.
+
+The next block in the digital communication model is the \emph{channel encoder}. Whereas the source encoder compresses the information bit vectors, the channel encoder expands them by adding redundant bits in a structured manner. This structured redundancy makes the transmitted information bits less susceptible to distortions such as interference in the channel medium, and receiver noise. A \emph{channel} is a physical medium through which the information is transferred from transmitter to receiver. A \emph{code} is a set of rules that defines the encoding principle of the encoder. The type of code is chosen depending on the channel and the application requirements. In general, the source encoder or decoder is placed at higher layers of the \ac{osi} model, while channel-coding blocks are placed at the \ac{phy} layer. The outputs of the channel encoder are called channel codewords. The codeword vectors $\mathbf{x}$ are then modulated in the \emph{modulator} block where the bits are transformed into symbol vectors $\mathbf{u}$. The symbol vectors are then transmitted as analog signals through the channel. Due to the addition of interference and noise, the channel output is in general not the same as the channel input: $\mathbf{v}\neq\mathbf{u}$. The \emph{demodulator} converts the received symbol vectors $\mathbf{v}$ into vectors of bits $\mathbf{y}$ which corresponds to the vector of encoded bits $\mathbf{x}$. The \emph{channel decoder} uses the redundancy in the received codeword to deduce an estimate $\widehat{\mathbf{m}}$ of the source codeword. The source decoder then deduces an estimate $\widehat{\mathbf{d}}$ of the information bit vector from $\widehat{\mathbf{m}}$.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth, height=\textwidth]{graphics/channel_coding}
+  \caption{Block diagram of a digital communication system.}
+  \label{fig:chanCoding}
+\end{figure}
+
+The addition of redundant bits by the channel encoder enables the mapping between a set of information words and a set of all possible \emph{receive words}. Lets us consider the length of an information word $\mathbf{m}$ to be $k$ bits and the length of a codeword $\mathbf{x}$ to be $n$ bits such that $n>k$. Thus the information word set has $2^k$ words and the receive word set has $2^n$ words. The codeword set of size $2^k$ is a subset of the receive word set. The mapping between different set sizes allows us to detect if the received word is in the codeword set. The information words and codewords contain elements in the binary set $\mathbb{F}_2=\{0,1\}$ as their alphabets. $\mathbb{F}_2$ or GF(2) is called a finite field of order $2$. Hence, all arithmetic operations with information bits and codewords are performed modulo 2.
+
+\subsection{Channel Codes}
+There are different types of channel codes. The choice of one depends on the application requirements, type of channel medium and resource availability. In this thesis, we focus on \acp{ldpccc}, a special class of \acp{ldpcbc}.
+\subsubsection{Linear Block Codes}
+Linear block codes are codes in which a codeword is formed by a linear combination of two or more base vectors that span the codeword space~\cite{proak} and hence the base vectors are also codewords. As a result, a linear combination of any two or more codewords forms another codeword. The codeword space of $2^k$ vectors is a subspace of the space of all $2^n$ vectors. An $(n,k)$ linear block code maps $k$ message bits to $n$ codeword bits. The remaining $n-k$ redundant bits are called parity bits and they are determined by an encoding rule. Linear block codes are classified into two categories: \emph{systematic} and \emph{non-systematic}. Systematic codes have all their message bits transmitted in an unaltered manner whereas the non-systematic codes do not have such formation. A codeword of a systematic linear block code can have one of the following structures: $$\x^T=(\m^T,\bb^T)$$ or $$\x^T=(\bb^T,\m^T)$$ where $\x\in\mathbb{F}_2^{n\times 1}$ is the codeword vector, $\m\in\mathbb{F}_2^{k\times 1}$ and $\bb\in\mathbb{F}_2^{(n-k)\times 1}$ denote message and parity vectors, respectively. The code rate is given by $$R=\frac{k}{n}.$$
+
+Codewords of linear block codes are expressed using the linear expression $$\x=\G\odot\m$$ where $\G\in\mathbb{F}_2^{n\times k}$ is called the \ac{gm} and $\odot$ represents multiplication modulo 2. A parity check is described by the expression $$\H\odot\x=\mathbf{s}$$ where $\H\in\mathbb{F}_2^{(n-k)\times n}$ is called the \ac{pcm} and $\mathbf{s}\in\mathbb{F}_2^{(n-k)\times 1}$ is called the syndrome. Each row of the \ac{pcm} represents a parity-check equation. Only when $\mathbf{s}=\mathbf{0}$, the parity checks are fulfilled. The relation between \ac{pcm} and \ac{gm} is given by $\H\odot\G=\mathbf{0}$. With either \ac{gm} or \ac{pcm} given, the other one is not unique. For example, if the \ac{pcm} of a $(7,4)$ hamming code is given by
+\begin{align} \label{eq:H_ham}
+\H =
+\begin{bmatrix}
+1 &1 &1 &0 &1 &0 &0 \\
+1 &1 &0 &1 &0 &1 &0 \\
+1 &0 &1 &1 &0 &0 &1
+\end{bmatrix},
+\end{align}
+then the \ac{gm} can be formed by combining any 3 rows of null$(\H)$, i.e., the right null space of $\H$.
+%\begin{align} \label{eq:G_ham}
+%\text{null}(\H) =
+%\begin{bmatrix}
+%1 &1 &0 &0 &0 &0 &1 \\
+%1 &1 &1 &0 &1 &0 &0 \\
+%0 &0 &1 &1 &1 &1 &0 \\
+%0 &1 &1 &1 &0 &0 &0
+%\end{bmatrix}
+%\end{align}
+
+The \ac{pcm} can be represented by a bipartite graph, called Tanner graph~\cite{Tanner1981}. The Tanner graph has two sets of nodes: \acp{vn} represent columns and \acp{cn} represent rows of the \ac{pcm}. Each non-zero entry in the \ac{pcm} is represented by an edge between the respective \ac{vn} and \ac{cn}. The \emph{degree} of a node is the number of edges connected to it. The Tanner graph of the example \ac{pcm} in (\ref{eq:H_ham}) is shown in Figure \ref{fig:tannGraph}.
+
+\begin{figure}[htbp]
+  \centering
+  %\tikzsetnextfilename{tanner_graph}
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/tanner_graph}
+  \caption{Tanner graph of the code from (\ref{eq:H_ham}). The dark shaded circles represents \acp{vn} and the crossed circles \acp{cn}.}
+  \label{fig:tannGraph}
+\end{figure}
+
+\subsubsection{\acl{ldpc} Block Codes}
+\acp{ldpcbc} are a class of linear block codes which were introduced by Robert Gallager in 1963~\cite{Gallager1963}. As the name specifies, they are defined by a sparse \ac{pcm} containing mostly 0's and relatively few 1's. The sparsity of the \ac{pcm} or its Tanner graph is a key property that allows for the algorithmic efficiency of \acp{ldpcbc}. These codes are divided into two types: regular and irregular codes.
+
+In a regular $(n,q,r)$ code, all \acp{vn} have degree $q$ and all \acp{cn} have degree $r$.
+
+\subsubsection{\acl{ldpc} Convolutional Codes}
+Convolutional codes in general are codes in which the parity bits are generated by convolving information bits or information and parity bits. The rule for the convolution is expressed by generator-polynomial. This generator-polynomial is similar to the taps of an \ac{fir} filter in case of non-recursive codes and an \ac{iir} filter in case of recursive codes. An example of parity bit generation in a non-recursive systematic convolutional code is shown in Figure~\ref{fig:conv_code}.
+\begin{figure}[htbp]
+  \centering
+  %\tikzsetnextfilename{tanner_graph}
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/conv_code}
+  \caption{Example of a non-recursive convolutional code with rate $R=1/2$. $x[k]$ is the input and $y[k]$ is the output.}
+  \label{fig:conv_code}
+\end{figure}
+The generator-polynomials of this example is given by
+\begin{align*}
+G^{(0)}(D)&=1\\
+G^{(1)}(D)&=1+D^2.
+\end{align*}
+The impulse response of the parity-bit generator is given by
+$$g^{(1)}[k]=\begin{bmatrix}
+1 &0 &1
+\end{bmatrix}.$$
+The output is given by the convolution form:
+\begin{align}
+y^{(1)}[k]&=x[k]*g^{(1)}[k]\nonumber\\
+&=\sum_{l=0}^{2}x[l]g^{(1)}[k-l].
+\end{align}
+The \emph{constraint length} of a convolutional code is $l_c=m_s+1$ where $m_s$ is the largest degree in the generator-polynomial. In the example in Figure~\ref{fig:conv_code}, the constraint length is 3.
+
+\acp{ldpccc} or \ac{scldpc} codes are formed by imposing the above mentioned convolutional structure on \acp{ldpcbc}. They were invented by Alberto Felstr{\"o}m and Kamil Zigangirov~\cite{Felstrom1999}. These codes are characterized by a sparse infinite-length \ac{pcm} which has a diagonal structure. The \ac{pcm} of these codes is constructed by coupling \acp{pcm} of \acp{ldpcbc} as given by
+
+\begin{align}\label{eq:H_infty}
+\H_{[-\infty,\infty]} =& 
+\begin{bmatrix}
+  \ddots &\ddots &\ddots &\ddots\\
+  &\H_{m_s}(t-1) &\dots &\H_1(t-1) &\H_0(t-1)\\
+  & &\H_{m_s}(t) &\dots &\H_1(t) &\H_0(t)\\
+  & & &\H_{m_s}(t+1) &\dots &\H_1(t+1) &\H_0(t+1)\\
+  & & & &\ddots &\ddots &\ddots &\ddots
+  \end{bmatrix}
+  \begin{matrix}
+  \mathbf{s}(t-1)\\
+  \mathbf{s}(t)\\
+  \mathbf{s}(t+1)\\
+  \end{matrix}
+\end{align}
+where the $\H_\mu(t)\in\mathbb{F}_2^{(n-k)\times n},\mu=0,\dots,m_s$ are \acp{pcm} of different \acp{ldpcbc} of rate $R=k/n$ for different time instances and $m_s$ is the memory of the code. Hence, the asymptotic rate of the resulting \ac{ldpccc} is $R_\infty=k/n$. $\mathbf{s}(t)\in\mathbb{F}_2^{(n-k)\times 1}$ denotes the syndromes resulting from the parity check equations. The codewords of such a code have the form $\x^T=(\dots,\x(t-1)^T,\x(t)^T,\x(t+1)^T,\dots)$ where each $\x(t)\in\mathbb{F}_2^{n\times 1}$. Given the \ac{pcm} $\H$ and a valid codeword $\x$, the following expression holds:
+\begin{align}\label{eq:ldpccc_conv}
+\mathbf{s}(t)=\sum_{\tau=0}^{m_s}\H_\tau(t)\x(t-\tau)\mod 2.
+\end{align}
+The equation (\ref{eq:ldpccc_conv}) is a convolution representing the convolutional structure of $\H$ in (\ref{eq:H_infty}).
+
+The bits in the codeword $\x$ are coupled together over a distance called the \emph{constraint length} which is given by $l_c=(m_s+1)n$ bits.
+
+\subsubsection{Termination of Convolutional Codes}
+In general, \acp{ldpccc} have codewords and \acp{pcm} of infinite length. For packet-based communication networks, however, the whole packet has to be retransmitted in case of incorrect information bits in higher layers. Also, in a wireless medium the channel parameters change over time which requires the encoder to change its code rate on the fly. For the aforementioned reasons, terminated codes are a better choice.
+
+Termination is the process of limiting the coupling length, so that the codewords have finite length. This allows the decoder to stop decoding the current received word if a bit cannot be corrected, thus reducing the decoding complexity. The termination process requires adding \emph{termination bits} to the end of the codeword to ensure that the last $m_s$ parity-check equations of the terminated \ac{pcm} are fulfilled. Termination also ensures that the encoder returns to an all-zero state before encoding the next codeword and so termination bits are determined by solving a system of linear equations in $\mathbb{F}_2$. 
+
+Termination introduces a rate loss because the termination bits are transmitted which are known at the receiver. Hence for the rate calculation of a terminated \ac{ldpccc}, the termination bits are not taken into account. However, the rate loss is compensated by an increase in decoding performance as the termination reduces the \ac{cn} degrees at the end of the codeword and smaller \ac{cn} degrees are better.
+
+The \ac{pcm} of a terminated \ac{ldpccc} is a sub-matrix of the infinitely long \ac{pcm} of the code (\ref{eq:H_infty}). The terminated \ac{pcm} has a structure as given by
+
+\begin{align}
+\H_L = 
+\overbrace{\begin{bmatrix}
+  \H_{0}(0)\\
+  \H_1(1) &\H_0(1)\\
+  \vdots &\H_1(2) &\ddots\\
+  \H_{m_s}(m_s) &\vdots &\ddots &\H_0(L-1)\\
+  &\H_{m_s}(m_s+1) &\ddots &\H_{1}(L)\\
+  & & &\vdots\\
+  & & &\H_{m_s}(L+m_s)
+\end{bmatrix}}^{Ln}
+\left.\begin{matrix}
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\end{matrix}\right\}(L+m_s)(n-k)
+\end{align}
+where $L$ is the \emph{coupling length} denoting the number of \acp{cb} in the codeword. Each \ac{cb} contains $n$ bits. Hence, the total length of the terminated codeword is $n_L=Ln$ bits. The effect of termination in the Tanner graph of a $R_\infty=1/2$ code is shown in Figure~\ref{fig:tannGraphLdpccc}.
+\begin{figure}[htbp]
+  \centering
+  %\tikzsetnextfilename{tanner_graph}
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/tanner_graph_ldpccc}
+  \caption{Tanner graph of a terminated \ac{ldpccc}. The dark circles and lines are the \acp{vn} and edges of terminated code, the light circles and dashed lines are the omitted \acp{vn} and edges as a result of termination.}
+  \label{fig:tannGraphLdpccc}
+\end{figure}
+The entire graph in Figure~\ref{fig:tannGraphLdpccc} can be seen as a Tanner graph of an infinitely long \ac{ldpccc}. As a result of termination, only the center part of the graph remains. The dark circles are the \acp{vn} of the terminated \ac{ldpccc} and the solid lines are their corresponding edges.
+
+\subsubsection{\aclp{ldpccc} Used in IEEE 1901}
+In this thesis, we use the \acp{ldpccc} specified in the \ac{bpl} or IEEE 1901 standard to evaluate our decoder~\cite{Bpl}. From now on, we refer to the \acp{ldpccc} in the IEEE 1901 standard as \emph{\ac{bpl}~codes}. The \ac{bpl} codes are specified as sets of parity-check polynomials for all asymptotic rates $R_\infty=k/n,\ n\in\{2,3,4,5\}$ where $k=n-1$. In other words, the \ac{bpl} codes have only one parity bit in each \ac{cb}. 
+
+The codes are defined as parity-check polynomials expressed as
+\begin{align}
+\sum_{i=1}^{k}A_{i,\tau}(D)M_i(D)+\sum_{i=1}^{n-k}C_{i,\tau}(D)B_i(D)=0\mod 2
+\end{align}
+where $k$ is the number of message bits in each \ac{cb}, $\tau \in \{0,\dots,T-1\}$ is the phase of the code that is given by $\tau=(t\ \text{mod}\ T)$, $T$ is the periodicity of the codes, $M_i(D),i=1,\dots,k$ represents message bits and $B_i(D),i=1,\dots,n-k$ represents parity bits, $A_{i,\tau}$ and $C_{i,\tau}$ defines the connection between the bits based on delay $D$.
+
+The memory $m_s$ of the code is
+\begin{align}
+m_s=\max\left(\{\deg(A_{i,\tau}(D)):i=1,\dots,k;\forall\tau\}\cup\{\deg(C_{i,\tau}(D)):i=1,\dots,n-k;\forall\tau\}\right)
+\end{align}
+where $\tau \in \{0,\dots,T-1\}$ and deg$(f(x))$ denotes the set of all degrees of $x$ in $f(x)$.
+
+The \ac{bpl} codes are periodic with $T=3$. Periodic codes have time-varying parity-check polynomials which repeat every $T$ \acp{cb}. For illustration, the parity-check polynomial of the \ac{bpl} code for $R_\infty=2/3$ and $\tau=0$ is given by
+\begin{align}
+&(D^{214}+D^{185}+1)M_1(D)+(D^{194}+D^{67}+1)M_2(D)+(D^{215}+D^{145}+1)B(D)=0\mod 2.
+\end{align}
+$m_s=215$ for $n=2$ and $m_s=226$ for $n\neq2$. All $A_{i,\tau}$ and $C_{i,\tau}$ have three taps for each bit in the \ac{cb}. So there is a maximum of $3n$ taps or edges per \ac{cn}. The parity-check equation can be given by
+\begin{align}\label{eq:parity_check}
+\sum_{i=0}^{m_s}\mathbf{h}_{M,i}\m(t-i)+\sum_{i=0}^{m_s}h_{B,i}b(t-i) \mod 2,
+\end{align}
+The encoder generates one parity bit per $n-1$ message bits and the parity bit expression is given by rearranging equation (\ref{eq:parity_check}) as
+\begin{align}
+b(t)=\sum_{i=0}^{m_s}\mathbf{h}_{M,i}\m(t-i)+\sum_{i=1}^{m_s}h_{B,i}b(t-i) \mod 2,
+\end{align}
+where $b(t)\in\mathbb{F}_2$ is the parity bit and $\m(t)\in\mathbb{F}_2^{k\times 1}$ is a vector of message bits at $t$-th time instance or \ac{cb}, $h_{B,i}\in\mathbb{F}_2$ is the coefficient of polynomial of the parity bit. $\mathbf{h}_{M,i}\in\mathbb{F}_2^{1\times k}$ is a vector of coefficients of polynomials of message bits and is given by
+\begin{align}
+\mathbf{h}_{M,i}&= \big[[D^i]A_{1,\tau},\dots,[D^i]A_{k,\tau}\big],
+\end{align}
+where $[D^i]A_{1,\tau}$ represents the coefficient of $D^i$ in polynomial $A_{1,\tau}(D)$.
+
+The resulting codewords $\x\in\mathbb{F}_2^{Ln\times 1}$ have a systematic structure given by $$\x^T=(\x(0)^T,\x(1)^T,\dots,\x(L-1)^T).$$
+
+Similarly, the \ac{pcm} can be formed using the coefficients of the parity-check polynomials:
+\begin{align}\label{eq:bpl_pcm}
+\H=
+\begin{bmatrix}
+\mathbf{h}_{M,0}\\
+\mathbf{h}_{M,1} &\mathbf{h}_{M,0}\\
+\vdots &\mathbf{h}_{M,1} &\ddots\\
+\mathbf{h}_{M,m_s} &\vdots &\ddots &\mathbf{h}_{M,0}\\
+&\mathbf{h}_{M,m_s} &\ddots &\mathbf{h}_{M,1}\\
+& &\ddots &\vdots\\
+& & &\mathbf{h}_{M,m_s}
+\end{bmatrix}.
+\end{align}
+
+\cite{Bpl} specifies that termination is achieved by appending bits with value $0$ to the end of the message bits before encoding. These bits are called \emph{zero-tail bits}. The number of zero-tail bits $n_z$ depends on the number of message bits $n_m$ in the codeword and the asymptotic rate $R_\infty$. The number of \acp{cb} in the terminated codeword is $$L=\frac{n_m+n_z}{n-1}.$$ Since the zero-tail bits are known at the receiver, they are not transmitted. Only the parity bits generated from the zero-tail bits are transmitted. Hence, the actual rate of the terminated \ac{bpl} code is
+\begin{align}\label{eq:rate_term}
+R_L=\frac{n_m}{Ln-n_z}.
+\end{align}
+Encoding and termination of \ac{bpl} codes is explained in detail in Section \ref{sec:encode}.
+
+\subsection{Decoding of \acl{ldpc} Codes}\label{sec:decoding_ldpc}
+A channel decoder attempts to find the transmitted codeword $\x$ from the received word $\mathbf{y}$. The best decoder in terms of performance is a \ac{map} based decoder. Hence, its complexity grows exponentially with the information word length because it finds among all possible codewords the codeword that has the highest probability given the received word. The estimate of the transmitted codeword from a \ac{map} decoder is given by
+\begin{align}
+\widehat{\x}&=\argmax_{\x_i}\pdf_{X\mid Y}\left(\x_i,\mathbf{y}\right) \nonumber\\
+&=\argmax_{\x_i}\frac{\pdf_{Y\mid X}\left(\mathbf{y},\x_i\right)\prob(\x_i)}{\prob(\mathbf{y})} \nonumber\\
+&=\argmax_{\x_i}\pdf_{Y\mid X}\left(\mathbf{y},\x_i\right)\prob(\x_i)
+\end{align}
+where $\x_i$ is a codeword from the set of all codewords, $\mathbf{y}$ is the received word, $Y$ and $X$ are random variables representing received word and transmitted codeword respectively. For equiprobable codewords $\x_i$, a \ac{map} decoder is equivalent to a \ac{ml} decoder.
+
+Due to the high complexity of \ac{map} decoders, \ac{ldpc} codes are usually decoded using iterative \acfp{mpa}.
+\subsubsection{Belief Propagation}
+The \ac{mpa} uses the \ac{bp} technique~\cite{Hagenauer1996} to compute the \emph{a-posteriori} probability of the bits in the transmitted codeword given the received word in an iterative fashion. The idea behind belief propagation is exchanging uncertainties between the bits which are connected as defined by the encoder or \ac{pcm}. Refer to Section~\ref{sec:enc_design} to see how different bits in the codeword are dependent on each other. The algorithm uses \acp{llr} instead of a-posteriori probabilities for numerical stability. The \ac{llr} values given by the channel for the received bits are
+$$\mathcal{L}(y_i)=\log\frac{\prob\left(x_i=1\mid\mathbf{y}\right)}{\prob\left(x_i=0\mid\mathbf{y}\right)}$$
+where $i=0,\dots,n-1$ is the index of bits in the codeword.
+
+In a single iteration of the algorithm, the \acp{llr} of each bits in the codeword are updated through two intermediate message computations: \ac{v2c} message and \ac{c2v} message.
+\begin{itemize}
+  \item \ac{v2c} message: Each \ac{vn} passes its \acp{llr} on to its neighboring nodes (neighboring nodes are the \acp{cn} to which the \ac{vn} is connected in the Tanner graph). These \acp{llr} contain only extrinsic information from all other \acp{cn} in the previous iteration. The expression for the \ac{v2c} message is given by~\cite{Hagenauer1996}
+  \begin{align}
+    \mathcal{L}^{\mathrm{vc}}_{ij}=\mathcal{L}(y_i)+\sum_{j^\prime\in\mathcal{E}_v(i)\backslash j} \mathcal{L}^{\mathrm{cv}}_{j^\prime i}
+  \end{align}
+  where $\mathcal{L}^{\mathrm{vc}}_{ij}$ is the \ac{v2c} message from the $i$-th \ac{vn} to the $j$-th \ac{cn}, $\mathcal{L}^{\mathrm{cv}}_{ji}$ is the C2V message from the $j$-th \ac{cn} to the $i$-th \ac{vn} in the previous iteration and $\mathcal{E}_v(i)$ is the set of all \acp{cn} connected to the $i$-th \ac{vn}.
+  \item \ac{c2v} message: Each \ac{cn} processes the received \ac{v2c} messages and computes extrinsic information for its neighboring \acp{vn}. These extrinsic informations contain \ac{v2c} messages from \acp{vn} other than the destination \ac{vn}. The expression for C2V messages is given by~\cite{Hagenauer1996}
+  \begin{align}\label{eq:c2v}
+  \mathcal{L}^{\mathrm{cv}}_{ji}=2\arctanh\left(\prod_{i^\prime\in\mathcal{E}_c(j)\backslash i}\tanh\left(\frac{\mathcal{L}^{\mathrm{vc}}_{i^\prime j}}{2}\right)\right)
+  \end{align}
+  where $\mathcal{E}_c(j)$ is the set of all \acp{vn} connected to the $j$-th \ac{cn}.
+\end{itemize}
+The process of sending a \ac{v2c} message, receiving a \ac{c2v} message from the same edge, and summing it up with the current \ac{llr} is termed an \emph{edge update}. The above steps indicate the \ac{bp} technique. It is also called \ac{spa}.
+
+The high complexity C2V message computation can be approximated by a low-complexity computation called the \emph{\acf{msa}}. The \ac{msa} version of the expression in (\ref{eq:c2v}) is given by
+\begin{align}\label{eq:msa}
+\mathcal{L}^{\mathrm{cv}}_{ji}\approx\left(\prod_{i^\prime\in\mathcal{E}_c(j)\backslash i}\sign\left(\mathcal{L}^{\mathrm{vc}}_{i^\prime j}\right)\right)\cdot\min_{i^\prime}\lvert\mathcal{L}^{\mathrm{vc}}_{i^\prime j}\rvert.
+\end{align}
+In our implementation, we use an improved \ac{msa} as proposed in~\cite{Jones2003} which is a combination of (\ref{eq:c2v}) and (\ref{eq:msa}) with serial scheduling.
+
+One can perform the edge updates in different sequences. The sequencing is termed as \emph{scheduling}. Two such scheduling methods are \emph{parallel scheduling} and \emph{serial scheduling}. In parallel scheduling which is also referred to as \emph{flooding}, the \acp{vn} send V2C messages to all \acp{cn} at once and then C2V messages are computed and passed to all \acp{vn}. On a parallel computing platform, the parallel scheduling is much faster than its serial counterpart but it lacks performance because the messages are not shared between different \acp{cn}. In serial scheduling~\cite{Zhang2002}, the \acp{vn} are updated in a \ac{cn}-by-\ac{cn} or row-by-row (in the \ac{pcm}) manner. Each \ac{cn} processes its V2C messages and sends the corresponding C2V messages to its neighboring \acp{vn}. This is called a \emph{row update} or a \emph{layer update}.
+
+\subsubsection{Windowed Decoding}\label{sec:back_wd}
+The conventional \ac{bp}-based decoder can be used to decode any \ac{ldpcbc} or terminated \ac{ldpccc} in which the belief propagation is performed throughout the whole Tanner graph at once. For \acp{ldpccc}, the convolutional structure imposes a constraint on the \acp{vn}: two \acp{vn} of the \ac{pcm} that are at least $(m_s+1)n$ columns apart cannot be involved in the same parity-check equation. This characteristic can be exploited to perform belief-propagation decoding only to a \emph{window} (part) of the received codeword at once~\cite{Iyengar2012}. This technique is called \emph{\ac{wd}} and is shown in Figure~\ref{fig:wd}.
+\begin{figure}[htbp]
+  \centering
+  %\tikzsetnextfilename{tanner_graph}
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/pcm_wd}
+  \caption{\ac{pcm} illustrating the \acl{wd} technique for $R_\infty=2/3$ codes and $m_s=5$.}
+  \label{fig:wd}
+\end{figure}
+
+In Figure~\ref{fig:wd} the window size is $W=6$. The vertically hatched \acp{vn} are the target nodes for the current window (thick line rectangle). The backhatched \acp{vn} are outside the window but still receive updates from the \acp{cn} inside the window. The hatched \acp{vn} are the target nodes for the next window (dashed rectangle). All \acp{vn} with patterns are updated during the current window. The size of the window $W$ should be $W\geq (m_s+1)$ because smaller window size will not include all the edges of the last \ac{cn} of the window. Thus the window includes $W$ \acp{cn} and $(W+m_s)n$ \acp{vn} connected to them. At each window instance, the first $n$ \acp{vn} are considered to be the \emph{target nodes}. However, all \acp{vn} connected to the $W$ \acp{cn} are updated, only the correctness of target nodes are considered as the criteria for moving on to the next window. The \ac{bp} decoding is performed within the current window for a maximum number of iterations or until the target nodes are decoded (whichever occurs earlier). Then the window shifts forward such that the next $n$ \acp{vn} become the target nodes. This process continues until all \acp{vn} in the received word are decoded.
+
+The main benefit of window decoding is that the memory requirements are reduced because at any instance the \ac{bp} is performed on a smaller number of \acp{vn} rather than the whole graph. For non-packet-wise transmissions, the decoding latency is also reduced because the decoded bits from the previous windows can be sent to the higher layer for processing. However, these benefits come with a cost of reduced performance since the \ac{bp} is limited to fewer \acp{vn} and \acp{cn}.
+
+\subsection{System Model}\label{sec:sys_mod}
+In this thesis, we consider a digital baseband system model for simulations as shown in Figure \ref{fig:system}. The information bits are generated using a random-number generator with uniform distribution. The sequence of bits $\m$ of the generated random numbers is encoded using the \ac{bpl} encoder. The \emph{\ac{qam} Modulator} block receives the codewords $\x\in\mathbb{F}_2^{Ln\times 1}$ from the encoder and maps them to complex-valued symbols depending on the chosen modulation scheme. The output of the modulator is a vector of symbols given by $\mathbf{u}\in\mathbb{C}^{\frac{Ln}{o}\times 1}$ where $o$ is the order of modulation and lets assume that $Ln=go, g\in\mathbb{Z}_+$. In all our simulations we use \ac{qpsk} with gray mapping and no interleaving. Hence, $\mathbf{u}_i,i=0,\dots,\frac{Ln}{o}-1\in\{e^{j\frac{\pi}{4}},e^{j\frac{3\pi}{4}},e^{-j\frac{3\pi}{4}},e^{-j\frac{\pi}{4}}\}$.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth, height=\textwidth]{graphics/system_model}
+  \caption{System model for simulations.}
+  \label{fig:system}
+\end{figure}
+
+The channel model we consider is a simple \ac{awgn} channel with no fading or multi-path components. So the received symbols are given by $$\mathbf{v}=\mathbf{u}+\mathbf{n}$$where $\mathbf{n}=\mathcal{CN}(0,\sigma^2)\in\mathbb{C}^{\frac{Ln}{o}\times 1}$ is a complex random variable of Gaussian distribution with zero mean and variance $\sigma^2$. Note that only one symbol in $\mathbf{u}$ is transmitted per channel use. The received symbol vector is $\mathbf{v}\in\mathbb{C}^{\frac{Ln}{o}\times 1}$. The output of the \emph{QAM Demodulator} is a vector of \acp{llr} $\mathbf{y}\in\mathbb{R}^{Ln\times 1}$ corresponding to the bits in $\x$. The \acp{llr} are computed using the symbols in $\mathbf{v}$ and the modulation order. With \ac{qpsk} modulation, the \ac{llr} of first bit of each received symbol $y$ is computed as
+\begin{align}
+\mathcal{L}_{\text{first}}&=\log\frac{\prob\left(X_1=0\mid\re(y)\right)}{\prob\left(X_1=1\mid\re(y)\right)}
+\end{align}
+and of the second bit as
+\begin{align}
+\mathcal{L}_{\text{second}}&=\log\frac{\prob\left(X_2=0\mid\im(y)\right)}{\prob\left(X_2=1\mid\im(y)\right)}.
+\end{align}
+We assume that the bits in $\x$ are equiprobable hence,
+\begin{align}
+\mathcal{L}_{\text{first}}=\log\frac{\pdf_{\re(Y)\mid X}\left(\re(y), X_1=0\right)}{\pdf_{\re(Y)\mid X}\left(\re(y), X_1=1\right)},\\
+\mathcal{L}_{\text{second}}=\log\frac{\pdf_{\im(Y)\mid X}\left(\im(y), X_2=0\right)}{\pdf_{\im(Y)\mid X}\left(\im(y), X_2=1\right)}.
+\end{align}
+On substituting the conditional \acp{pdf} of the Gaussian random variable, we get
+\begin{align}
+\mathcal{L}_{\text{first}}&=\frac{2}{\sigma^2}\re(y)\label{eq:final_llr1},\\
+\mathcal{L}_{\text{second}}&=\frac{2}{\sigma^2}\im(y)\label{eq:final_llr2}.
+\end{align}
+
+From equations (\ref{eq:final_llr1}) and (\ref{eq:final_llr2}), we see that the \acp{llr} are directly proportional to the \ac{snr} $=\frac{2}{\sigma^2}$ of the received symbols. After the \acp{llr} are computed, they are decoded using the \ac{bp} and \ac{wd} techniques as mentioned in Section~\ref{sec:decoding_ldpc}. The estimated bits $\widehat{\m}$ are then compared with the output of the random bit generator $\m$ to calculate the \ac{ber} and \ac{bler}. \ac{ber} is the ratio between the number of error-bits and the total number of bits transmitted. \ac{bler} is the ratio between the number of error-blocks and the total number of blocks transmitted. A block is considered to be an error-block if at least one information bit is incorrect.

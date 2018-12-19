@@ -1,0 +1,84 @@
+\begin{tikzpicture}
+  \tikzstyle{outer} = [draw=gray,dashed,fill=none,thick,inner sep=0.2cm]
+  \tikzstyle{outer2} = [draw=black,fill=none,thick,inner sep=0.2cm]
+  \node at (-3, 0) [circle, fill, label={[name=nm3] above:{$\vnval_{-3}$}}] (zm3) {};
+  \node at (-2, 0) [circle, fill, label={[name=nm2] above:{$\vnval_{-2}$}}] (zm2) {};
+  \node at (-1, 0) [circle, fill, label=above:{$\vnval_{-1}$}] (zm1) {};
+  \node at (0, 0) [circle, fill, label={[name=l0] above:{$\vnval_0$}}] (z0) {};
+  \node at (1, 0) [circle, fill, label=above:{$\vnval_1$}] (z1) {};
+  \node at (2, 0) [circle, fill, label={[name=l2] above:{$\vnval_2$}}] (z2) {};
+  \node at (3, 0) [circle, fill, label=above:{$\vnval_3$}] (z3) {};
+  \node at (4, 0) [circle, fill, label={[name=l4] above:{$\vnval_4$}}] (z4) {};
+  \node at (5, 0) [circle, fill, label=above:{$\vnval_5$}] (z5) {};
+  \node at (6, 0) [circle, fill, label=above:{$\vnval_6$}] (z6) {};
+  \node at (7, 0) [circle, fill, label=above:{$\vnval_7$}] (z7) {};
+  \node at (8, 0) [circle, fill, label=above:{$\vnval_8$}] (z8) {};
+  \node at (9, 0) [circle, fill, label=above:{$\vnval_9$}] (z9) {};
+  \node at (10, 0) [circle, fill, label=above:{$\vnval_{10}$}] (z10) {};
+  \node at (11, 0) [circle, fill, label=above:{$\vnval_{11}$}] (z11) {};
+  \node at (12, 0) [circle, fill, label=above:{$\vnval_{12}$}] (z12) {};
+  \node at (13, 0) [circle, fill, label=above:{$\vnval_{13}$}] (z13) {};
+  
+  \node at (-1.5, -3) [circle, draw, label=right:{$\cnval_{-1}$}] (sm1) {};
+  \node at (0.5, -3) [circle, draw, label=right:{$\cnval_0$}] (s0) {};
+  \node at (2.5, -3) [circle, draw, label=right:{$\cnval_1$}] (s1) {};
+  \node at (4.5, -3) [circle, draw, label=right:{$\cnval_2$}] (s2) {};
+  \node at (6.5, -3) [circle, draw, label=right:{$\cnval_3$}] (s3) {};
+  \node at (8.5, -3) [circle, draw, label=right:{$\cnval_4$}] (s4) {};
+  \node at (10.5, -3) [circle, draw, label={[name=c5] right:{$\cnval_5$}}] (s5) {};
+  \node at (12.5, -3) [circle, draw, label=right:{$\cnval_6$}] (s6) {};
+
+  \draw (s1.north) -- (s1.south);
+  \draw (s1.east) -- (s1.west);
+  \draw (s2.north) -- (s2.south);
+  \draw (s2.east) -- (s2.west);
+  \draw (s3.north) -- (s3.south);
+  \draw (s3.east) -- (s3.west);
+  \draw (s4.north) -- (s4.south);
+  \draw (s4.east) -- (s4.west);
+  \draw (s5.north) -- (s5.south);
+  \draw (s5.east) -- (s5.west);
+  \draw (s6.north) -- (s6.south);
+  \draw (s6.east) -- (s6.west);
+  \draw (s0.north) -- (s0.south);
+  \draw (s0.east) -- (s0.west);
+  \draw (sm1.north) -- (sm1.south);
+  \draw (sm1.east) -- (sm1.west);
+  
+  \draw (z0.south) -- (s0.north);
+  \draw (z1.south) -- (s0.north);
+  \draw (z1.south) -- (s1.north);
+  \draw (z2.south) -- (s1.north);
+  \draw (z3.south) -- (s1.north);
+  \draw (z0.south) -- (s2.north);
+  \draw (z3.south) -- (s2.north);
+  \draw (z4.south) -- (s2.north);
+  \draw (z5.south) -- (s2.north);
+  \draw (z2.south) -- (s3.north);
+  \draw (z5.south) -- (s3.north);
+  \draw (z6.south) -- (s3.north);
+  \draw (z7.south) -- (s3.north);
+  \draw (z4.south) -- (s4.north);
+  \draw (z7.south) -- (s4.north);
+  \draw (z8.south) -- (s4.north);
+  \draw (z9.south) -- (s4.north);
+  \draw (z6.south) -- (s5.north);
+  \draw (z9.south) -- (s5.north);
+  \draw (z8.south) -- (s6.north);
+  \draw (z10.south) -- (s5.north);
+  \draw (z11.south) -- (s5.north);
+  \draw (zm1.south) -- (s0.north);
+  \draw (zm1.south) -- (sm1.north);
+  \draw (zm2.south) -- (sm1.north);
+  \draw (zm2.south) -- (s1.north);
+  \draw (zm3.south) -- (sm1.north);
+  \draw (z11.south) -- (s6.north);
+  \draw (z12.south) -- (s6.north);
+  \draw (z13.south) -- (s6.north);
+  \node [outer, fit=(nm2) (s4) (z9),label={above left:Previous window},yshift=+1.2mm] (1wi) {};
+  \node [outer2, fit=(l0) (z11) (s5)] (2wi) {};
+  \node [outer, fit=(l2) (s6) (z13),yshift=-1.2mm] (3wi) {};
+  \node [above right=0cm and -1.7cm of 3wi] (labNxt) {Next window};
+  \node [above=7mm of 2wi] (curwin) {Current window};
+  \draw [->] (2wi.north) -- (curwin.south);
+\end{tikzpicture}

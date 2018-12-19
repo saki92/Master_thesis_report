@@ -1,0 +1,32 @@
+\begin{tikzpicture}[auto, node distance=3.5cm,>=latex']
+  \tikzstyle{inner} = [draw, fill=none, rectangle, 
+  minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=center]
+  \tikzstyle{outer} = [draw=gray,dashed,fill=none,thick,inner sep=0.2cm]
+  \tikzstyle{cord} = [coordinate]
+  \tikzstyle{sum} = [draw,circle,node distance=3cm]
+  \node [inner,name=source] {Random Bit Generator};
+  \node [inner,right of=source] (encoder) {BPL Codes Encoder};
+  \node [cord,below= 2.7cm of $(source)!0.5!(encoder)$] (take) {};
+  %\node [inner,name=encoder] {Terminated LDPC-CC encoder};
+  \node [inner,right of=encoder] (mod) {QAM\\Modulator};
+  \node [inner,below=1cm of mod] (channel) {Baseband Channel};
+  \node [inner,below=1cm of channel] (demod) {QAM\\Demodulator};
+  \node [inner,left of=demod] (decoder) {Windowed Decoder with BPA};
+  \node [inner,left of=decoder] (sink) {Evaluation};
+  \node [right=1.5cm of channel] (noise) {AWGN};
+  %\node [cord,right of=encoder] (codew) {};
+  %\node [cord,right of=decoder] (rxword) {};
+  %\node [outer, fit=(encoder) (decoder),label=above:Channel coding blocks] (tx) {};
+  %\node [outer, fit=(rxout) (decoder) (rxword),label=below:Channel decoder block of a receiver] (rx) {};
+  
+  \draw [->] (source) -- node [] {$\mathbf{m}$} (encoder);
+  \draw [->] (encoder) -- node [] {$\mathbf{x}$} (mod);
+  \draw [->] (mod) -- node [] {$\mathbf{u}$} (channel);
+  \draw [->] (channel) -- node [] {$\mathbf{v}$} (demod);
+  \draw [->] (demod) -- node [] {$\mathbf{y}$} (decoder);
+  \draw [->] (decoder) -- node [] {$\widehat{\mathbf{m}}$} (sink);
+  \draw [->] (noise) -- node [above] {$\mathbf{n}$} (channel);
+  \draw ($(source)!0.5!(encoder)$) -- (take);
+  \draw [->] (take) -| (sink.north);
+
+\end{tikzpicture}

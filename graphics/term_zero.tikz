@@ -1,0 +1,20 @@
+\begin{tikzpicture}[auto, node distance=3.5cm,>=latex']
+  \tikzstyle{inner} = [draw, fill=none, rectangle, 
+  minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=center]
+  \tikzstyle{box} = [step=0.5cm,color=black,thin]
+  \tikzstyle{cord} = [coordinate]
+  \tikzstyle{sum} = [draw,circle,radius=0.5cm]
+  \draw[box] (0,0) grid (1.5,-2.5);
+  \draw[box] (1.5-\xs,-3-\xs) grid (3,-0.5);
+  \draw[box] (3-\xs,-1-\xs) grid (4.5,-3.5);
+  \draw[box] (4.5-\xs,-1.5-\xs) grid (6,-4);
+  \draw[box] (6-\xs,-2-\xs) grid (7.5,-4);
+  \draw[box] (7.5-\xs,-2.5-\xs) grid (9,-4);
+  \draw[box] (9-\xs,-3-\xs) grid (10.5,-4);
+  \draw[box] (10.5-\xs,-3.5-\xs) grid (12,-4);
+  \draw (0,0.5) rectangle (12,1);
+  \draw (3,0.5) -- (3,1);
+  \draw (9,0.5) -- (9,1);
+  \node at (6,0.75) {$\mathbf{e}$};
+  \node at (10.5,0.75) {$\mathbf{a}$};
+\end{tikzpicture}

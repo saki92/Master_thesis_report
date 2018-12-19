@@ -1,0 +1,89 @@
+\documentclass[11pt,article,type=msc,colorback,accentcolor=tud1b]{tudthesis}
+%\usepackage{ngerman}
+\usepackage[nolist,nohyperlinks]{acronym}
+\usepackage[english]{babel}
+%\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{eucal}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows,external,patterns}
+\usepackage{tikz,pgfplots}
+\usepackage{tikzscale}
+\usepackage{etoolbox}
+\usepackage{float}
+%\usepackage{fontspec}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[utf8x]{inputenc}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usetikzlibrary{calc}
+\usetikzlibrary{fit,backgrounds,automata}
+
+%\tikzexternalize[mode=list and make]{Report}
+%\titleformat{\section}{\normalfont\fontsize{12}{15}\bfseries}{\thesection}{1em}{}
+\newcommand{\getmydate}{%
+	\ifcase\month%
+	\or Januar\or Februar\or M\"arz%
+	\or April\or Mai\or Juni\or Juli%
+	\or August\or September\or Oktober%
+	\or November\or Dezember%
+	\fi\ \number\year%
+}
+
+\renewcommand{\H}{\mathbf{H}}
+\newcommand{\G}{\mathbf{G}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\m}{\mathbf{m}}
+\newcommand{\bb}{\mathbf{b}}
+\newcommand{\cnval}{c}
+\newcommand{\vnval}{v}
+\newcommand{\sdot}{}
+\newcommand{\xs}{0.0001}
+\newcommand*{\pdf}{p}
+\newcommand*{\prob}{\text{Pr}}
+\newcommand{\mc}{\mathcal{c}}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator{\arctanh}{atanh}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\sign}{sign}
+\begin{document}
+  \pagenumbering{roman}
+	\colorlet{tudidentbar}{tud1b} 
+	\thesistitle{Design and Implementation of Improved Decoding Algorithms for LDPC Convolutional Codes}%
+	{Entwurf und Implementierung von verbesserten Decodieralgorithmen f{\"u}r LDPC-Faltungscodes }
+	\author{Sakthivel Velumani}
+	\birthplace{Salem, India}
+	\referee{Prof. Dr. techn. Heinz Koeppl}{Bastian Alt}[Janik Frenzel]
+	\department{Fachbereich Elektrotechnik und Informationstechnik}
+	\group{Bioinspired Communication Systems Lab}
+	\date{\today}
+	\dateofexam{14.01.2019}{14.01.2019}
+	\tuprints{82349}{8234}
+	\makethesistitle
+	\colorlet{tudidentbar}{tud0b} 
+	\affidavit{Sakthivel Velumani}
+  \include{acknowledgment}
+  \onehalfspacing
+	\tableofcontents
+	\clearpage
+	\input{acronyms}
+  \pagenumbering{arabic}
+	\input{abstract}
+	\clearpage
+	\input{introduction}
+  \clearpage
+  \input{background}
+  \clearpage
+  \input{encoding}
+  \clearpage
+  \input{decoding_improve}
+  \clearpage
+  \input{implementation}
+  \clearpage
+  \bibliographystyle{IEEEtran}
+  \bibliography{IEEEabrv,references}
+\end{document}

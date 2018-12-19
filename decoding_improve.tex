@@ -1,0 +1,14 @@
+\section{Decoding Improvements}
+\begin{enumerate}
+  \item Early success with complete vs target CNs: From simulation results, for $W<(2m_s+1)$ there is a noticeable reductions in edge updates for the same BLER when only complete CNs are checked. And for $W>(2m_s+1)$, only the target CNs can be checked instead of complete CNs. Hence the complexity is reduced with no reduction in performance.
+\end{enumerate}
+
+
+In this section, we start by continuing our discussion on decoding \acp{bpl} codes from section~\ref{sec:decoding_ldpc}. We then discuss the improvements proposed in the latest literatures, the techniques investigated in this thesis and possible areas of further research and improvements. We finish this section by discussing the results from our simulations.
+
+\subsection{Decoding \acl{bpl} Codes}
+The information bits are encoded using the \ac{bpl} codes and termination is performed by zero-tailing as mentioned in section~\ref{sec:bpl_termi}. The encoded bits are then transmitted through an \ac{awgn} channel with \ac{qpsk} modulation. The \ac{bpl} decoder that we discuss here is soft value based belief propagation decoder and it uses \acp{llr} of the received bits as soft values. The \acp{llr} are calculated as described in section~\ref{sec:sys_mod}. The zero tail bits used for termination are not transmitted since they are known at the receiver. Hence the \acp{llr} of these zero tail bits are saturated to $+\infty$.
+
+We use a window based decoding strategy to decoder the received words. The base windowed decoder that we use is the one described in section~\ref{sec:back_wd}. In the following, we discuss further about the existing techniques from literatures in the context of windowed decoding of terminated \acp{ldpccc} and followed by our findings.
+
+\subsection{Existing Techniques}

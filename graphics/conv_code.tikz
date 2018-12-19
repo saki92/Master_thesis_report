@@ -1,0 +1,21 @@
+\begin{tikzpicture}[node distance=2.5cm,auto,>=latex']
+\tikzstyle{int}=[draw, minimum size=2em]
+\tikzstyle{init} = [pin edge={to-,thin,black}]
+\tikzstyle{sum} = [draw, circle, node distance = 2cm]
+\tikzstyle{branch}=[fill,shape=circle,minimum size=3pt,inner sep=0pt]
+\node [int] (b) {D};
+\node (a) [left of=b] {$x[k]$};
+\path (b) -- coordinate (branch) (a);
+\node [branch] at (branch) {};
+\node [int,right of=b] (c) {D};
+\node [coordinate] (end) [right of=c, node distance=2cm]{};
+\node [sum,above of=end] (s) {+};
+\node [right of=s] (op1) {$y^{(1)}[k]$};
+\node [below=3cm of op1] (op2) {$y^{(0)}[k]$};
+\draw[->] (a) -- (b);
+\draw[->] (branch) |- (s.west);
+\draw[->] (b) -- (c);
+\draw[->] (c) -| (s.south);
+\draw[->] (s.east) -- (op1);
+\draw[->] (branch) |- (op2);
+\end{tikzpicture}

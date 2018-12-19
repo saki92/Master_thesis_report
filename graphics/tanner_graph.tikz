@@ -1,0 +1,33 @@
+\begin{tikzpicture}
+  \node at (0, 0) [circle, fill, label=above:{$\vnval_1$}] (z1) {};
+  \node at (1, 0) [circle, fill, label=above:{$\vnval_2$}] (z2) {};
+  \node at (2, 0) [circle, fill, label=above:{$\vnval_3$}] (z3) {};
+  \node at (3, 0) [circle, fill, label=above:{$\vnval_4$}] (z4) {};
+  \node at (4, 0) [circle, fill, label=above:{$\vnval_5$}] (z5) {};
+  \node at (5, 0) [circle, fill, label=above:{$\vnval_6$}] (z6) {};
+  \node at (6, 0) [circle, fill, label=above:{$\vnval_7$}] (z7) {};
+  
+  \node at (1, -3) [circle, draw, label=right:{$\cnval_1$}] (s1) {};
+  \node at (3, -3) [circle, draw, label=right:{$\cnval_2$}] (s2) {};
+  \node at (5, -3) [circle, draw, label=right:{$\cnval_3$}] (s3) {};
+  
+  \draw (s1.north) -- (s1.south);
+  \draw (s1.east) -- (s1.west);
+  \draw (s2.north) -- (s2.south);
+  \draw (s2.east) -- (s2.west);
+  \draw (s3.north) -- (s3.south);
+  \draw (s3.east) -- (s3.west);
+  
+  \draw (z1.south) -- (s1.north);
+  \draw (z1.south) -- (s2.north);
+  \draw (z1.south) -- (s3.north);
+  \draw (z2.south) -- (s1.north);
+  \draw (z2.south) -- (s2.north);
+  \draw (z3.south) -- (s1.north);
+  \draw (z3.south) -- (s3.north);
+  \draw (z4.south) -- (s2.north);
+  \draw (z4.south) -- (s3.north);
+  \draw (z5.south) -- (s1.north);
+  \draw (z6.south) -- (s2.north);
+  \draw (z7.south) -- (s3.north);
+\end{tikzpicture}

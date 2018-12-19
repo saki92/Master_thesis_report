@@ -1,0 +1,34 @@
+\begin{tikzpicture}[auto, node distance=3cm,>=latex']
+  \tikzstyle{inner} = [draw, fill=none, rectangle, 
+  minimum height=3em, minimum width=7em, node distance=3.5cm, text width=5em, align=center]
+  \tikzstyle{outer} = [draw=gray,dashed,fill=none,thick,inner sep=0.2cm]
+  \tikzstyle{cord} = [coordinate]
+  \tikzstyle{sum} = [draw,circle,node distance=3cm]
+  \node [inner,name=source] {Source};
+  \node [inner,right of=source] (sencoder) {Source\\Encoder};
+  \node [inner,right of=sencoder] (encoder) {Channel\\Encoder};
+  \node [inner,right of=encoder] (mod) {Modulator};
+  %\node [cord,right of=mod] (chin) {};
+  \node [inner,below=1cm of mod] (channel) {Channel};
+  %\node [cord,below of=channel] (chout) {};
+  \node [inner,below=1cm of channel] (demod) {Demodulator};
+  \node [inner,left of=demod] (decoder) {Channel\\Decoder};
+  \node [inner,left of=decoder] (sdecoder) {Source\\Decoder};
+  \node [inner,left of=sdecoder] (dest) {Sink};
+  \node [right=1.5cm of channel] (noise) {Noise};
+  %\node [cord,right of=encoder] (codew) {};
+  %\node [cord,right of=decoder] (rxword) {};
+  \node [outer, fit=(encoder) (decoder),label=above:Channel coding blocks] (tx) {};
+  %\node [outer, fit=(rxout) (decoder) (rxword),label=below:Channel decoder block of a receiver] (rx) {};
+  
+  \draw [->] (source) -- node [] {$\mathbf{d}$} (sencoder);
+  \draw [->] (sencoder) --  node [] {$\mathbf{m}$} (encoder);
+  \draw [->] (encoder) -- node [] {$\mathbf{x}$} (mod);
+  \draw [->] (mod) -- node [] {$\mathbf{u}$} (channel);
+  \draw [->] (channel) -- node [] {$\mathbf{v}$} (demod);
+  \draw [->] (demod) -- node [above] {$\mathbf{y}$} (decoder);
+  \draw [->] (decoder) -- node [above] {$\widehat{\mathbf{m}}$} (sdecoder);
+  \draw [->] (sdecoder) -- node [above] {$\widehat{\mathbf{d}}$} (dest);
+  \draw [->] (noise) -- node [above] {$\mathbf{n}$} (channel);
+
+\end{tikzpicture}

@@ -1,0 +1,15 @@
+\begin{tikzpicture}
+  \node at (0, 0) [circle, fill, label=above:{$\vnval_i$}] (vn) {};
+  \node at (180:1) [] (chan) {$\chanval_i$};
+  \node at (0:1) [] (j2) {$\ctov{i}{2}$};
+  \node at (45:1) [] (j1) {$\vtoc{i}{1}$};
+  \node at (-45:1) [] (jn) {$\ctov{i}{d_v}$};
+  \node at (-18:0.7) [] (dot1) {\textbf{.}};
+  \node at (-23:0.7) [] (dot2) {\textbf{.}};
+  \node at (-28:0.7) [] (dot3) {\textbf{.}};
+  
+  \draw [->] (chan) -- (vn);
+  \draw [->] (vn) -- (j1);
+  \draw [->] (j2) -- (vn);
+  \draw [->] (jn) -- (vn);
+\end{tikzpicture}
