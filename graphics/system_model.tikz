@@ -11,7 +11,7 @@
   \node [inner,right of=encoder] (mod) {QAM\\Modulator};
   \node [inner,below=1cm of mod] (channel) {Baseband Channel};
   \node [inner,below=1cm of channel] (demod) {QAM\\Demodulator};
-  \node [inner,left of=demod] (decoder) {Windowed Decoder with BPA};
+  \node [inner,left of=demod] (decoder) {Windowed Decoder with BP};
   \node [inner,left of=decoder] (sink) {Evaluation};
   \node [right=1.5cm of channel] (noise) {AWGN};
   %\node [cord,right of=encoder] (codew) {};

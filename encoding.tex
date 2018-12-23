@@ -31,19 +31,19 @@ The objective of terminating any \ac{ldpccc} is to have a finite codeword length
 \end{figure}
 
 The \ac{pcm} in (\ref{eq:bpl_pcm}) of a \ac{bpl} code has a structure as shown in Figure~\ref{fig:bpl_term} where $\mathbf{e}\in\mathbb{F}_2^{m_sn\times 1}$ is the last part of the codeword vector. Vector $\mathbf{a}\in\mathbb{F}_2^{l_t\times 1}$ is the termination sequence that should be determined and appended to the end of $\mathbf{e}$. All the rows of the matrix $[\mathbf{P},\mathbf{D}]$ are the parity checks that are targeted to be satisfied by the termination sequence. Hence, provided a correct termination sequence $\mathbf{a}$, the following equations from~\cite{Chen2006} hold true.
-\begin{align*}
+\begin{align}
 \begin{bmatrix}\mathbf{P} &\mathbf{D}\end{bmatrix}\odot
 \begin{bmatrix}
 \mathbf{e}\\
 \mathbf{a}
 \end{bmatrix}&=\mathbf{0}\\
 \mathbf{P}\odot\mathbf{e}&=\mathbf{D}\odot\mathbf{a}
-\end{align*}
+\end{align}
 The termination sequence is given by
 \begin{align}\label{eq:term_sol}
 \mathbf{a}=\mathbf{D}^{-1}\odot\mathbf{P}\odot\mathbf{e}.
 \end{align}
-The maximum length $l_t$ of the termination sequence $\mathbf{a}$ should not exceed the one given in the \ac{bpl} standard. However, a shorter termination sequence with $l_t\geq n$ can be chosen such that $\mathbf{D}$ is a square matrix. Once the termination sequence $\mathbf{a}$ is determined from equation (\ref{eq:term_sol}), it is appended to the codeword and the remaining part of the termination sequence (if any) is filled with zeros. These zeros do not contribute to any parity checks. For an encoder that is implemented on hardware, these zeros are required to bring the encoder to all-zero state. Since we do software implementation, we omit these zeros. Hence the resulting \ac{pcm} and codeword looks like the one shown in Figure~\ref{fig:bpl_term} with no zero at the end of the codeword and without their corresponding edges in the \ac{pcm}.
+The maximum length $l_t$ of the termination sequence $\mathbf{a}$ should not exceed the one given in the \ac{bpl} standard. However, a shorter termination sequence with $l_t\geq n$ can be chosen such that $\mathbf{D}$ is a square matrix. Once the termination sequence $\mathbf{a}$ is determined from equation (\ref{eq:term_sol}), it is appended to the codeword and the remaining part of the termination sequence (if any) is filled with zeros. These zeros do not contribute to any parity checks. For an encoder that is implemented on hardware, these zeros are required to bring the encoder to an all-zero state. But we omit these zeros since we do software implementation. Hence, the resulting \ac{pcm} and codeword looks like the one shown in Figure~\ref{fig:bpl_term} with no zeros at the end of the codeword and without their corresponding edges in the \ac{pcm}.
 %\begin{figure}[htbp]
 %  \centering
 %  \includegraphics[width=\textwidth, height=\textwidth]{graphics/term_result}
@@ -51,16 +51,16 @@ The maximum length $l_t$ of the termination sequence $\mathbf{a}$ should not exc
 %  \label{fig:term_res}
 %\end{figure}
 
-We found that termination for \ac{bpl} codes cannot be performed as mentioned earlier. It is found through numerical evaluations that for \ac{bpl} codes, $\mathbf{D}$ is not full-rank. When the length of $\mathbf{a}$ is reduced, $\mathbf{D}$ is full-rank but the system of linear equations becomes overdetermined i.e, $\mathbf{D}\in\mathbb{F}_2^{r\times c}$ where $r>c$. A solution for such an overdetermined system cannot be found. Hence a termination sequence to satisfy the last $m_s$ parity checks cannot be found for \ac{bpl} codes. So we choose to omit the last $m_s$ parity checks from the \ac{pcm} and do the termination by \emph{zero-tailing} as mentioned in the standard.
+Unfortunately, we found that a proper termination sequence cannot be computed for \ac{bpl} codes. It is found through numerical evaluations that $\mathbf{D}$ is not full-rank and hence its inverse do not exist. A full rank $\mathbf{D}$ matrix is possible if $\mathbf{D}\in\mathbb{F}_2^{r\times c}$ and $r>c$. But with the help of numerical solvers, we found that the solution for such an overdetermined system do not exist either. Hence, a termination sequence to satisfy the last $m_s$ parity checks cannot be found for \ac{bpl} codes. So we choose to omit the last $m_s$ parity checks from the \ac{pcm} and do the termination by \emph{zero-tailing} as mentioned in the standard.
 
 The steps for performing zero-tailing termination are as follows.
 \begin{enumerate}
   \item The $n_z$ zero-tail bits are appended to the input buffer of the encoder after the $n_m$ information bits.
-  \item The encoding as mentioned in Section~\ref{sec:enc_design} is performed to all information bits and zero-tail bits.
+  \item The encoding as mentioned in Section~\ref{sec:enc_design} is performed to all the information bits and zero-tail bits.
 \end{enumerate}
 With the zero-tail-termination, the zero-tail bits are always known at the receiver. Hence, the zero-tail bits are not transmitted in an actual transmission system. Only the parity bits generated from the zero-tail bits are transmitted.
 
-The zero-tail-termination does not satisfy the last $m_s$ parity checks of the \ac{pcm}. Hence, the \ac{pcm} of a zero-tail terminated \ac{bpl} codes looks like one as shown in figure \ref{fig:pcm_zero}.
+The zero-tail-termination does not satisfy the last $m_s$ parity checks of the \ac{pcm}. Hence, the \ac{pcm} of a zero-tail-terminated \ac{bpl} codes looks like the one shown in Figure~\ref{fig:pcm_zero}.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth, height=\textwidth]{graphics/term_zero}
@@ -68,4 +68,4 @@ The zero-tail-termination does not satisfy the last $m_s$ parity checks of the \
   \label{fig:pcm_zero}
 \end{figure}
 
-The \ac{pcm} of the zero-tail terminated codes have the same \ac{cn} degrees in the middle and in the end. But in contrast, properly terminated codes have lower \ac{cn} degrees at the end. This reduces the performance of the codes as lower \ac{cn} degree means better reliability for the variable nodes connected to them. However, the zero-tail bits are known at the receiver and their certainty improves the decoding performance of the nearby variable nodes.
+The \ac{pcm} of the zero-tail-terminated codes have the same \ac{cn} degrees in the middle and in the end. But in contrast, properly terminated codes have lower \ac{cn} degrees at the end. This reduces the performance of the codes as lower \ac{cn} degree means better reliability of the variable nodes connected to them. Since the zero-tail bits are known at the receiver, they improve the reliability of the connected \acp{vn} during the decoding process.

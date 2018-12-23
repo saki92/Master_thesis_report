@@ -18,9 +18,9 @@ The addition of redundant bits by the channel encoder enables the mapping betwee
 \subsection{Channel Codes}
 There are different types of channel codes. The choice of one depends on the application requirements, type of channel medium and resource availability. In this thesis, we focus on \acp{ldpccc}, a special class of \acp{ldpcbc}.
 \subsubsection{Linear Block Codes}
-Linear block codes are codes in which a codeword is formed by a linear combination of two or more base vectors that span the codeword space~\cite{proak} and hence the base vectors are also codewords. As a result, a linear combination of any two or more codewords forms another codeword. The codeword space of $2^k$ vectors is a subspace of the space of all $2^n$ vectors. An $(n,k)$ linear block code maps $k$ message bits to $n$ codeword bits. The remaining $n-k$ redundant bits are called parity bits and they are determined by an encoding rule. Linear block codes are classified into two categories: \emph{systematic} and \emph{non-systematic}. Systematic codes have all their message bits transmitted in an unaltered manner whereas the non-systematic codes do not have such formation. A codeword of a systematic linear block code can have one of the following structures: $$\x^T=(\m^T,\bb^T)$$ or $$\x^T=(\bb^T,\m^T)$$ where $\x\in\mathbb{F}_2^{n\times 1}$ is the codeword vector, $\m\in\mathbb{F}_2^{k\times 1}$ and $\bb\in\mathbb{F}_2^{(n-k)\times 1}$ denote message and parity vectors, respectively. The code rate is given by $$R=\frac{k}{n}.$$
+Linear block codes are codes in which a codeword is formed by a linear combination of two or more base vectors that span the codeword space~\cite{proak} and hence the base vectors are also codewords. As a result, a linear combination of any two or more codewords forms another codeword. The codeword space of $2^k$ vectors is a subspace of the space of all $2^n$ vectors. An $(n,k)$ linear block code maps $k$ message bits to $n$ codeword bits. The remaining $n-k$ redundant bits are called parity bits and they are determined by an encoding rule. Linear block codes are classified into two categories: \emph{systematic} and \emph{non-systematic}. Systematic codes have all their message bits transmitted in an unaltered manner whereas the non-systematic codes do not have such formation. Without loss of generality, we assume that a codeword of the systematic linear block code has the following structure: \begin{align}\x^T=(\m^T,\bb^T)\end{align} where $\x\in\mathbb{F}_2^{n\times 1}$ is the codeword vector, $\m\in\mathbb{F}_2^{k\times 1}$ and $\bb\in\mathbb{F}_2^{(n-k)\times 1}$ denote message and parity vectors, respectively. The code rate is given by \begin{align}R=\frac{k}{n}.\end{align}
 
-Codewords of linear block codes are expressed using the linear expression $$\x=\G\odot\m$$ where $\G\in\mathbb{F}_2^{n\times k}$ is called the \ac{gm} and $\odot$ represents multiplication modulo 2. A parity check is described by the expression $$\H\odot\x=\mathbf{s}$$ where $\H\in\mathbb{F}_2^{(n-k)\times n}$ is called the \ac{pcm} and $\mathbf{s}\in\mathbb{F}_2^{(n-k)\times 1}$ is called the syndrome. Each row of the \ac{pcm} represents a parity-check equation. Only when $\mathbf{s}=\mathbf{0}$, the parity checks are fulfilled. The relation between \ac{pcm} and \ac{gm} is given by $\H\odot\G=\mathbf{0}$. With either \ac{gm} or \ac{pcm} given, the other one is not unique. For example, if the \ac{pcm} of a $(7,4)$ hamming code is given by
+Codewords of linear block codes are expressed using the linear expression \begin{align}\x=\G\odot\m\end{align} where $\G\in\mathbb{F}_2^{n\times k}$ is called the \ac{gm} and $\odot$ represents multiplication modulo 2. A parity check is described by the expression \begin{align}\H\odot\x=\mathbf{s}\end{align} where $\H\in\mathbb{F}_2^{(n-k)\times n}$ is called the \ac{pcm} and $\mathbf{s}\in\mathbb{F}_2^{(n-k)\times 1}$ is called the syndrome. Each row of the \ac{pcm} represents a parity-check equation. Only when $\mathbf{s}=\mathbf{0}$, the parity checks are fulfilled. The relation between \ac{pcm} and \ac{gm} is given by $\H\odot\G=\mathbf{0}$. With either \ac{gm} or \ac{pcm} given, the other one is not unique. For example, if the \ac{pcm} of a $(7,4)$ hamming code is given by
 \begin{align} \label{eq:H_ham}
 \H =
 \begin{bmatrix}
@@ -30,15 +30,15 @@ Codewords of linear block codes are expressed using the linear expression $$\x=\
 \end{bmatrix},
 \end{align}
 then the \ac{gm} can be formed by combining any 3 rows of null$(\H)$, i.e., the right null space of $\H$.
-%\begin{align} \label{eq:G_ham}
-%\text{null}(\H) =
-%\begin{bmatrix}
-%1 &1 &0 &0 &0 &0 &1 \\
-%1 &1 &1 &0 &1 &0 &0 \\
-%0 &0 &1 &1 &1 &1 &0 \\
-%0 &1 &1 &1 &0 &0 &0
-%\end{bmatrix}
-%\end{align}
+\begin{align} \label{eq:G_ham}
+\G^T =
+\begin{bmatrix}
+1 &1 &0 &0 &0 &0 &1 \\
+1 &1 &1 &0 &1 &0 &0 \\
+0 &0 &1 &1 &1 &1 &0 \\
+0 &1 &1 &1 &0 &0 &0
+\end{bmatrix}
+\end{align}
 
 The \ac{pcm} can be represented by a bipartite graph, called Tanner graph~\cite{Tanner1981}. The Tanner graph has two sets of nodes: \acp{vn} represent columns and \acp{cn} represent rows of the \ac{pcm}. Each non-zero entry in the \ac{pcm} is represented by an edge between the respective \ac{vn} and \ac{cn}. The \emph{degree} of a node is the number of edges connected to it. The Tanner graph of the example \ac{pcm} in (\ref{eq:H_ham}) is shown in Figure \ref{fig:tannGraph}.
 
@@ -65,14 +65,14 @@ Convolutional codes in general are codes in which the parity bits are generated 
   \label{fig:conv_code}
 \end{figure}
 The generator-polynomials of this example is given by
-\begin{align*}
+\begin{align}
 G^{(0)}(D)&=1\\
 G^{(1)}(D)&=1+D^2.
-\end{align*}
+\end{align}
 The impulse response of the parity-bit generator is given by
-$$g^{(1)}[k]=\begin{bmatrix}
+\begin{align}g^{(1)}[k]=\begin{bmatrix}
 1 &0 &1
-\end{bmatrix}.$$
+\end{bmatrix}.\end{align}
 The output is given by the convolution form:
 \begin{align}
 y^{(1)}[k]&=x[k]*g^{(1)}[k]\nonumber\\
@@ -179,7 +179,7 @@ where $b(t)\in\mathbb{F}_2$ is the parity bit and $\m(t)\in\mathbb{F}_2^{k\times
 \end{align}
 where $[D^i]A_{1,\tau}$ represents the coefficient of $D^i$ in polynomial $A_{1,\tau}(D)$.
 
-The resulting codewords $\x\in\mathbb{F}_2^{Ln\times 1}$ have a systematic structure given by $$\x^T=(\x(0)^T,\x(1)^T,\dots,\x(L-1)^T).$$
+The resulting codewords $\x\in\mathbb{F}_2^{Ln\times 1}$ have a systematic structure given by \begin{align}\x^T=(\x(0)^T,\x(1)^T,\dots,\x(L-1)^T).\end{align}
 
 Similarly, the \ac{pcm} can be formed using the coefficients of the parity-check polynomials:
 \begin{align}\label{eq:bpl_pcm}
@@ -195,7 +195,7 @@ Similarly, the \ac{pcm} can be formed using the coefficients of the parity-check
 \end{bmatrix}.
 \end{align}
 
-\cite{Bpl} specifies that termination is achieved by appending bits with value $0$ to the end of the message bits before encoding. These bits are called \emph{zero-tail bits}. The number of zero-tail bits $n_z$ depends on the number of message bits $n_m$ in the codeword and the asymptotic rate $R_\infty$. The number of \acp{cb} in the terminated codeword is $$L=\frac{n_m+n_z}{n-1}.$$ Since the zero-tail bits are known at the receiver, they are not transmitted. Only the parity bits generated from the zero-tail bits are transmitted. Hence, the actual rate of the terminated \ac{bpl} code is
+\cite{Bpl} specifies that termination is achieved by appending bits with value $0$ to the end of the message bits before encoding. These bits are called \emph{zero-tail bits}. The number of zero-tail bits $n_z$ depends on the number of message bits $n_m$ in the codeword and the asymptotic rate $R_\infty$. The number of \acp{cb} in the terminated codeword is \begin{align}L=\frac{n_m+n_z}{n-1}.\end{align} Since the zero-tail bits are known at the receiver, they are not transmitted. Only the parity bits generated from the zero-tail bits are transmitted. Hence, the actual rate of the terminated \ac{bpl} code is
 \begin{align}\label{eq:rate_term}
 R_L=\frac{n_m}{Ln-n_z}.
 \end{align}
@@ -212,9 +212,18 @@ where $\x_i$ is a codeword from the set of all codewords, $\mathbf{y}$ is the re
 
 Due to the high complexity of \ac{map} decoders, \ac{ldpc} codes are usually decoded using iterative \acfp{mpa}.
 \subsubsection{Belief Propagation}
-The \ac{mpa} uses the \ac{bp} technique~\cite{Hagenauer1996} to compute the \emph{a-posteriori} probability of the bits in the transmitted codeword given the received word in an iterative fashion. The idea behind belief propagation is exchanging uncertainties between the bits which are connected as defined by the encoder or \ac{pcm}. Refer to Section~\ref{sec:enc_design} to see how different bits in the codeword are dependent on each other. The algorithm uses \acp{llr} instead of a-posteriori probabilities for numerical stability. The \ac{llr} values given by the channel for the received bits are
-$$\mathcal{L}(y_i)=\log\frac{\prob\left(x_i=1\mid\mathbf{y}\right)}{\prob\left(x_i=0\mid\mathbf{y}\right)}$$
+The \ac{mpa} uses the \ac{bp} technique~\cite{Hagenauer1996} to compute the \emph{a-posteriori} probability of the bits in the transmitted codeword given the received word in an iterative fashion. The idea behind belief propagation is exchanging uncertainties between the bits which are connected as defined by the encoder or \ac{pcm}. Refer to Section~\ref{sec:enc_design} to see how different bits in the codeword are dependent on each other. The algorithm uses \acp{llr} instead of \acp{app} for numerical stability. The \ac{llr} values given by the channel for the received bits are
+\begin{align}\mathcal{L}(y_i)=\log\frac{\prob\left(x_i=1\mid\mathbf{y}\right)}{\prob\left(x_i=0\mid\mathbf{y}\right)}\end{align}
 where $i=0,\dots,n-1$ is the index of bits in the codeword.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{plots/app_llr}
+  \caption{Relation between \ac{app} and \ac{llr}.}
+  \label{fig:app_llr}
+\end{figure}
+
+Figure~\ref{fig:app_llr} shows the relation between \ac{app} and \ac{llr}. The \ac{app} values range from 0 to 1 while the \ac{llr} takes values ranging from $-\infty$ to $+\infty$ which makes calculation of messages easier.
 
 In a single iteration of the algorithm, the \acp{llr} of each bits in the codeword are updated through two intermediate message computations: \ac{v2c} message and \ac{c2v} message.
 \begin{itemize}
@@ -222,12 +231,24 @@ In a single iteration of the algorithm, the \acp{llr} of each bits in the codewo
   \begin{align}
     \mathcal{L}^{\mathrm{vc}}_{ij}=\mathcal{L}(y_i)+\sum_{j^\prime\in\mathcal{E}_v(i)\backslash j} \mathcal{L}^{\mathrm{cv}}_{j^\prime i}
   \end{align}
-  where $\mathcal{L}^{\mathrm{vc}}_{ij}$ is the \ac{v2c} message from the $i$-th \ac{vn} to the $j$-th \ac{cn}, $\mathcal{L}^{\mathrm{cv}}_{ji}$ is the C2V message from the $j$-th \ac{cn} to the $i$-th \ac{vn} in the previous iteration and $\mathcal{E}_v(i)$ is the set of all \acp{cn} connected to the $i$-th \ac{vn}.
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/v2c}
+    \caption{Example showing that messages from all other \acp{cn} sum-up with the channel's \ac{llr} to form the V2C message to the first \ac{cn}.}
+    \label{fig:v2c}
+  \end{figure}
+  where $\mathcal{L}^{\mathrm{vc}}_{ij}$ is the \ac{v2c} message from the $i$-th \ac{vn} to the $j$-th \ac{cn}, $\mathcal{L}^{\mathrm{cv}}_{ji}$ is the C2V message from the $j$-th \ac{cn} to the $i$-th \ac{vn} in the previous iteration and $\mathcal{E}_v(i)$ is the set containing  all $n_c$ \acp{cn} connected to the $i$-th \ac{vn}.
   \item \ac{c2v} message: Each \ac{cn} processes the received \ac{v2c} messages and computes extrinsic information for its neighboring \acp{vn}. These extrinsic informations contain \ac{v2c} messages from \acp{vn} other than the destination \ac{vn}. The expression for C2V messages is given by~\cite{Hagenauer1996}
   \begin{align}\label{eq:c2v}
   \mathcal{L}^{\mathrm{cv}}_{ji}=2\arctanh\left(\prod_{i^\prime\in\mathcal{E}_c(j)\backslash i}\tanh\left(\frac{\mathcal{L}^{\mathrm{vc}}_{i^\prime j}}{2}\right)\right)
   \end{align}
-  where $\mathcal{E}_c(j)$ is the set of all \acp{vn} connected to the $j$-th \ac{cn}.
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/c2v}
+    \caption{Example showing that messages from all other \acp{vn} combine using equation~(\ref{eq:c2v}) to form the C2V message to the second \ac{vn}.}
+    \label{fig:c2v}
+  \end{figure}
+  where $\mathcal{E}_c(j)$ is the set containing all $n_v$ \acp{vn} connected to the $j$-th \ac{cn}.
 \end{itemize}
 The process of sending a \ac{v2c} message, receiving a \ac{c2v} message from the same edge, and summing it up with the current \ac{llr} is termed an \emph{edge update}. The above steps indicate the \ac{bp} technique. It is also called \ac{spa}.
 
@@ -235,26 +256,71 @@ The high complexity C2V message computation can be approximated by a low-complex
 \begin{align}\label{eq:msa}
 \mathcal{L}^{\mathrm{cv}}_{ji}\approx\left(\prod_{i^\prime\in\mathcal{E}_c(j)\backslash i}\sign\left(\mathcal{L}^{\mathrm{vc}}_{i^\prime j}\right)\right)\cdot\min_{i^\prime}\lvert\mathcal{L}^{\mathrm{vc}}_{i^\prime j}\rvert.
 \end{align}
-In our implementation, we use an improved \ac{msa} as proposed in~\cite{Jones2003} which is a combination of (\ref{eq:c2v}) and (\ref{eq:msa}) with serial scheduling.
 
-One can perform the edge updates in different sequences. The sequencing is termed as \emph{scheduling}. Two such scheduling methods are \emph{parallel scheduling} and \emph{serial scheduling}. In parallel scheduling which is also referred to as \emph{flooding}, the \acp{vn} send V2C messages to all \acp{cn} at once and then C2V messages are computed and passed to all \acp{vn}. On a parallel computing platform, the parallel scheduling is much faster than its serial counterpart but it lacks performance because the messages are not shared between different \acp{cn}. In serial scheduling~\cite{Zhang2002}, the \acp{vn} are updated in a \ac{cn}-by-\ac{cn} or row-by-row (in the \ac{pcm}) manner. Each \ac{cn} processes its V2C messages and sends the corresponding C2V messages to its neighboring \acp{vn}. This is called a \emph{row update} or a \emph{layer update}.
-
-\subsubsection{Windowed Decoding}\label{sec:back_wd}
-The conventional \ac{bp}-based decoder can be used to decode any \ac{ldpcbc} or terminated \ac{ldpccc} in which the belief propagation is performed throughout the whole Tanner graph at once. For \acp{ldpccc}, the convolutional structure imposes a constraint on the \acp{vn}: two \acp{vn} of the \ac{pcm} that are at least $(m_s+1)n$ columns apart cannot be involved in the same parity-check equation. This characteristic can be exploited to perform belief-propagation decoding only to a \emph{window} (part) of the received codeword at once~\cite{Iyengar2012}. This technique is called \emph{\ac{wd}} and is shown in Figure~\ref{fig:wd}.
 \begin{figure}[htbp]
   \centering
-  %\tikzsetnextfilename{tanner_graph}
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/flooding}
+  \caption{Illustration of parallel scheduling with an example Tanner graph.}
+  \label{fig:flooding}
+\end{figure}
+
+One can perform the edge updates in different sequences. The sequencing is termed as \emph{scheduling}. Two such scheduling methods are \emph{parallel scheduling} and \emph{serial scheduling}. In parallel scheduling which is also referred to as \emph{flooding}, the \acp{vn} send V2C messages to all \acp{cn} at once and then C2V messages are computed and passed to all \acp{vn}. In Figure~\ref{fig:flooding}, the left graph indicates V2C message passing and the right graph indicated C2V message passing. Parallel scheduling is possible and much faster on a parallel computing platform because the edge updates are independent to each other. But compared to its serial counterpart, parallel scheduling lacks performance because the messages are not shared between different \acp{cn}. In serial scheduling~\cite{Zhang2002}, the \acp{vn} are updated in a \ac{cn}-by-\ac{cn} or row-by-row (in the \ac{pcm}) manner. Each \ac{cn} processes its incoming V2C messages and sends the corresponding C2V messages to its neighboring \acp{vn}. This is called a \emph{row update} or a \emph{layer update}. Figure~\ref{fig:serial_sch} shows how message passing is performed in serial scheduling. There is a trade-off between performance and latency with both the scheduling procedures. Serial scheduling yields better performance than parallel scheduling as the \acp{cn} that are being processed later will have updated \acp{llr} from the \acp{vn}. While in parallel scheduling, all \acp{cn} receive only the original channel \acp{llr} from the \acp{vn}. In a conventional \ac{bp} based decoder with any type of scheduling, the entire message passing is repeated for maximum number of $I$ iterations.
+
+With serial scheduling, the order of \ac{cn} processing can be varied to get varying decoding performance. Figure~\ref{fig:serial_sch} illustrates the serial scheduling with \ac{cn} processing starting from left to right i.e., top to bottom in the \ac{pcm}. For irregular codes, a good choice for \ac{cn} processing order will be starting from \acp{cn} that has the lowest \ac{vn} degree and moving to higher \ac{vn} degree \acp{cn}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/serial_sch}
+  \caption{Illustration of serial scheduling with the same Tanner graph from Figure~\ref{fig:flooding}.}
+  \label{fig:serial_sch}
+\end{figure}
+
+In our implementation, we use an improved \ac{msa} as proposed in~\cite{Jones2003} which is a combination of (\ref{eq:c2v}) and (\ref{eq:msa}). We do serial scheduling with layer updates starting from top to bottom. We also do a bottom to top layer update which is discussed in Section~\ref{sec:dec_improve}.
+
+\subsubsection{Pipeline vs Window Decoding}\label{sec:back_wd}
+A decoding technique that was proved to be efficient for \acp{ldpccc} is the \emph{pipeline decoding} introduced in~\cite{Felstrom1999}. The pipeline decoder employs $I$ parallel processing units which is equal to the maximum number of iterations performed in a conventional \ac{bp} decoder. Each processing unit covers $l_c=(m_s+1)n$ \acp{vn}, so that during a single decoding iteration the messages are passed to \acp{vn} within the processing unit. Hence, the whole decoding unit covers a total of $Il_c$ \acp{vn}. In each time instance, $n$ \acp{vn} and $n-k$ \acp{vn} enter the right most processor and $n$ estimated \acp{vn} leave from the left processor. At every time instance, each processor updates the last \ac{cn} inside the processing unit. Hence, at the end of $I$ time instances, all \acp{cn} are processed $I$ times. Figure~\ref{fig:pipeline} illustrates pipeline decoding for a $R_\infty=1/2$ code with $m_s=3$ and $I=3$. The red windows are the three processing units. The green (backhatched) part of the codeword indicates the estimated \acp{vn} and the blue (hatched) part indicates the next available estimated \acp{vn}. The brown (vertically hatched) and red (horizontally hatched) regions indicate the \acp{vn} that are processed currently and \acp{vn} that are not yet processed, respectively. The arrows indicate the \acp{cn} that are processed at the current time instance.
+
+The latency in seconds per bit of a pipeline decoder is given by
+\begin{align}
+\kappa_{\text{pd}}=\frac{\psi}{n}s
+\end{align}
+where $\psi$ is the time taken in seconds to perform one \ac{cn} processing.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/pipeline}
+  \caption{\ac{pcm} illustrating the pipeline decoding technique for $R_\infty=1/2$ codes with $m_s=2$ and $I=3$.}
+  \label{fig:pipeline}
+\end{figure}
+
+The conventional \ac{bp}-based block decoder can be used to decode any \ac{ldpcbc} or terminated \ac{ldpccc} in which the belief propagation is performed throughout the whole Tanner graph at once. For \acp{ldpccc}, the convolutional structure imposes a constraint on the \acp{vn}: two \acp{vn} of the \ac{pcm} that are at least $(m_s+1)n$ columns apart cannot be involved in the same parity-check equation. This characteristic can be exploited to perform iterative belief-propagation decoding only to a \emph{window} (part) of the received codeword at once~\cite{Iyengar2012}. This technique is called \emph{\ac{wd}} and is shown in Figure~\ref{fig:wd}.
+\begin{figure}[htbp]
+  \centering
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/pcm_wd}
-  \caption{\ac{pcm} illustrating the \acl{wd} technique for $R_\infty=2/3$ codes and $m_s=5$.}
+  \caption{\ac{pcm} illustrating the \acl{wd} technique for $R_\infty=1/2$ codes and $m_s=2$. The current window position is $\rho=4$ indicated by the solid red box and the next window position is indicated by the dashed red box.}
   \label{fig:wd}
 \end{figure}
 
-In Figure~\ref{fig:wd} the window size is $W=6$. The vertically hatched \acp{vn} are the target nodes for the current window (thick line rectangle). The backhatched \acp{vn} are outside the window but still receive updates from the \acp{cn} inside the window. The hatched \acp{vn} are the target nodes for the next window (dashed rectangle). All \acp{vn} with patterns are updated during the current window. The size of the window $W$ should be $W\geq (m_s+1)$ because smaller window size will not include all the edges of the last \ac{cn} of the window. Thus the window includes $W$ \acp{cn} and $(W+m_s)n$ \acp{vn} connected to them. At each window instance, the first $n$ \acp{vn} are considered to be the \emph{target nodes}. However, all \acp{vn} connected to the $W$ \acp{cn} are updated, only the correctness of target nodes are considered as the criteria for moving on to the next window. The \ac{bp} decoding is performed within the current window for a maximum number of iterations or until the target nodes are decoded (whichever occurs earlier). Then the window shifts forward such that the next $n$ \acp{vn} become the target nodes. This process continues until all \acp{vn} in the received word are decoded.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/pcm_wd_last}
+  \caption{Target \acp{vn} for first, middle and the last window positions.}
+  \label{fig:wd_last}
+\end{figure}
 
-The main benefit of window decoding is that the memory requirements are reduced because at any instance the \ac{bp} is performed on a smaller number of \acp{vn} rather than the whole graph. For non-packet-wise transmissions, the decoding latency is also reduced because the decoded bits from the previous windows can be sent to the higher layer for processing. However, these benefits come with a cost of reduced performance since the \ac{bp} is limited to fewer \acp{vn} and \acp{cn}.
+In Figure~\ref{fig:wd}, the window size is $W=6$. The vertically hatched \acp{vn} are the target nodes for the current window (thick line rectangle). The backhatched \acp{vn} are outside the window but still receive updates from the \acp{cn} inside the window. The hatched \acp{vn} are the target nodes for the next window (dashed rectangle). All \acp{vn} with patterns are updated during the current window. The size of the window $W$ should be $W\geq (m_s+1)$ because smaller window size will not include all the edges of the last \ac{cn} of the window. Thus the window includes $W$ \acp{cn} and $(W+m_s)n$ \acp{vn} connected to them. At each window instance, the first $n$ \acp{vn} are considered to be the \emph{target nodes}. However, all \acp{vn} connected to the $W$ \acp{cn} are updated, only the correctness of target nodes are considered as the criteria for moving on to the next window. The \ac{bp} decoding is performed within the current window for a maximum number of iterations $I$ or until the target nodes are decoded (whichever occurs earlier). Then the window shifts forward such that the next $n$ \acp{vn} become the target nodes. This process continues until all \acp{vn} in the received word are decoded.
+
+The latency in seconds per bit of a window decoder is given by
+\begin{align}
+\kappa_{\text{wd}}=\frac{W\psi}{n}s.
+\end{align}
+
+The main benefit of window decoding is that the memory requirements are reduced because at any instance the \ac{bp} is performed on a smaller number of \acp{vn} rather than the whole graph. For non-packet-wise transmissions, the decoding latency is also reduced compared to full-block decoding because the decoded bits can be sent to the higher layer for processing. However, these benefits come with a cost of reduced performance since the \ac{bp} is limited to fewer \acp{vn} and \acp{cn}.
+
+In this thesis, we choose window decoding over pipeline decoding because implementing parallel processing units in software is infeasible. Although window decoder has higher latency, we take the advantage of easy implementation.
 
 \subsection{System Model}\label{sec:sys_mod}
-In this thesis, we consider a digital baseband system model for simulations as shown in Figure \ref{fig:system}. The information bits are generated using a random-number generator with uniform distribution. The sequence of bits $\m$ of the generated random numbers is encoded using the \ac{bpl} encoder. The \emph{\ac{qam} Modulator} block receives the codewords $\x\in\mathbb{F}_2^{Ln\times 1}$ from the encoder and maps them to complex-valued symbols depending on the chosen modulation scheme. The output of the modulator is a vector of symbols given by $\mathbf{u}\in\mathbb{C}^{\frac{Ln}{o}\times 1}$ where $o$ is the order of modulation and lets assume that $Ln=go, g\in\mathbb{Z}_+$. In all our simulations we use \ac{qpsk} with gray mapping and no interleaving. Hence, $\mathbf{u}_i,i=0,\dots,\frac{Ln}{o}-1\in\{e^{j\frac{\pi}{4}},e^{j\frac{3\pi}{4}},e^{-j\frac{3\pi}{4}},e^{-j\frac{\pi}{4}}\}$.
+In this thesis, we consider a digital baseband system model for simulations as shown in Figure \ref{fig:system}. The information bits are generated using a random-number generator with uniform distribution. The sequence of bits $\m$ of the generated random bit is encoded using the \emph{BPL Codes Encoder} block. The details of this block are discussed in Section~\ref{sec:encode}. The \emph{\ac{qam} Modulator} block receives the codewords $\x\in\mathbb{F}_2^{Ln\times 1}$ from the encoder and maps them to complex-valued symbols depending on the chosen modulation scheme. The output of the modulator is a vector of symbols given by $\mathbf{u}\in\mathbb{C}^{\frac{Ln}{o}\times 1}$ where $o$ is the order of modulation and lets assume that $Ln=go, g\in\mathbb{Z}_+$. Figure~\ref{fig:qpsk} shows a \ac{qpsk} symbol constellation. It is seen that the adjacent symbols differ by only one bit. This is called \emph{Gray Mapping}~\cite{proak}. In all our simulations we use \ac{qpsk} with gray mapping and no interleaving. Hence, $\mathbf{u}_i,i=0,\dots,\frac{Ln}{o}-1\in\{e^{j\frac{\pi}{4}},e^{j\frac{3\pi}{4}},e^{-j\frac{3\pi}{4}},e^{-j\frac{\pi}{4}}\}$.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth, height=\textwidth]{graphics/system_model}
@@ -262,7 +328,21 @@ In this thesis, we consider a digital baseband system model for simulations as s
   \label{fig:system}
 \end{figure}
 
-The channel model we consider is a simple \ac{awgn} channel with no fading or multi-path components. So the received symbols are given by $$\mathbf{v}=\mathbf{u}+\mathbf{n}$$where $\mathbf{n}=\mathcal{CN}(0,\sigma^2)\in\mathbb{C}^{\frac{Ln}{o}\times 1}$ is a complex random variable of Gaussian distribution with zero mean and variance $\sigma^2$. Note that only one symbol in $\mathbf{u}$ is transmitted per channel use. The received symbol vector is $\mathbf{v}\in\mathbb{C}^{\frac{Ln}{o}\times 1}$. The output of the \emph{QAM Demodulator} is a vector of \acp{llr} $\mathbf{y}\in\mathbb{R}^{Ln\times 1}$ corresponding to the bits in $\x$. The \acp{llr} are computed using the symbols in $\mathbf{v}$ and the modulation order. With \ac{qpsk} modulation, the \ac{llr} of first bit of each received symbol $y$ is computed as
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth, height=\textwidth]{graphics/qpsk}
+  \caption{Symbol constellation of \ac{qpsk} modulation with gray mapping.}
+  \label{fig:qpsk}
+\end{figure}
+
+The channel model we consider is a simple \ac{awgn} channel with no fading or multi-path components. So the received symbols are given by \begin{align}\mathbf{v}=\mathbf{u}+\mathbf{n}\end{align}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth]{graphics/bpsk_awgn}
+  \caption{Conditional probability density functions of a \ac{bpsk} symbol over \ac{awgn} channel.}
+  \label{fig:bpsk_awgn}
+\end{figure}
+where $\mathbf{n}=\mathcal{CN}(0,\sigma^2)\in\mathbb{C}^{\frac{Ln}{o}\times 1}$ is a complex random variable of Gaussian distribution with zero mean and variance $\sigma^2$. Note that only one symbol in $\mathbf{u}$ is transmitted per channel use. The received symbol vector is $\mathbf{v}\in\mathbb{C}^{\frac{Ln}{o}\times 1}$. The output of the \emph{QAM Demodulator} is a vector of \acp{llr} $\mathbf{y}\in\mathbb{R}^{Ln\times 1}$ corresponding to the bits in $\x$. The \acp{llr} are computed using the symbols in $\mathbf{v}$ and the modulation order. Each \ac{qpsk} symbol is a combination of two \ac{bpsk} symbols that are orthogonal to each other. Hence, the \acp{llr} of both the bits can be computed separately. The \ac{llr} of the first bit of each received \ac{qpsk} symbol $y$ is computed as
 \begin{align}
 \mathcal{L}_{\text{first}}&=\log\frac{\prob\left(X_1=0\mid\re(y)\right)}{\prob\left(X_1=1\mid\re(y)\right)}
 \end{align}
@@ -270,15 +350,20 @@ and of the second bit as
 \begin{align}
 \mathcal{L}_{\text{second}}&=\log\frac{\prob\left(X_2=0\mid\im(y)\right)}{\prob\left(X_2=1\mid\im(y)\right)}.
 \end{align}
-We assume that the bits in $\x$ are equiprobable hence,
+Using Bayes' Theorem and assuming that the bits in $\x$ are equiprobable, we have
 \begin{align}
 \mathcal{L}_{\text{first}}=\log\frac{\pdf_{\re(Y)\mid X}\left(\re(y), X_1=0\right)}{\pdf_{\re(Y)\mid X}\left(\re(y), X_1=1\right)},\\
 \mathcal{L}_{\text{second}}=\log\frac{\pdf_{\im(Y)\mid X}\left(\im(y), X_2=0\right)}{\pdf_{\im(Y)\mid X}\left(\im(y), X_2=1\right)}.
 \end{align}
-On substituting the conditional \acp{pdf} of the Gaussian random variable, we get
+On substituting the conditional \acp{pdf} of \ac{bpsk} symbols as shown in Figure~\ref{fig:bpsk_awgn}, we get
 \begin{align}
-\mathcal{L}_{\text{first}}&=\frac{2}{\sigma^2}\re(y)\label{eq:final_llr1},\\
+\mathcal{L}_{\text{first}}&=\log\frac{e^{-\frac{(\re(y)-1)^2}{2\sigma^2}}}{e^{-\frac{(\re(y)+1)^2}{2\sigma^2}}}\\
+&=\frac{2}{\sigma^2}\re(y)\label{eq:final_llr1}.
+\end{align}
+Similarly,
+\begin{align}
 \mathcal{L}_{\text{second}}&=\frac{2}{\sigma^2}\im(y)\label{eq:final_llr2}.
 \end{align}
+Note that the symbol values in Figure~\ref{fig:bpsk_awgn} are -1 and +1 which corresponds to information bits 1 and 0 respectively.
 
-From equations (\ref{eq:final_llr1}) and (\ref{eq:final_llr2}), we see that the \acp{llr} are directly proportional to the \ac{snr} $=\frac{2}{\sigma^2}$ of the received symbols. After the \acp{llr} are computed, they are decoded using the \ac{bp} and \ac{wd} techniques as mentioned in Section~\ref{sec:decoding_ldpc}. The estimated bits $\widehat{\m}$ are then compared with the output of the random bit generator $\m$ to calculate the \ac{ber} and \ac{bler}. \ac{ber} is the ratio between the number of error-bits and the total number of bits transmitted. \ac{bler} is the ratio between the number of error-blocks and the total number of blocks transmitted. A block is considered to be an error-block if at least one information bit is incorrect.
+From equations (\ref{eq:final_llr1}) and (\ref{eq:final_llr2}), we see that the \acp{llr} are directly proportional to the \ac{snr} $\zeta=\frac{2}{\sigma^2}$ of the received symbols. After the \acp{llr} are computed, they are decoded using the \ac{bp} and \ac{wd} techniques inside the \emph{Window Decoder with BP} block. The decoding-improvement techniques that are used in this block are discussed in Section~\ref{sec:dec_improve}. The estimated bits $\widehat{\m}$ are then compared with the output of the random bit generator $\m$ to calculate the \ac{ber} $P_b$ and \ac{bler}. \ac{ber} $P_l$ is the ratio between the number of error-bits and the total number of bits transmitted. \ac{bler} is the ratio between the number of error-blocks and the total number of blocks transmitted. A block is considered to be an error-block if at least one information bit is incorrect.

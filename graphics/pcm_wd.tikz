@@ -1,24 +1,39 @@
 \begin{tikzpicture}[auto, node distance=3.5cm,>=latex']
-  \tikzstyle{inner} = [draw, fill=none, rectangle, 
-  minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=center]
-  \tikzstyle{box} = [step=0.5cm,color=black,thin]
-  \tikzstyle{cord} = [coordinate]
-  \tikzstyle{sum} = [draw,circle,radius=0.5cm]
-  \draw[box] (0,0) grid (1.5,-2.5);
-  \draw[box] (1.5-\xs,-3-\xs) grid (3,-0.5);
-  \draw[box] (3-\xs,-1-\xs) grid (4.5,-3.5);
-  \draw[box] (4.5-\xs,-1.5-\xs) grid (6,-4);
-  \draw[box] (6-\xs,-2-\xs) grid (7.5,-4.5);
-  \draw[box] (7.5-\xs,-2.5-\xs) grid (9,-5);
-  \draw[box] (9-\xs,-3-\xs) grid (10.5,-5.5);
-  \draw[box] (10.5-\xs,-3.5-\xs) grid (12,-6);
-  \draw[box] (12-\xs,-4-\xs) grid (13.5,-6.5);
-  \draw[box] (13.5-\xs,-4.5-\xs) grid (15,-7);
-  \draw[thick] (3,-1) rectangle (12,-4);
-  \draw[thick,dashed] (4.5,-1.5) rectangle (13.5,-4.5);
-  \draw[pattern=vertical lines] (3,0.5) rectangle (4.5,1);
-  \draw[pattern=north east lines] (4.5,0.5) rectangle (6,1);
-  \draw[pattern=north west lines] (0,0.5) rectangle (3,1);
-  \draw[pattern=dots] (6,0.5) rectangle (12,1);
-  \draw (0,0.5) rectangle (15,1);
+\tikzstyle{inner} = [draw, fill=none, rectangle, 
+minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=center]
+\tikzstyle{box} = [step=0.5cm,color=black,thin]
+\tikzstyle{cord} = [coordinate]
+\tikzstyle{sum} = [draw,circle,radius=0.5cm]
+\draw[box] (0,0) grid (1,-1.5);
+\draw[box] (1-\xs,-0.5-\xs) grid (2,-2);
+\draw[box] (2-\xs,-1-\xs) grid (3,-2.5);
+\draw[box] (3-\xs,-1.5-\xs) grid (4,-3);
+\draw[box] (4-\xs,-2-\xs) grid (5,-3.5);
+\draw[box] (5-\xs,-2.5-\xs) grid (6,-4);
+\draw[box] (6-\xs,-3-\xs) grid (7,-4.5);
+\draw[box] (7-\xs,-3.5-\xs) grid (8,-5);
+\draw[box] (8-\xs,-4-\xs) grid (9,-5.5);
+\draw[box] (9-\xs,-4.5-\xs) grid (10,-6);
+\draw[box] (10-\xs,-5-\xs) grid (11,-6.5);
+\draw[box] (11-\xs,-5.5-\xs) grid (12,-7);
+\draw[box] (12-\xs,-6-\xs) grid (13,-7.5);
+\draw[box] (13-\xs,-6.5-\xs) grid (14,-8);
+\draw[thick,color=red] (4,-2) rectangle (8,-4);
+\draw[thick,color=red,dashed] (5,-2.5) rectangle (9,-4.5);
+\draw (0,0.5) rectangle (14,1);
+\draw[pattern=dots,pattern color=brown] (0,0.5) rectangle (2,1);
+\draw[pattern=north west lines,pattern color=green] (2,0.5) rectangle (4,1);
+\draw[pattern=north east lines,pattern color=blue] (4,0.5) rectangle (5,1);
+\draw[pattern=vertical lines,pattern color=red] (5,0.5) rectangle (8,1);
+\draw[fill=red,opacity=0.5] (2,-2) rectangle (4,-2.5);
+\draw[fill=red,opacity=0.5] (3,-2.5) rectangle (4,-3);
+\draw[fill=blue,opacity=0.5] (4,-2) rectangle (5,-3.5);
+\draw[fill=blue,opacity=0.5] (5,-2.5) rectangle (6,-4);
+\draw[fill=blue,opacity=0.5] (6,-3) rectangle (7,-4);
+\draw[fill=blue,opacity=0.5] (7,-3.5) rectangle (8,-4);
+
+\draw[fill=red,opacity=0.5] (1,-5.25) rectangle (1.5,-5.75);
+\node[text width=7cm] at (5.25,-5.5) {Edges updates outside the window};
+\draw[fill=blue,opacity=0.5] (1,-6.25) rectangle (1.5,-6.75);
+\node[text width=7cm] at (5.25,-6.5) {Edges updates inside the window};
 \end{tikzpicture}

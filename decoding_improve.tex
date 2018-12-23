@@ -1,14 +1,60 @@
-\section{Decoding Improvements}
-\begin{enumerate}
-  \item Early success with complete vs target CNs: From simulation results, for $W<(2m_s+1)$ there is a noticeable reductions in edge updates for the same BLER when only complete CNs are checked. And for $W>(2m_s+1)$, only the target CNs can be checked instead of complete CNs. Hence the complexity is reduced with no reduction in performance.
-\end{enumerate}
+\section{Decoding Improvements}\label{sec:dec_improve}
+In this section, we discuss the techniques that are investigated in this thesis to improve the decoding performance. We start with the discussion of existing techniques to improve the decoding performance. We then discuss the techniques investigated in this thesis and possible areas of further research and improvements. We finish this section by discussing the results from our simulations.
 
+\subsection{Base Decoder Configuration}
+Before discussing the details of the techniques used in the improved decoder, it is essential to define a decoder configuration to which the improvements are made. This allows better understanding of the techniques and the simulation results. Let us call the decoder without out improvements as \ac{bd} and the one with our improvements as \ac{id}. The \ac{bd} uses the \ac{wd} technique to decoder the \ac{bpl} codes. The window slides from the left end of the \ac{pcm} to the right end. Within each window, serial scheduling is performed by updating the \acp{cn} from top to bottom for a maximum of $I_{\text{max}}$ iterations.
 
-In this section, we start by continuing our discussion on decoding \acp{bpl} codes from section~\ref{sec:decoding_ldpc}. We then discuss the improvements proposed in the latest literatures, the techniques investigated in this thesis and possible areas of further research and improvements. We finish this section by discussing the results from our simulations.
+In the last window instance i.e., when the window touches the right most column of the \ac{pcm}, all the \acp{vn} inside the window are considered as target \acp{vn}. Hence, the early success criterion is to check if all \acp{cn} inside the window are fulfilled. This idea was proposed in~\cite{Ali2018} with flooding schedule.
 
-\subsection{Decoding \acl{bpl} Codes}
-The information bits are encoded using the \ac{bpl} codes and termination is performed by zero-tailing as mentioned in section~\ref{sec:bpl_termi}. The encoded bits are then transmitted through an \ac{awgn} channel with \ac{qpsk} modulation. The \ac{bpl} decoder that we discuss here is soft value based belief propagation decoder and it uses \acp{llr} of the received bits as soft values. The \acp{llr} are calculated as described in section~\ref{sec:sys_mod}. The zero tail bits used for termination are not transmitted since they are known at the receiver. Hence the \acp{llr} of these zero tail bits are saturated to $+\infty$.
+An early success technique is used in our \ac{bd}. This technique prevents the decoder from exhausting all iteration in a window if the target \acp{vn} are decoder before reaching the maximum number of iteration. Thus saving computational effort. The criterion for finding the correctness of the target \acp{vn} is to check if all the \acp{cn} connected to the target \acp{vn} fulfill their parity-checks.
 
-We use a window based decoding strategy to decoder the received words. The base windowed decoder that we use is the one described in section~\ref{sec:back_wd}. In the following, we discuss further about the existing techniques from literatures in the context of windowed decoding of terminated \acp{ldpccc} and followed by our findings.
+We now know that the \ac{bpl} codes are terminated using the zero-tail termination technique. The zero-tail bits and their positions are always known at the receiver. Hence, the \acp{llr} of these bits are made to $+\infty$ which indicates that these bits most certainly have the value 0.
 
-\subsection{Existing Techniques}
+\subsection{\acl{iesc}}
+An early success technique with a different criterion for checking the correctness of target nodes was proposed in~\cite{Kang2018}. They called the set of \acp{vn} whose connected \acp{cn} are completely inside the window \emph{complete-\acp{vn}} and the remaining \emph{incomplete-\acp{vn}}. Their idea was to check the parity-checks for \acp{cn} that are connected only to complete-\acp{vn} rather than checking for all \acp{cn}. Let us call these \acp{cn} \emph{complete-\acp{cn}}. They also assumed that the window size is always large enough such that the number of complete-\acp{vn} are larger than the number of incomplete-\acp{vn}. However, all their evaluations and simulations are based on reliability-based decoding algorithms where hard information about the \acp{vn} are passed along the edges. Figure~\ref{fig:comp_vn} shows the complete-\acp{vn}, incomplete-\acp{vn} and complete-\acp{cn}.
+\begin{figure}[htbp]
+  \centering
+  %\tikzsetnextfilename{tanner_graph}
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/comp_vn}
+  \caption{\ac{pcm} illustrating complete-\acp{vn}, incomplete-\acp{vn} and complete-\acp{cn}.}
+  \label{fig:comp_vn}
+\end{figure}
+
+We propose an \ac{iesc} with decoding complexity and memory requirements in mind. In our \ac{bd}, we just check the $m_s+1$ \acp{cn} that are connected to the target \acp{vn}, instead of checking all the \acp{cn} inside the window. This has a reduced decoding complexity but with a degradation in decoding performance. However, our focus is to reduce the decoding complexity with an acceptable performance degradation. Our \ac{iesc} chooses the early success criterion depending on the window size. When $W<2(m_s+1)$, we choose complete-\acp{cn} as the early success criterion and when $W>2(m_s+1)$, we choose the $m_s+1$ \acp{cn} as the early success criterion.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{plots/aeu_300}
+  \caption{\ac{aneu} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=300$.}
+  \label{fig:aneu_vs_snr_300}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{plots/bler_300}
+  \caption{\ac{bler} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=300$.}
+  \label{fig:bler_vs_snr_300}
+\end{figure}
+
+Figure~\ref{fig:aneu_vs_snr_300} shows that there is a significant decrease in \ac{aneu} for \ac{snr} $\zeta>3.2$dB for $W<2(m_s+1)$ i.e., $W=300$ when \textbf{complete-\acp{cn} are checked}. This is a decent reduction in complexity considering there is no degradation in \ac{bler} performance in Figure~\ref{fig:bler_vs_snr_300}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{plots/aeu_600}
+  \caption{\ac{aneu} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=600$.}
+  \label{fig:aneu_vs_snr_600}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{plots/bler_600}
+  \caption{\ac{bler} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=600$.}
+  \label{fig:bler_vs_snr_600}
+\end{figure}
+
+Figure~\ref{fig:aneu_vs_snr_600} shows that there is a decrease in \ac{aneu} for \acp{snr} in range $2.4<\zeta(dB)<4.2$ for $W\geq2(m_s+1)$ i.e., $W=600$ when \textbf{target-\acp{cn} are checked}. But the \ac{bler} performance remains the same as seen in Figure~\ref{fig:bler_vs_snr_600}.
+
+Hence, this show that by using the \ac{iesc}, we can reduce the computation complexity \ac{aneu} while maintaining the same  decoding performance \ac{bler} for varying window sizes.
+
+\subsection{\acl{lrl} \acl{wd}}
+The next technique we discuss is the \ac{lrl} decoding technique where the window slides from the left end of the \ac{pcm} to the right end and again back to the left. Compared to the \ac{bd}, the number of \ac{bp} iterations to be performed in each window is halved $I_w=I_{\text{max}}/2$. This is done to balance the total maximum number of iterations between the \ac{bd} and our \ac{id}. When the window reaches the right end of the \ac{pcm} and moves towards the left, the better reliability of the right most \acp{vn} propagate to the middle and the left \acp{vn} in the \ac{pcm}. Thus with this technique, the highly reliable \acp{vn} in the left and right of the codeword influence the \acp{vn} in the middle of the codeword. While in the \ac{bd}, only the \acp{vn} in the left of the codeword influence the rest of the \acp{vn}.

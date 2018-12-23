@@ -7,9 +7,8 @@
 \usepackage{eucal}
 \usepackage{amsmath}
 \usepackage{setspace}
-\usepackage{tikz}
-\usetikzlibrary{positioning,arrows,external,patterns}
 \usepackage{tikz,pgfplots}
+\usetikzlibrary{positioning,arrows,external,patterns}
 \usepackage{tikzscale}
 \usepackage{etoolbox}
 \usepackage{float}
@@ -21,6 +20,7 @@
 \usepackage{graphicx}
 \usetikzlibrary{calc}
 \usetikzlibrary{fit,backgrounds,automata}
+\usepackage[a-1b]{pdfx}
 
 %\tikzexternalize[mode=list and make]{Report}
 %\titleformat{\section}{\normalfont\fontsize{12}{15}\bfseries}{\thesection}{1em}{}
@@ -34,7 +34,7 @@
 }
 
 \renewcommand{\H}{\mathbf{H}}
-\newcommand{\G}{\mathbf{G}}
+\renewcommand{\G}{\mathbf{G}}
 \newcommand{\x}{\mathbf{x}}
 \newcommand{\m}{\mathbf{m}}
 \newcommand{\bb}{\mathbf{b}}
@@ -65,7 +65,7 @@
 	\dateofexam{14.01.2019}{14.01.2019}
 	\tuprints{82349}{8234}
 	\makethesistitle
-	\colorlet{tudidentbar}{tud0b} 
+	%\colorlet{tudidentbar}{tud0b} 
 	\affidavit{Sakthivel Velumani}
   \include{acknowledgment}
   \onehalfspacing
