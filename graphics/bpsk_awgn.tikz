@@ -1,0 +1,31 @@
+\begin{tikzpicture}
+\pgfplotsset{ytick=\empty}
+\pgfmathdeclarefunction{gauss}{2}{%
+  \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+\begin{axis}[every axis plot post/.append style={
+  mark=none,domain=-4:4,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
+xtick={-1,0,1},
+xlabel=$Y$,
+ylabel=$p(Y\mid X)$,
+legend style={at={(0.7,0.97)},
+  anchor=north west},
+axis line style={->},
+axis x line=bottom, % no box around the plot, only x and y axis
+axis y line=center, % the * suppresses the arrow tips
+enlargelimits=upper] % extend the axes a bit to the right and top
+\addplot +[
+blue,
+postaction={
+  pattern=north east lines, pattern color=blue
+}
+] {gauss(-1,0.75)};
+\addplot +[
+red,
+postaction={
+  pattern=north west lines, pattern color=red
+}
+] {gauss(1,0.75)};
+\legend{$p(Y\mid X=-1)$,$p(Y\mid X=1)$}
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,33 @@
+\begin{tikzpicture}[auto, node distance=3.5cm,>=latex']
+\tikzstyle{inner} = [draw, fill=none, rectangle, 
+minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=center]
+\tikzstyle{box} = [step=0.5cm,color=black,thin]
+\tikzstyle{cord} = [coordinate]
+\tikzstyle{sum} = [draw,circle,radius=0.5cm]
+\draw[box] (0,0) grid (1,-1.5);
+\draw[box] (1-\xs,-0.5-\xs) grid (2,-2);
+\draw[box] (2-\xs,-1-\xs) grid (3,-2.5);
+\draw[box] (3-\xs,-1.5-\xs) grid (4,-3);
+\draw[box] (4-\xs,-2-\xs) grid (5,-3.5);
+\draw[box] (5-\xs,-2.5-\xs) grid (6,-4);
+\draw[box] (6-\xs,-3-\xs) grid (7,-4.5);
+\draw[box] (7-\xs,-3.5-\xs) grid (8,-5);
+\draw[box] (8-\xs,-4-\xs) grid (9,-5.5);
+\draw[box] (9-\xs,-4.5-\xs) grid (10,-6);
+\draw[box] (10-\xs,-5-\xs) grid (11,-6.5);
+\draw[box] (11-\xs,-5.5-\xs) grid (12,-7);
+\draw[box] (12-\xs,-6-\xs) grid (13,-7.5);
+\draw[box] (13-\xs,-6.5-\xs) grid (14,-8);
+\draw[thick,color=red] (2,-1) rectangle (5,-2.5);
+\draw[thick,color=red] (5,-2.5) rectangle (8,-4);
+\draw[thick,color=red] (8,-4) rectangle (11,-5.5);
+\draw (0,0.5) rectangle (14,1);
+\draw[pattern=north west lines,pattern color=green] (0,0.5) rectangle (2,1);
+\draw[pattern=north east lines,pattern color=blue] (2,0.5) rectangle (3,1);
+\draw[pattern=vertical lines,pattern color=brown] (3,0.5) rectangle (11,1);
+\draw[pattern=horizontal lines,pattern color=red] (11,0.5) rectangle (14,1);
+\draw[->] (0.75,-2.25) -- (2,-2.25);
+\draw[->] (3.75,-3.75) -- (5,-3.75);
+\draw[->] (6.75,-5.25) -- (8,-5.25);
+\node[text width=5cm] at (3.5,-6) {Arrows indicate the CNs that are processed at current time instance};
+\end{tikzpicture}

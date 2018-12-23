@@ -1,0 +1,116 @@
+% This file was created by matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\fwidth,
+height=\fheight,
+at={(0\fwidth,0\fheight)},
+scale only axis,
+xmin=2,
+xmax=5,
+xlabel={SNR (dB)},
+ymode=log,
+ymin=1e-08,
+ymax=0.1,
+ylabel={BER},
+axis background/.style={fill=white},
+xmajorgrids,
+xminorgrids,
+ymajorgrids,
+yminorgrids,
+legend style={legend cell align=left, align=left, legend plot pos=left, draw=black}
+]
+\addplot [color=mycolor1, forget plot]
+  table[row sep=crcr]{%
+2	0.06201445\\
+2.2	0.05410025\\
+2.4	0.04544686\\
+2.6	0.03594976\\
+2.8	0.02412704\\
+3	0.01123402\\
+3.2	0.003727052\\
+3.4	0.001176143\\
+3.6	0.0003870614\\
+3.8	0.0001440711\\
+4	6.06203e-05\\
+4.2	2.54151e-05\\
+4.4	1.539004e-05\\
+4.6	8.302005e-06\\
+4.8	5.443296e-06\\
+5	3.681078e-06\\
+};
+\addplot [color=mycolor1, draw=none, mark=x, mark options={solid, mycolor1}, forget plot]
+  table[row sep=crcr]{%
+5	3.681078e-06\\
+};
+\addplot [color=mycolor1, mark=x, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+2	0.06201445\\
+};
+\addlegendentry{W = 400}
+
+\addplot [color=mycolor2, forget plot]
+  table[row sep=crcr]{%
+2	0.06161826\\
+2.2	0.05343448\\
+2.4	0.04414419\\
+2.6	0.03303121\\
+2.8	0.01878924\\
+3	0.006300869\\
+3.2	0.001598606\\
+3.4	0.0004021382\\
+3.6	0.0001188127\\
+3.8	5.110432e-05\\
+4	1.253133e-05\\
+4.2	6.187343e-06\\
+4.4	3.054511e-06\\
+4.6	1.488095e-06\\
+4.8	2.741228e-07\\
+5	4.307644e-07\\
+};
+\addplot [color=mycolor2, draw=none, mark=o, mark options={solid, mycolor2}, forget plot]
+  table[row sep=crcr]{%
+5	4.307644e-07\\
+};
+\addplot [color=mycolor2, mark=o, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+2	0.06161826\\
+};
+\addlegendentry{W = 500}
+
+\addplot [color=mycolor3, forget plot]
+  table[row sep=crcr]{%
+2	0.06146942\\
+2.2	0.05308897\\
+2.4	0.0432603\\
+2.6	0.03046092\\
+2.8	0.01463593\\
+3	0.003852874\\
+3.2	0.000805412\\
+3.4	0.000186756\\
+3.6	5.059524e-05\\
+3.8	1.194392e-05\\
+4	3.015351e-06\\
+4.2	1.566416e-06\\
+4.4	4.699248e-07\\
+4.6	5.090852e-07\\
+4.8	1.95802e-07\\
+5	3.91604e-08\\
+};
+\addplot [color=mycolor3, draw=none, mark=diamond, mark options={solid, mycolor3}, forget plot]
+  table[row sep=crcr]{%
+5	3.91604e-08\\
+};
+\addplot [color=mycolor3, mark=diamond, mark options={solid, mycolor3}]
+  table[row sep=crcr]{%
+2	0.06146942\\
+};
+\addlegendentry{W = 600}
+
+\end{axis}
+\end{tikzpicture}%

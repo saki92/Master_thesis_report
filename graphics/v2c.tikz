@@ -1,0 +1,12 @@
+\begin{tikzpicture}[node distance=2cm,auto,>=latex']
+\node at (0,0) (llr) {};
+\node[circle,fill,,label={[label distance=1mm]225:$v_i$}] at (2,0) (vn) {};
+\node at (4,2) (c1) {$c_1$};
+\node at (4,0) (c2) {$c_2$};
+\node at (4,-2) (cL) {$c_{n_c}$};
+
+\draw[->] (llr) -- node[] {$L(y_i)$} (vn.west);
+\draw[->] (vn) -- node[] {$L^{\text{vc}}_{ij_1}$} (c1);
+\draw[->] (c2) -- node[] {$L^{\text{cv}}_{j_2i}$} (vn);
+\draw[->] (cL) -- node[] {$L^{\text{cv}}_{j_{n_c}i}$} (vn);
+\end{tikzpicture}

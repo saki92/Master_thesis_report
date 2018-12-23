@@ -1,0 +1,70 @@
+% This file was created by matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\fwidth,
+height=\fheight,
+at={(0\fwidth,0\fheight)},
+scale only axis,
+xmin=2,
+xmax=5,
+xlabel={$\zeta$ (dB)},
+ymode=log,
+ymin=1000000,
+ymax=100000000,
+ylabel={$\eta$},
+axis background/.style={fill=white},
+xmajorgrids,
+xminorgrids,
+ymajorgrids,
+yminorgrids,
+legend style={legend cell align=left, align=left, legend plot pos=left, draw=black}
+]
+\addplot [color=mycolor1, mark=x, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+2	81808460\\
+2.2	81772120\\
+2.4	81428900\\
+2.6	79570430\\
+2.8	71548870\\
+3	52307220\\
+3.2	31462640\\
+3.4	18105560\\
+3.6	12515860\\
+3.8	10105010\\
+4	9071115\\
+4.2	8614483\\
+4.4	8396081\\
+4.6	8316725\\
+4.8	8249699\\
+5	8218013\\
+};
+\addlegendentry{Checking complete CNs}
+
+\addplot [color=mycolor2, mark=o, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+2	81627830\\
+2.2	81204820\\
+2.4	79657370\\
+2.6	75072920\\
+2.8	62497750\\
+3	39130390\\
+3.2	20041330\\
+3.4	11199320\\
+3.6	8997220\\
+3.8	8379299\\
+4	8231120\\
+4.2	8205380\\
+4.4	8187747\\
+4.6	8185511\\
+4.8	8181155\\
+5	8179895\\
+};
+\addlegendentry{Checking target CNs}
+
+\end{axis}
+\end{tikzpicture}%

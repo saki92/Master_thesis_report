@@ -1,0 +1,45 @@
+\begin{tikzpicture}
+\tikzstyle{vnode} = [draw,circle,fill]
+%\tikzstyle{cnode} = [draw,cicle]
+\def\cnode#1#2#3#4{
+\begin{scope}[shift={#1}]
+\node[draw,circle,label={[label distance=0.01mm]{#2}:{#3}}] at (0,0) (#4) {};
+\draw (#4.north) -- (#4.south);
+\draw (#4.west) -- (#4.east);
+\end{scope}
+}
+%first graph
+\node[vnode,label={[label distance=0.01mm]{90}:{$v_1$}}] at (0,0) (1v1) {};
+\node[vnode,label={[label distance=0.01mm]{90}:{$v_2$}}] at (1,0) (1v2) {};
+\node[vnode,label={[label distance=0.01mm]{90}:{$v_3$}}] at (2,0) (1v3) {};
+\node[vnode,label={[label distance=0.01mm]{90}:{$v_4$}}] at (3,0) (1v4) {};
+\cnode{(0.5,-2)}{270}{$c_1$}{1c1};
+\cnode{(1.5,-2)}{270}{$c_2$}{1c2};
+\cnode{(2.5,-2)}{270}{$c_3$}{1c3};
+\draw[->] (1v1) -- (1c1);
+\draw[->] (1v1) -- (1c2);
+\draw[->] (1v2) -- (1c1);
+\draw[->] (1v2) -- (1c2);
+\draw[->] (1v3) -- (1c1);
+\draw[->] (1v3) -- (1c3);
+\draw[->] (1v4) -- (1c1);
+\draw[->] (1v4) -- (1c3);
+
+%second graph
+\node[vnode,label={[label distance=0.01mm]{90}:{$v_1$}}] at (6,0) (2v1) {};
+\node[vnode,label={[label distance=0.01mm]{90}:{$v_2$}}] at (7,0) (2v2) {};
+\node[vnode,label={[label distance=0.01mm]{90}:{$v_3$}}] at (8,0) (2v3) {};
+\node[vnode,label={[label distance=0.01mm]{90}:{$v_4$}}] at (9,0) (2v4) {};
+\cnode{(6.5,-2)}{270}{$c_1$}{2c1};
+\cnode{(7.5,-2)}{270}{$c_2$}{2c2};
+\cnode{(8.5,-2)}{270}{$c_3$}{2c3};
+\draw[->] (2c1) -- (2v1);
+\draw[->] (2c1) -- (2v2);
+\draw[->] (2c1) -- (2v3);
+\draw[->] (2c1) -- (2v4);
+\draw[->] (2c2) -- (2v1);
+\draw[->] (2c2) -- (2v2);
+\draw[->] (2c3) -- (2v3);
+\draw[->] (2c3) -- (2v4);
+\draw[->,thick] (3.5,-1) -- (5.5,-1);
+\end{tikzpicture}

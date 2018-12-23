@@ -1,0 +1,63 @@
+% General scaling (fiddle with value to find ideal setting)
+\newcommand{\plotscale}{1}
+
+% Golden ratio as axes aspect ratio
+\newcommand{\plotratio}{0.618}
+
+% Define line width within plots
+\newlength{\mylinewidth}
+\setlength{\mylinewidth}{0.6pt}
+
+% Define font size within plots
+\newcommand{\plotfontsize}{\footnotesize}
+
+% Apply settings to all figures
+\tikzset
+{
+  ultra thin/.style= {line width=0.25\mylinewidth},
+  very thin/.style=  {line width=0.5\mylinewidth},
+  thin/.style=       {line width=\mylinewidth},
+  semithick/.style=  {line width=1.5\mylinewidth},
+  thick/.style=      {line width=2\mylinewidth},
+  very thick/.style= {line width=3\mylinewidth},
+  ultra thick/.style={line width=4\mylinewidth},
+  every picture/.style={thin},
+  every node/.append style={font=\plotfontsize}
+}
+
+% Mostly for changing the minor-grid-line widths
+\pgfplotsset
+{
+  compat=newest,
+  minor grid style={black!10},
+  every axis/.append style=
+  {
+    label style={font=\plotfontsize},
+    tick label style={font=\plotfontsize},
+    legend style={font=\plotfontsize}
+  }
+}
+
+% Line width for dsp figures
+\newlength{\tikzthin}
+\setlength{\tikzthin}{\mylinewidth}
+
+% For inputting pgf files generated from Octave with matlab2tikz
+\usepgfplotslibrary{patchplots}
+\pgfplotsset{plot coordinates/math parser=false}
+\newlength{\fwidth}
+\newlength{\fheight}
+\setlength{\fwidth}{\plotscale\linewidth}
+\setlength{\fheight}{\plotratio\fwidth}
+
+% Scale unscalable tikz figures
+\let\OrgPgfTransformScale\pgftransformscale
+
+% Color definitions for document-wide use
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}
+\definecolor{mycolor4}{rgb}{0.49400,0.18400,0.55600}
+\definecolor{mycolor5}{rgb}{0.46600,0.67400,0.18800}
+\definecolor{mycolor6}{rgb}{0.30100,0.74500,0.93300}
+\definecolor{mycolor7}{rgb}{0.63500,0.07800,0.18400}
