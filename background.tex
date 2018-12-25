@@ -146,7 +146,7 @@ where $L$ is the \emph{coupling length} denoting the number of \acp{cb} in the c
 \end{figure}
 The entire graph in Figure~\ref{fig:tannGraphLdpccc} can be seen as a Tanner graph of an infinitely long \ac{ldpccc}. As a result of termination, only the center part of the graph remains. The dark circles are the \acp{vn} of the terminated \ac{ldpccc} and the solid lines are their corresponding edges.
 
-\subsubsection{\aclp{ldpccc} Used in IEEE 1901}
+\subsubsection{\aclp{ldpccc} Used in IEEE 1901}\label{sec:bpl_bg}
 In this thesis, we use the \acp{ldpccc} specified in the \ac{bpl} or IEEE 1901 standard to evaluate our decoder~\cite{Bpl}. From now on, we refer to the \acp{ldpccc} in the IEEE 1901 standard as \emph{\ac{bpl}~codes}. The \ac{bpl} codes are specified as sets of parity-check polynomials for all asymptotic rates $R_\infty=k/n,\ n\in\{2,3,4,5\}$ where $k=n-1$. In other words, the \ac{bpl} codes have only one parity bit in each \ac{cb}. 
 
 The codes are defined as parity-check polynomials expressed as
@@ -165,35 +165,7 @@ The \ac{bpl} codes are periodic with $T=3$. Periodic codes have time-varying par
 \begin{align}
 &(D^{214}+D^{185}+1)M_1(D)+(D^{194}+D^{67}+1)M_2(D)+(D^{215}+D^{145}+1)B(D)=0\mod 2.
 \end{align}
-$m_s=215$ for $n=2$ and $m_s=226$ for $n\neq2$. All $A_{i,\tau}$ and $C_{i,\tau}$ have three taps for each bit in the \ac{cb}. So there is a maximum of $3n$ taps or edges per \ac{cn}. The parity-check equation can be given by
-\begin{align}\label{eq:parity_check}
-\sum_{i=0}^{m_s}\mathbf{h}_{M,i}\m(t-i)+\sum_{i=0}^{m_s}h_{B,i}b(t-i) \mod 2,
-\end{align}
-The encoder generates one parity bit per $n-1$ message bits and the parity bit expression is given by rearranging equation (\ref{eq:parity_check}) as
-\begin{align}
-b(t)=\sum_{i=0}^{m_s}\mathbf{h}_{M,i}\m(t-i)+\sum_{i=1}^{m_s}h_{B,i}b(t-i) \mod 2,
-\end{align}
-where $b(t)\in\mathbb{F}_2$ is the parity bit and $\m(t)\in\mathbb{F}_2^{k\times 1}$ is a vector of message bits at $t$-th time instance or \ac{cb}, $h_{B,i}\in\mathbb{F}_2$ is the coefficient of polynomial of the parity bit. $\mathbf{h}_{M,i}\in\mathbb{F}_2^{1\times k}$ is a vector of coefficients of polynomials of message bits and is given by
-\begin{align}
-\mathbf{h}_{M,i}&= \big[[D^i]A_{1,\tau},\dots,[D^i]A_{k,\tau}\big],
-\end{align}
-where $[D^i]A_{1,\tau}$ represents the coefficient of $D^i$ in polynomial $A_{1,\tau}(D)$.
-
-The resulting codewords $\x\in\mathbb{F}_2^{Ln\times 1}$ have a systematic structure given by \begin{align}\x^T=(\x(0)^T,\x(1)^T,\dots,\x(L-1)^T).\end{align}
-
-Similarly, the \ac{pcm} can be formed using the coefficients of the parity-check polynomials:
-\begin{align}\label{eq:bpl_pcm}
-\H=
-\begin{bmatrix}
-\mathbf{h}_{M,0}\\
-\mathbf{h}_{M,1} &\mathbf{h}_{M,0}\\
-\vdots &\mathbf{h}_{M,1} &\ddots\\
-\mathbf{h}_{M,m_s} &\vdots &\ddots &\mathbf{h}_{M,0}\\
-&\mathbf{h}_{M,m_s} &\ddots &\mathbf{h}_{M,1}\\
-& &\ddots &\vdots\\
-& & &\mathbf{h}_{M,m_s}
-\end{bmatrix}.
-\end{align}
+$m_s=215$ for $n=2$ and $m_s=226$ for $n\neq2$. All $A_{i,\tau}$ and $C_{i,\tau}$ have three taps for each bit in the \ac{cb}. So there is a maximum of $3n$ taps or edges per \ac{cn}.
 
 \cite{Bpl} specifies that termination is achieved by appending bits with value $0$ to the end of the message bits before encoding. These bits are called \emph{zero-tail bits}. The number of zero-tail bits $n_z$ depends on the number of message bits $n_m$ in the codeword and the asymptotic rate $R_\infty$. The number of \acp{cb} in the terminated codeword is \begin{align}L=\frac{n_m+n_z}{n-1}.\end{align} Since the zero-tail bits are known at the receiver, they are not transmitted. Only the parity bits generated from the zero-tail bits are transmitted. Hence, the actual rate of the terminated \ac{bpl} code is
 \begin{align}\label{eq:rate_term}

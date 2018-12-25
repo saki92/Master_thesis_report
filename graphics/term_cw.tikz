@@ -1,0 +1,39 @@
+\begin{tikzpicture}[auto, node distance=3.5cm,>=latex']
+\tikzstyle{inner} = [draw, fill=none, rectangle, 
+minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=center]
+\tikzstyle{outer} = [draw=gray,dashed,fill=none,thick,inner sep=0.2cm]
+\tikzstyle{cord} = [coordinate]
+\tikzstyle{sum} = [draw,circle,radius=0.5cm]
+\draw[step=0.5cm,color=gray,thin] (-1.5,0) grid (7.5,0.5);
+\node at (-1.25,+0.25) {0};
+\node at (-0.75,+0.25) {1};
+\node at (-0.25,+0.25) {1};
+\node at (+0.25,+0.25) {0};
+\node at (+0.75,+0.25) {1};
+\node at (+1.25,+0.25) {0};
+\node at (+1.75,+0.25) {1};
+\node at (+2.25,+0.25) {0};
+\node at (+2.75,+0.25) {1};
+\node at (+3.25,+0.25) {0};
+\node at (+3.75,+0.25) {0};
+\node at (+4.25,+0.25) {1};
+\node at (+4.75,+0.25) {0};
+\node at (+5.25,+0.25) {0};
+\node at (+5.75,+0.25) {0};
+\node at (+6.25,+0.25) {0};
+\node at (+6.75,+0.25) {0};
+\node at (+7.25,+0.25) {1};
+\draw[color=black,thick] (0,0) rectangle (1.5,0.5);
+\draw[color=black,thick] (1.5,0) rectangle (3,0.5);
+\draw[color=blue,thick] (3,0) rectangle (4.5,0.5);
+\draw[color=blue,thick] (4.5,0) rectangle (6,0.5);
+\draw[color=black,thick] (-1.5,0.5) rectangle (0,0);
+\draw[color=blue,thick] (6,0) rectangle (7.5,0.5);
+\draw [thick,color=red] (1,0) rectangle (1.5,0.5);
+\draw [thick,color=red] (2.5,0) rectangle (3,0.5);
+\draw [thick,color=red] (4,0) rectangle (4.5,0.5);
+\draw [thick,color=red] (5.5,0) rectangle (6,0.5);
+\draw [thick,color=red] (-0.5,0) rectangle (0,0.5);
+\draw [thick,color=red] (7,0) rectangle (7.5,0.5);
+\node[] at (-2,0.25) {$\dots$};
+\end{tikzpicture}
