@@ -312,6 +312,8 @@ In Figure~\ref{fig:wd}, the window size is $W=4$ and the window position is $\rh
 
 A window must include $Wn$ \acp{vn} and $W(n-k)$ \acp{cn}. Hence, the size of the window should be $W\geq (m_s+1)$ because smaller window size will not include at least one full \acp{cn} with all its edges. At each window instance, the first $n$ \acp{vn} are considered to be the target nodes. However, all \acp{vn} connected to the $W(n-k)$ \acp{cn} are updated, only the correctness of target nodes are considered as the criteria for moving on to the next window. The \ac{bp} decoding is performed within the current window for a maximum number of $I$ iterations or until the target nodes are decoded (whichever occurs earlier). Then the window shifts forward such that the next $n$ \acp{vn} become the target nodes. This process continues until all \acp{vn} in the received word are decoded.
 
+With window decoder, there are several ways to perform the decoding when the window reaches the right most end of the \ac{pcm}. The conventional way is to keep moving the window until the last $n$ \acp{vn} are the target \acp{vn}. Another method is when the window touches the right most column of the \ac{pcm}, the window extends its height to include the remaining $m_s$ \acp{cn} of the \ac{pcm} and considering all the \acp{vn} inside the last window as target \acp{vn}. This is illustrated in Figure~\ref{fig:wd_last}. We choose the second method as this reduces the number of iterations compared to the conventional method. As the \ac{cn} in the end of the \ac{pcm} has fewer \ac{cn} degree, this compensates to the reduced decoding performance for having fewer iterations.
+
 The latency in seconds per bit of a window decoder is given by
 \begin{align}
 \kappa_{\text{wd}}=\frac{W\psi}{n}s.
@@ -337,14 +339,14 @@ In this thesis, we consider a digital baseband system model for simulations as s
   \label{fig:qpsk}
 \end{figure}
 
-The channel model we consider is a simple \ac{awgn} channel with no fading or multi-path components. So the received symbols are given by \begin{align}\mathbf{v}=\mathbf{u}+\mathbf{n}\end{align}
+The channel model we consider is a simple \ac{awgn} channel with no fading or multi-path components. So the received symbols are given by \begin{align}\mathbf{v}=\mathbf{u}+\mathbf{z}\end{align}
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.5\textwidth]{graphics/bpsk_awgn}
   \caption{Conditional probability density functions of a \ac{bpsk} symbol over \ac{awgn} channel.}
   \label{fig:bpsk_awgn}
 \end{figure}
-where $\mathbf{n}=\mathcal{CN}(0,\sigma^2)\in\mathbb{C}^{\frac{Ln}{o}\times 1}$ is a complex random variable of Gaussian distribution with zero mean and variance $\sigma^2$. Note that only one symbol in $\mathbf{u}$ is transmitted per channel use. The received symbol vector is $\mathbf{v}\in\mathbb{C}^{\frac{Ln}{o}\times 1}$. The output of the \emph{QAM Demodulator} is a vector of \acp{llr} $\mathbf{y}\in\mathbb{R}^{Ln\times 1}$ corresponding to the bits in $\x$. The \acp{llr} are computed using the symbols in $\mathbf{v}$ and the modulation order. Each \ac{qpsk} symbol is a combination of two \ac{bpsk} symbols that are orthogonal to each other. Hence, the \acp{llr} of both the bits can be computed separately. The \ac{llr} of the first bit of each received \ac{qpsk} symbol $y$ is computed as
+where $\mathbf{z}=\mathcal{CN}(0,2\sigma^2)\in\mathbb{C}^{\frac{Ln}{o}\times 1}$ is a complex random variable of Gaussian distribution with zero mean and variance $2\sigma^2$. Note that only one symbol in $\mathbf{u}$ is transmitted per channel use. The received symbol vector is $\mathbf{v}\in\mathbb{C}^{\frac{Ln}{o}\times 1}$. The output of the \emph{QAM Demodulator} is a vector of \acp{llr} $\mathbf{y}\in\mathbb{R}^{Ln\times 1}$ corresponding to the bits in $\x$. The \acp{llr} are computed using the symbols in $\mathbf{v}$ and the modulation order. Each \ac{qpsk} symbol is a combination of two \ac{bpsk} symbols that are orthogonal to each other. Hence, the \acp{llr} of both the bits can be computed separately. The \ac{llr} of the first bit of each received \ac{qpsk} symbol $y$ is computed as
 \begin{align}
 \mathcal{L}_{\text{first}}&=\log\frac{\prob\left(X_1=0\mid\re(y)\right)}{\prob\left(X_1=1\mid\re(y)\right)}
 \end{align}
@@ -366,6 +368,43 @@ Similarly,
 \begin{align}
 \mathcal{L}_{\text{second}}&=\frac{2}{\sigma^2}\im(y)\label{eq:final_llr2}.
 \end{align}
-Note that the symbol values in Figure~\ref{fig:bpsk_awgn} are -1 and +1 which corresponds to information bits 1 and 0 respectively.
+Note that the symbol values in Figure~\ref{fig:bpsk_awgn} are $X_i\in\{-1,+1\},i=1,2$ which corresponds to information bits 1 and 0 respectively. The noise variances of the real and imaginary parts of the complex random variable $Z$ are each $\sigma^2$ from
+\begin{align}
+\text{E}\{||Z||^2\}&=\text{E}\{||\re(Z)||^2\}+\text{E}\{||\im(Z)||^2\}.
+\end{align}
+The \ac{snr} $\zeta$ of the \ac{qpsk} signal is
+\begin{align}
+\frac{E_s}{N_0}&=2\frac{E_b}{N_0}
+\end{align}
+where $E_s$ is the energy per \ac{qpsk} symbol, $E_b$ is the energy per bit and $N_0$ is the \ac{awgn} power spectral density. The \ac{snr} of each bit is equivalent to the \ac{snr} of \ac{bpsk} signal and is given by
+\begin{align}
+\frac{E_b}{N_0}&=\frac{\text{E}\{||X_1||^2\}}{\text{E}\{||\re(Z)||^2\}}\\
+&=\frac{\text{E}\{||X_2||^2\}}{\text{E}\{||\im(Z)||^2\}}\\
+&=\frac{1}{\sigma^2}.
+\end{align}
+Hence, the \acp{llr} can be written as
+\begin{align}
+\mathcal{L}_{\text{first}}&=2\frac{E_b}{N_0}\re(y),\\
+\mathcal{L}_{\text{second}}&=2\frac{E_b}{N_0}\im(y).
+\end{align}
 
-From equations (\ref{eq:final_llr1}) and (\ref{eq:final_llr2}), we see that the \acp{llr} are directly proportional to the \ac{snr} $\zeta=\frac{2}{\sigma^2}$ of the received symbols. After the \acp{llr} are computed, they are decoded using the \ac{bp} and \ac{wd} techniques inside the \emph{Window Decoder with BP} block. The decoding-improvement techniques that are used in this block are discussed in Section~\ref{sec:dec_improve}. The estimated bits $\widehat{\m}$ are then compared with the output of the random bit generator $\m$ to calculate the \ac{ber} $P_b$ and \ac{bler}. \ac{ber} $P_l$ is the ratio between the number of error-bits and the total number of bits transmitted. \ac{bler} is the ratio between the number of error-blocks and the total number of blocks transmitted. A block is considered to be an error-block if at least one information bit is incorrect.
+After the \acp{llr} are computed, they are decoded using the \ac{bp} and \ac{wd} techniques used inside the \emph{Window Decoder with BP} block. The decoding-improvement techniques that are used in this block are discussed in Section~\ref{sec:dec_improve}. The estimated bits $\widehat{\m}$ are then compared with the output of the random bit generator $\m$ to calculate the \ac{ber} $P_b$ and \ac{bler}. \ac{ber} $P_L$ is the ratio between the number of error-bits and the total number of bits transmitted. The probability of error for each bit in the codeword is given by
+\begin{align}
+P_b(i)&=\Pr\{\widehat{X}_i\neq X_i\}\\
+\end{align}
+and the overall probability of bit error is give by
+\begin{align}
+P_b&=\frac{1}{Ln}\sum_{i=0}^{Ln-1}P_b(i)\\
+\end{align}
+\ac{bler} is the ratio between the number of error-blocks and the total number of blocks transmitted. A block is considered to be an error-block if at least one information bit is incorrect. The \ac{bler} is given by
+\begin{align}
+P_L&=\Pr\{\widehat{\m}\neq \m\}.
+\end{align}
+With \ac{ber} and \ac{bler} being the metrics for measuring decoding performance, \ac{aneu} is the metric for measuring decoding complexity. \ac{aneu} $\eta$ is given by
+\begin{align}
+\eta&=\frac{1}{\eta_{\text{max}}}\sum_{\rho=0}^{\xi-1}\eta_\rho I_\rho\\
+\end{align}
+where $\xi$ is the total number of window positions, $\eta_\rho$ is the number of edges inside and $I_\rho$ is the number of iterations performed in $\rho$-th window position. $\eta_{\text{max}}$ is the maximum number of edge updates possible and is given by
+\begin{align}
+\eta_{\text{max}}&=I\sum_{\rho=0}^{\xi-1}\eta_\rho.
+\end{align}
