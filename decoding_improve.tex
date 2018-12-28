@@ -1,65 +1,71 @@
-\section{Decoding Improvements}\label{sec:dec_improve}
+\section{Decoding Improvements}\label{ch:dec_improve}
 In this section, we discuss the techniques that are investigated in this thesis to improve the decoding performance. We start with the discussion of existing techniques that improve the decoding performance. We then discuss the techniques investigated in this thesis and possible areas of further research and improvements. We finish this section by discussing the results from our simulations.
 
 \subsection{Existing Techniques and Motivation}
-Improvement techniques for window decoding of \ac{ldpccc} are being widely discussed in literatures. One of them is the \emph{early-success} technique in which the decoding stops before reaching the maximum number of iterations $I$. Although its very natural to stop decoding when the target \ac{vn} are decoded, one should carefully choose an optimum criterion for deciding whether the target \ac{vn} are decoded. A heuristic choice is to check whether the \emph{target-\acp{cn}} i.e., the \acp{cn} connected to the target \acp{vn} are fulfilled. A new early-success criterion was proposed in~\cite{Kang2018} based on reliable \acp{vn} and is called \ac{psc}. They distinguish the \acp{vn} inside the window as \emph{complete-\acp{vn}} and \emph{incomplete-\acp{vn}}. Complete-\acp{vn} are \acp{vn} whose connected \acp{cn} are completely inside the window. The remaining \acp{vn} in the window are called the incomplete-\acp{vn}. This is illustrated in Figure~\ref{fig:comp_vn}. The authors say that the complete-\acp{vn} are more reliable than the incomplete ones as they get updates from all their connected \acp{cn}. Hence, correctness on only the complete-\acp{cn} i.e., the \acp{cn} connected to only the complete-\acp{vn} are considered as early-success criterion.
+Improvement techniques for window decoding of \ac{ldpccc} are being widely discussed in literatures. An attractive technique that we found in the literature is the \emph{Zigzag decoder} proposed in~\cite{Shadi2015}. In a normal window decoder, the window moves from left to right of the \ac{pcm}. So, the messages pass from left to right of the codeword. The \acp{vn} in the left and right ends of the codeword are more reliable than that are in the middle. The Zigzag decoder moves the window from right to left of the \ac{pcm} within a small part where the \acp{vn} are not decoded. This allows the messages to pass from right to left of the codeword and hence influencing the high reliability of the \acp{vn} in the right on the \acp{vn} in the left.
+
+The Zigzag decoder performs better than the conventional left to right decoder but the decoding complexity in terms of number of iterations are higher. The implementation complexity is also high due to the nature of the decoder. Hence, this motivates us to develop a technique to utilize the high reliability of \acp{vn} in right of the codeword while have similar decoding and implementation complexity as the conventional window decoder.
+
+Another improvement technique that we found to be interesting is the \emph{early-success} technique in which the decoding stops before reaching the maximum number of iterations $I$. Although its very natural to stop decoding when the target \ac{vn} are decoded, one should carefully choose an optimum criterion for deciding whether the target \ac{vn} are decoded. A heuristic choice is to check whether the \emph{target-\acp{cn}} i.e., the \acp{cn} connected to the target \acp{vn} are fulfilled. A new early-success criterion was proposed in~\cite{Kang2018} based on reliable \acp{vn} and is called \ac{psc}. They distinguish the \acp{vn} inside the window as \emph{complete-\acp{vn}} and \emph{incomplete-\acp{vn}}. Complete-\acp{vn} are \acp{vn} whose connected \acp{cn} are completely inside the window. The remaining \acp{vn} in the window are called the incomplete-\acp{vn}. This is illustrated in Figure~\ref{fig:comp_vn}. The authors say that the complete-\acp{vn} are more reliable than the incomplete ones as they get updates from all their connected \acp{cn}. Hence, correctness on only the complete-\acp{cn} i.e., the \acp{cn} connected to only the complete-\acp{vn} are considered as early-success criterion.
 
 Although the \ac{psc} rule proposed in~\cite{Kang2018} reduces the number of iterations with same performance, they are suitable only for small windows where $W<2(m_s+1)$. For larger window sizes, the number complete-\acp{vn} are greater than the number of incomplete-\acp{vn}. This also makes the number of complete-\acp{cn} to be grater than the number of target-\acp{cn}. So for larger windows, the \ac{psc} rule actually increases the number of iterations. This motivates us develop a better early-success criterion that depends on the window size.
 
 \subsection{Base Decoder Configuration}
-Before discussing the details of the techniques used in the improved decoder, it is essential to define a decoder configuration to which the improvements are made. This allows better understanding of the techniques and the simulation results. Let us call the decoder without out improvements as \ac{bd} and the one with our improvements as \ac{id}. The \ac{bd} uses the \ac{wd} technique to decoder the \ac{bpl} codes. The window slides from the left end of the \ac{pcm} to the right end. Within each window, serial scheduling is performed by updating the \acp{cn} from top to bottom for a maximum of $I_{\text{max}}$ iterations.
+Before discussing the details of the techniques used in the improved decoder, it is essential to define a decoder configuration to which the improvements are made. This allows better understanding of the techniques and evaluation of the simulation results. Let us call the decoder without out improvements as \ac{bd} and the one with our improvements as \ac{id}. The \ac{bd} uses the \ac{wd} technique to decoder the \ac{bpl} codes. The window slides from the left end of the \ac{pcm} to the right end. Within each window, serial scheduling is performed by updating the \acp{cn} from top to bottom for a maximum of $I_{\text{max}}$ iterations.
 
-In the last window instance i.e., when the window touches the right most column of the \ac{pcm}, all the \acp{vn} inside the window are considered as target \acp{vn}. Hence, the early success criterion is to check if all \acp{cn} inside the window are fulfilled. This idea was proposed in~\cite{Ali2018} with flooding schedule.
+In the last window instance i.e., when the window touches the right most column of the \ac{pcm}, all the \acp{vn} inside the window are considered as target \acp{vn}. Hence, the early success criterion is to check if all \acp{cn} inside the window are fulfilled. This idea was proposed in~\cite{Ali2018} with flooding schedule. We adapt this technique in our \ac{bd} to minimize the total number to iterations.
 
 An early success technique is used in our \ac{bd}. This technique prevents the decoder from exhausting all iteration in a window if the target \acp{vn} are decoder before reaching the maximum number of iteration. Thus saving computational effort. The criterion for finding the correctness of the target \acp{vn} is to check if all the \acp{cn} connected to the target \acp{vn} fulfill their parity-checks.
 
 We now know that the \ac{bpl} codes are terminated using the zero-tail termination technique. The zero-tail bits and their positions are always known at the receiver. Hence, the \acp{llr} of these bits are made to $+\infty$ which indicates that these bits most certainly have the value 0.
 
-\subsection{\acl{ipsc}}
-An early success technique with a different criterion for checking the correctness of target nodes was proposed in~\cite{Kang2018}. They called the set of \acp{vn} whose connected \acp{cn} are completely inside the window \emph{complete-\acp{vn}} and the remaining \emph{incomplete-\acp{vn}}. Their idea was to check the parity-checks for \acp{cn} that are connected only to complete-\acp{vn} rather than checking for all \acp{cn}. Let us call these \acp{cn} \emph{complete-\acp{cn}}. They also assumed that the window size is always large enough such that the number of complete-\acp{vn} are larger than the number of incomplete-\acp{vn}. However, all their evaluations and simulations are based on reliability-based decoding algorithms where hard information about the \acp{vn} are passed along the edges. Figure~\ref{fig:comp_vn} shows the complete-\acp{vn}, incomplete-\acp{vn} and complete-\acp{cn}.
-\begin{figure}[htbp]
-  \centering
-  %\tikzsetnextfilename{tanner_graph}
-  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/comp_vn}
-  \caption{\ac{pcm} illustrating complete-\acp{vn}, incomplete-\acp{vn} and complete-\acp{cn}.}
-  \label{fig:comp_vn}
-\end{figure}
-
-We propose an \ac{iesc} with decoding complexity and memory requirements in mind. In our \ac{bd}, we just check the $m_s+1$ \acp{cn} that are connected to the target \acp{vn}, instead of checking all the \acp{cn} inside the window. This has a reduced decoding complexity but with a degradation in decoding performance. However, our focus is to reduce the decoding complexity with an acceptable performance degradation. Our \ac{iesc} chooses the early success criterion depending on the window size. When $W<2(m_s+1)$, we choose complete-\acp{cn} as the early success criterion and when $W>2(m_s+1)$, we choose the $m_s+1$ \acp{cn} as the early success criterion.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.9\linewidth]{plots/aeu_300}
-  \caption{\ac{aneu} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=300$.}
-  \label{fig:aneu_vs_snr_300}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.9\linewidth]{plots/bler_300}
-  \caption{\ac{bler} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=300$.}
-  \label{fig:bler_vs_snr_300}
-\end{figure}
-
-Figure~\ref{fig:aneu_vs_snr_300} shows that there is a significant decrease in \ac{aneu} for \ac{snr} $\zeta>3.2$dB for $W<2(m_s+1)$ i.e., $W=300$ when \textbf{complete-\acp{cn} are checked}. This is a decent reduction in complexity considering there is no degradation in \ac{bler} performance in Figure~\ref{fig:bler_vs_snr_300}.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.9\linewidth]{plots/aeu_600}
-  \caption{\ac{aneu} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=600$.}
-  \label{fig:aneu_vs_snr_600}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.9\linewidth]{plots/bler_600}
-  \caption{\ac{bler} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=600$.}
-  \label{fig:bler_vs_snr_600}
-\end{figure}
-
-Figure~\ref{fig:aneu_vs_snr_600} shows that there is a decrease in \ac{aneu} for \acp{snr} in range $2.4<\zeta(dB)<4.2$ for $W\geq2(m_s+1)$ i.e., $W=600$ when \textbf{target-\acp{cn} are checked}. But the \ac{bler} performance remains the same as seen in Figure~\ref{fig:bler_vs_snr_600}.
-
-Hence, this show that by using the \ac{iesc}, we can reduce the computation complexity \ac{aneu} while maintaining the same  decoding performance \ac{bler} for varying window sizes.
+The configurations of the \ac{bd} is summarized below.
+\begin{enumerate}
+  \item \ac{bp} based window decoder and the window moves from left to right.
+  \item Maximum number of iterations for each window is $I_{\text{BD}}$.
+  \item Serial scheduling with top to bottom \ac{cn} update order.
+  \item In the last window, all \acp{vn} are considered as target \acp{vn}.
+  \item Target \acp{cn} are considered as early-success criterion.
+\end{enumerate}
 
 \subsection{\acl{lrl} \acl{wd}}
-The next technique we discuss is the \ac{lrl} decoding technique where the window slides from the left end of the \ac{pcm} to the right end and again back to the left. Compared to the \ac{bd}, the number of \ac{bp} iterations to be performed in each window is halved $I_w=I_{\text{max}}/2$. This is done to balance the total maximum number of iterations between the \ac{bd} and our \ac{id}. When the window reaches the right end of the \ac{pcm} and moves towards the left, the better reliability of the right most \acp{vn} propagate to the middle and the left \acp{vn} in the \ac{pcm}. Thus with this technique, the highly reliable \acp{vn} in the left and right of the codeword influence the \acp{vn} in the middle of the codeword. While in the \ac{bd}, only the \acp{vn} in the left of the codeword influence the rest of the \acp{vn}.
+In this thesis, we propose the \emph{\ac{lrl} decoder}. The \ac{lrl} decoder moves the window from left to right and from right to left of the \ac{pcm} unlike the \ac{bd} that moves the window only from left to right. As already mentioned earlier, the \acp{vn} in the left and right of the codeword are more reliable than the \acp{vn} in the middle due to the lower \ac{cn} degrees in both the ends. This can be seen in Figure~\ref{fig:indiv_ber} which plots the individual probability of error for all the bits in the codeword. We can see that the bits in the left and right of the codeword have lower probability of error than the bits in the middle. During the first half decoding phase of the \ac{lrl} decoder, the window moves from the first window position to the last window position of the \ac{pcm}. During the second phase of the decoding i.e., after decoding the last window position, the window moves to the left till it reaches the first window position. This is illustrated in Figure~\ref{fig:pcm:lrl}.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/pcm_lrl}
+  \caption{\ac{pcm} illustrating \ac{lrl} decoder.}
+  \label{fig:pcm_lrl}
+\end{figure}
+So during the first decoding phase, the \acp{vn} in the left increases the reliability of the \acp{vn} to the right as the window moves forward. Then during the second decoding phase, the better \acp{vn} in the right of the codeword increase the reliability of the \acp{vn} to the left as the window moves backwards. The maximum number of iterations within each window is half of the maximum number of iterations in the \ac{bd} i.e., $I_{\text{LRL}}=I_{\text{BD}}/2$. This is done to maintain the same decoding complexity as the \ac{bd} because each window in the \ac{lrl} decoder is decoded twice.
+
+With the \ac{lrl} decoder, we propose two different configurations of windows. They are illustrated in Figure~\ref{fig:win_config_lrl}. The red box indicates the window. The figure to the left shows a window configuration where the left most \acp{vn} (blue hatched) are the target \acp{vn}. The order of \ac{cn} update is from top to bottom as one indicated by the brown arrow. Let us call this \ac{lrl} configuration-\rom{1}. The illustration to the right of the Figure~\ref{fig:win_config_lrl} shows that the right most \acp{vn} in the window are the target \acp{vn}. The order of \ac{cn} update is from bottom to top as indicated by the brown arrow. Let us call this \ac{lrl} configuration-\rom{2}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/win_config_lrl_new}
+  \caption{Different window configurations used in \ac{lrl} decoder. Left image illustrates \ac{lrl} configuration-\rom{1} and right image illustrates \ac{lrl} configuration-\rom{2}.}
+  \label{fig:win_config_lrl}
+\end{figure}
+
+We discuss the performance of the \ac{lrl} decoder with both configurations. First we use \ac{lrl} configuration-\rom{1} in both phases of the \ac{lrl} decoder. When \ac{lrl} configuration-\rom{1} is used in the second phase, the window iterates for more number iterations than when \ac{lrl} configuration-\rom{2} is used. This is because the target \ac{vn} are at the end of the window corresponding to the window direction.
+
+Then we use the \ac{lrl} configuration-\rom{1} during the first phase and \ac{lrl} configuration-\rom{2} during the second phase. During the second phase the \ac{cn} updates are done from bottom to top to increase the effect of high reliability of \acp{vn} in the right on to the \acp{vn} in the middle. The simulation results of both the configurations are evaluated in Chapter~\ref{ch:simulation}.
+
+\subsection{\acl{ipsc}}
+The next technique we propose is the \ac{ipsc} rule. As mentioned earlier, a \ac{psc} was proposed in~\cite{Kang2018} that uses only complete-\ac{cn} as early-success criterion. In the \ac{ipsc} rule, we introduce an additional early-success rule for $W>2(m_s+1)$. That is, when the window size $W>2(m_s+1)$ the target \ac{cn} are considered as early-success criterion. This could reduce the number of iterations or edge updates because for $W>2(m_s+1)$ the number of complete-\ac{cn} are greater than the number of target \ac{vn} and so the window could converge sooner. A window is said to have converged when the target \ac{vn} are decoded. Table~\ref{tab:ipsc} summarizes the \ac{ipsc} technique. The simulation results of the \ac{ipsc} are evaluated in Chapter~\ref{ch:simulation}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|l|l|l|}
+  \hline
+  \textbf{S.No.} &Window Size &Early-success Criterion\\
+  \hline
+  \hline
+  1. &$W\leq2(m_s+1)$ &Complete-\acp{vn}.\\
+  \hline
+  2. &$W>2(m_s+1)$ &Target \acp{vn}.\\
+  \hline
+\end{tabular}
+\caption{Early-success criteria for \ac{ipsc}}
+\label{tab:ipsc}
+\end{table}

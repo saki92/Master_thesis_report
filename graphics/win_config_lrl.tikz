@@ -1,0 +1,24 @@
+\begin{tikzpicture}[auto, node distance=3.5cm,>=latex']
+\tikzstyle{inner} = [draw, fill=none, rectangle, 
+minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=center]
+\tikzstyle{box} = [step=0.5cm,color=black,thin]
+\tikzstyle{cord} = [coordinate]
+\tikzstyle{sum} = [draw,circle,radius=0.5cm]
+\draw[box] (0,0) grid (1,-1.5);
+\draw[box] (1-\xs,-0.5-\xs) grid (2,-2);
+\draw[box] (2-\xs,-1-\xs) grid (3,-2);
+\draw[box] (3-\xs,-1.5-\xs) grid (4,-2);
+\draw (0,0.5) rectangle (4,1);
+\draw[pattern=north west lines,pattern color=blue] (0,0.5) rectangle (1,1);
+\draw[thick,color=red] (0,0) rectangle (4,-2);
+\draw[->] (-0.5,0) -- (-0.5,-2);
+
+\draw[box] (8-\xs,-0.5-\xs) grid (7-\xs,0-\xs);
+\draw[box] (9-\xs,-1-\xs) grid (8-\xs,0-\xs);
+\draw[box] (10-\xs,-1.5-\xs) grid (9-\xs,0-\xs);
+\draw[box] (11-\xs,-2-\xs) grid (10-\xs,-0.5-\xs);
+\draw (7,0.5) rectangle (11,1);
+\draw[pattern=north west lines,pattern color=blue] (10,0.5) rectangle (11,1);
+\draw[thick,color=red] (7,0) rectangle (11,-2);
+\draw[->] (11.5,-2) -- (11.5,0);
+\end{tikzpicture}

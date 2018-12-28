@@ -52,6 +52,7 @@
 \DeclareMathOperator{\sign}{sign}
 \renewcommand{\arraystretch}{1.5} %for table row spacing
 \include{settings_tikz}
+\newcommand*{\rom}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
 \begin{document}
   \pagenumbering{roman}
 	\colorlet{tudidentbar}{tud1b} 
@@ -83,6 +84,8 @@
   \input{encoding}
   \cleardoublepage
   \input{decoding_improve}
+  \cleardoublepage
+  \input{simulation}
   \cleardoublepage
   \input{implementation}
   \cleardoublepage

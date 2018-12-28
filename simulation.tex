@@ -1,0 +1,42 @@
+\section{Simulation Results and Evaluation}\label{ch:simulation}
+\begin{figure}[htbp]
+  \centering
+  %\tikzsetnextfilename{tanner_graph}
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/comp_vn}
+  \caption{\ac{pcm} illustrating complete-\acp{vn}, incomplete-\acp{vn} and complete-\acp{cn}.}
+  \label{fig:comp_vn}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{plots/aeu_300}
+  \caption{\ac{aneu} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=300$.}
+  \label{fig:aneu_vs_snr_300}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{plots/bler_300}
+  \caption{\ac{bler} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=300$.}
+  \label{fig:bler_vs_snr_300}
+\end{figure}
+
+Figure~\ref{fig:aneu_vs_snr_300} shows that there is a significant decrease in \ac{aneu} for \ac{snr} $\zeta>3.2$dB for $W<2(m_s+1)$ i.e., $W=300$ when \textbf{complete-\acp{cn} are checked}. This is a decent reduction in complexity considering there is no degradation in \ac{bler} performance in Figure~\ref{fig:bler_vs_snr_300}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{plots/aeu_600}
+  \caption{\ac{aneu} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=600$.}
+  \label{fig:aneu_vs_snr_600}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{plots/bler_600}
+  \caption{\ac{bler} vs \ac{snr} comparison between incomplete-\acp{vn} and all target \acp{vn} as early success criterion for $W=600$.}
+  \label{fig:bler_vs_snr_600}
+\end{figure}
+
+Figure~\ref{fig:aneu_vs_snr_600} shows that there is a decrease in \ac{aneu} for \acp{snr} in range $2.4<\zeta(dB)<4.2$ for $W\geq2(m_s+1)$ i.e., $W=600$ when \textbf{target-\acp{cn} are checked}. But the \ac{bler} performance remains the same as seen in Figure~\ref{fig:bler_vs_snr_600}.
+
+Hence, this show that by using the \ac{iesc}, we can reduce the computation complexity \ac{aneu} while maintaining the same  decoding performance \ac{bler} for varying window sizes.

@@ -1,0 +1,26 @@
+\begin{tikzpicture}[auto, node distance=3.5cm,>=latex']
+\tikzstyle{inner} = [draw, fill=none, rectangle, 
+minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=center]
+\tikzstyle{box} = [step=0.5cm,color=black,thin]
+\tikzstyle{cord} = [coordinate]
+\tikzstyle{sum} = [draw,circle,radius=0.5cm]
+\draw[box] (0,0) grid (1,-1.5);
+\draw[box] (1-\xs,-0.5-\xs) grid (2,-2);
+\draw[box] (2-\xs,-1-\xs) grid (3,-2.5);
+\draw[box] (3-\xs,-1.5-\xs) grid (4,-3);
+\draw[box] (4-\xs,-2-\xs) grid (5,-3.5);
+\draw[box] (5-\xs,-2.5-\xs) grid (6,-4);
+\draw[box] (6-\xs,-3-\xs) grid (7,-4.5);
+\draw[box] (7-\xs,-3.5-\xs) grid (8,-5);
+\draw[box] (8-\xs,-4-\xs) grid (9,-5.5);
+\draw[box] (9-\xs,-4.5-\xs) grid (10,-6);
+\draw[box] (10-\xs,-5-\xs) grid (11,-6.5);
+\draw[box] (11-\xs,-5.5-\xs) grid (12,-7);
+\draw[box] (12-\xs,-6-\xs) grid (13,-7);
+\draw[box] (13-\xs,-6.5-\xs) grid (14,-7);
+\draw (0,0.5) rectangle (14,1);
+\draw[thick,color=red] (0,0) rectangle (4,-2);
+\draw[thick,color=blue] (10,-5) rectangle (14,-7);
+\draw[->,thick] (4.25,-1) -- (11.5,-4.7);
+\draw[->,thick] (9,-6.5) -- (1,-2.5);
+\end{tikzpicture}
