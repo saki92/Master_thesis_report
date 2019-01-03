@@ -21,14 +21,15 @@
 \usetikzlibrary{fit,backgrounds,automata}
 \usepackage[a-1b]{pdfx}
 %\usepackage[bookmarks]{hyperref}
+\usepgfplotslibrary{external} 
+\tikzexternalize[prefix=TikzPictures/]
 
 %\usepackage{breakurl}
 \usepackage[acronym,toc,nonumberlist]{glossaries}
-\newglossary[sylg]{symbolslist}{syi}{syo}{Nomenclature}
+\newglossary[sylg]{symbolslist}{syi}{syo}{List of Symbols}
 \makeglossaries
 \input{acronyms}
 %\tikzexternalize[mode=list and make]{Report}
-%\titleformat{\section}{\normalfont\fontsize{12}{15}\bfseries}{\thesection}{1em}{}
 \newcommand{\getmydate}{%
 	\ifcase\month%
 	\or Januar\or Februar\or M\"arz%

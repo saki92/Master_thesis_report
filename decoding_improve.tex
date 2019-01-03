@@ -28,10 +28,11 @@ The configurations of the \gls{bd} is summarized below.
   \item Target \glspl{cn} are considered as early-success criterion.
 \end{enumerate}
 
-\section{\acrfull{lrl} \acrfull{wd}}
+\section{\acrlong{lrl} \acrlong{wd}}
 In this thesis, we propose the \emph{\gls{lrl} decoder}. The \gls{lrl} decoder moves the window from left to right and from right to left of the \gls{pcm} unlike the \gls{bd} that moves the window only from left to right. As already mentioned earlier, the \glspl{vn} in the left and right of the codeword are more reliable than the \glspl{vn} in the middle due to the lower \gls{cn} degrees in both the ends. This can be seen in Figure~\ref{fig:indiv_ber} which plots the individual probability of error for all the bits in the codeword. We can see that the bits in the left and right of the codeword have lower probability of error than the bits in the middle. During the first half decoding phase of the \gls{lrl} decoder, the window moves from the first window position to the last window position of the \gls{pcm}. During the second phase of the decoding i.e., after decoding the last window position, the window moves to the left till it reaches the first window position. This is illustrated in Figure~\ref{fig:pcm_lrl}.
 \begin{figure}[htbp]
   \centering
+  \tikzsetnextfilename{indiv_ber}
   \includegraphics[width=0.9\linewidth]{plots/indiv_ber}
   \caption{Probability of error for each bit in the codeword of a code with $R_\infty=2/3$, $n_i=3500$. Termination bits are excluded.}
   \label{fig:indiv_ber}
@@ -39,6 +40,7 @@ In this thesis, we propose the \emph{\gls{lrl} decoder}. The \gls{lrl} decoder m
 
 \begin{figure}[htbp]
   \centering
+  \tikzsetnextfilename{pcm_lrl}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/pcm_lrl}
   \caption{\gls{pcm} illustrating \gls{lrl} decoder.}
   \label{fig:pcm_lrl}
@@ -49,6 +51,7 @@ With the \gls{lrl} decoder, we propose two different configurations of windows. 
 
 \begin{figure}[htbp]
   \centering
+  \tikzsetnextfilename{win_config_lrl_new}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/win_config_lrl_new}
   \caption{Different window configurations used in \gls{lrl} decoder. Left image illustrates \gls{lrl} configuration-\rom{1} and right image illustrates \gls{lrl} configuration-\rom{2}.}
   \label{fig:win_config_lrl}
@@ -58,11 +61,11 @@ We discuss the performance of the \gls{lrl} decoder with both configurations. Fi
 
 Then we use the \gls{lrl} configuration-\rom{1} during the first phase and \gls{lrl} configuration-\rom{2} during the second phase. During the second phase the \gls{cn} updates are done from bottom to top to increase the effect of high reliability of \glspl{vn} in the right on to the \glspl{vn} in the middle. The simulation results of both the configurations are evaluated in Chapter~\ref{ch:simulation}.
 
-\section{\acrfull{ipsc}}
+\section{\acrlong{ipsc}}
 The next technique we propose is the \gls{ipsc} rule. As mentioned earlier, a \gls{psc} was proposed in~\cite{Kang2018} that uses only complete-\gls{cn} as early-success criterion. In the \gls{ipsc} rule, we introduce an additional early-success rule for $W>2(m_s+1)$. That is, when the window size $W>2(m_s+1)$ the target \gls{cn} are considered as early-success criterion. This could reduce the number of iterations or edge updates because for $W>2(m_s+1)$ the number of complete-\gls{cn} are greater than the number of target \gls{vn} and so the window could converge sooner. A window is said to have converged when the target \gls{vn} are decoded. Table~\ref{tab:ipsc} summarizes the \gls{ipsc} technique. The simulation results of the \gls{ipsc} are evaluated in Chapter~\ref{ch:simulation}.
 \begin{figure}[htbp]
   \centering
-  %\tikzsetnextfilename{tanner_graph}
+  \tikzsetnextfilename{comp_vn}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/comp_vn}
   \caption{\gls{pcm} illustrating complete-\glspl{vn}, incomplete-\glspl{vn} and complete-\glspl{cn}.}
   \label{fig:comp_vn}
