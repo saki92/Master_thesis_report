@@ -1,0 +1,113 @@
+% This file was created by matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+\definecolor{mycolor4}{rgb}{0.49400,0.18400,0.55600}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.835\fwidth,
+height=\fheight,
+at={(0\fwidth,0\fheight)},
+scale only axis,
+xmin=2,
+xmax=5,
+xlabel={$\zeta$ (dB)},
+ymin=5000000,
+ymax=90000000,
+ylabel={$\eta$},
+axis background/.style={fill=white},
+xmajorgrids,
+xminorgrids,
+ymajorgrids,
+yminorgrids,
+legend style={legend cell align=left, align=left, legend plot pos=left, draw=black}
+]
+\addplot [color=mycolor1, mark=x, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+2	48525070\\
+2.2	48484250\\
+2.4	48383350\\
+2.6	48146140\\
+2.8	47619370\\
+3	46642030\\
+3.2	44848720\\
+3.4	41648310\\
+3.6	36085420\\
+3.8	29288100\\
+4	22510720\\
+4.2	17418580\\
+4.4	13762270\\
+4.6	11137390\\
+4.8	9357525\\
+5	8101157\\
+};
+\addlegendentry{$W$ = 300}
+
+\addplot [color=mycolor2, mark=o, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+2	61402820\\
+2.2	61344600\\
+2.4	61165110\\
+2.6	60589160\\
+2.8	58837530\\
+3	54311670\\
+3.2	44004840\\
+3.4	30030230\\
+3.6	18553800\\
+3.8	12374370\\
+4	9359813\\
+4.2	7938911\\
+4.4	7194389\\
+4.6	6806377\\
+4.8	6560294\\
+5	6403022\\
+};
+\addlegendentry{$W$ = 400}
+
+\addplot [color=mycolor3, mark=diamond, mark options={solid, mycolor3}]
+  table[row sep=crcr]{%
+2	72426630\\
+2.2	72227910\\
+2.4	71549320\\
+2.6	69621960\\
+2.8	63428680\\
+3	48740490\\
+3.2	29304600\\
+3.4	15543190\\
+3.6	10151000\\
+3.8	8274905\\
+4	7612164\\
+4.2	7398877\\
+4.4	7316173\\
+4.6	7291224\\
+4.8	7270100\\
+5	7260302\\
+};
+\addlegendentry{$W$ = 500}
+
+\addplot [color=mycolor4, mark=triangle, mark options={solid, mycolor4}]
+  table[row sep=crcr]{%
+2	81627830\\
+2.2	81204820\\
+2.4	79657370\\
+2.6	75072920\\
+2.8	62497750\\
+3	39130390\\
+3.2	20041330\\
+3.4	11199320\\
+3.6	8997220\\
+3.8	8379299\\
+4	8231120\\
+4.2	8205380\\
+4.4	8187747\\
+4.6	8185511\\
+4.8	8181155\\
+5	8179895\\
+};
+\addlegendentry{$W$ = 600}
+
+\end{axis}
+\end{tikzpicture}%

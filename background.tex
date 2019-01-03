@@ -1,7 +1,7 @@
-\section{Background}
-In this section, we provide an overview of channel coding and some selected channel codes. We start by discussing the need for channel coding. We then describe linear block codes, \ac{ldpc} codes and \acp{ldpccc} which are the main focus of this thesis. Then we go on to discuss \ac{bp} and the sliding-window technique used in decoders for \acp{ldpccc}. We finish the section describing our system model.
+\chapter{Background}
+In this chapter, we provide an overview of channel coding and some selected channel codes. We start by discussing the need for channel coding. We then describe linear block codes, \ac{ldpc} codes and \acp{ldpccc} which are the main focus of this thesis. Then we go on to discuss \ac{bp} and the sliding-window technique used in decoders for \acp{ldpccc}. We finish the section describing our system model.
 
-\subsection{Introduction to Channel Coding}
+\section{Introduction to Channel Coding}
 The term \emph{coding} is generally associated with the mapping of information to a set of symbols or numbers~\cite{Bossert}. Source coding aims to compress the information whereas channel coding aims to make the information immune to random distortion. A model of a digital communication system is shown in Figure~\ref{fig:chanCoding}. Let us consider that the \emph{source} block produces a sequence of information bits given by the vector $\mathbf{d}$. These bits might stream from any digital information source such as multimedia files, text documents, etc. These vectors of bits are encoded in the \emph{source-encoder} block to produce compressed information bit vectors $\mathbf{m}$ called source codewords. The compression means that the length of $\mathbf{m}$ is at most the length of $\mathbf{d}$. The mapping allow unique reconstruction of the information bits at the receiver. The source encoder is chosen depending on the type of the information source~\cite{proak}.
 
 The next block in the digital communication model is the \emph{channel encoder}. Whereas the source encoder compresses the information bit vectors, the channel encoder expands them by adding redundant bits in a structured manner. This structured redundancy makes the transmitted information bits less susceptible to distortions such as interference in the channel medium, and receiver noise. A \emph{channel} is a physical medium through which the information is transferred from transmitter to receiver. A \emph{code} is a set of rules that defines the encoding principle of the encoder. The type of code is chosen depending on the channel and the application requirements. In general, the source encoder or decoder is placed at higher layers of the \ac{osi} model, while channel-coding blocks are placed at the \ac{phy} layer. The outputs of the channel encoder are called channel codewords. The codeword vectors $\mathbf{x}$ are then modulated in the \emph{modulator} block where the bits are transformed into symbol vectors $\mathbf{u}$. The symbol vectors are then transmitted as analog signals through the channel. Due to the addition of interference and noise, the channel output is in general not the same as the channel input: $\mathbf{v}\neq\mathbf{u}$. The \emph{demodulator} converts the received symbol vectors $\mathbf{v}$ into vectors of bits $\mathbf{y}$ which corresponds to the vector of encoded bits $\mathbf{x}$. The \emph{channel decoder} uses the redundancy in the received codeword to deduce an estimate $\widehat{\mathbf{m}}$ of the source codeword. The source decoder then deduces an estimate $\widehat{\mathbf{d}}$ of the information bit vector from $\widehat{\mathbf{m}}$.
@@ -15,9 +15,9 @@ The next block in the digital communication model is the \emph{channel encoder}.
 
 The addition of redundant bits by the channel encoder enables the mapping between a set of information words and a set of all possible \emph{receive words}. Lets us consider the length of an information word $\mathbf{m}$ to be $k$ bits and the length of a codeword $\mathbf{x}$ to be $n$ bits such that $n>k$. Thus the information word set has $2^k$ words and the receive word set has $2^n$ words. The codeword set of size $2^k$ is a subset of the receive word set. The mapping between different set sizes allows us to detect if the received word is in the codeword set. The information words and codewords contain elements in the binary set $\mathbb{F}_2=\{0,1\}$ as their alphabets. $\mathbb{F}_2$ or GF(2) is called a finite field of order $2$. Hence, all arithmetic operations with information bits and codewords are performed modulo 2.
 
-\subsection{Channel Codes}
+\section{Channel Codes}
 There are different types of channel codes. The choice of one depends on the application requirements, type of channel medium and resource availability. In this thesis, we focus on \acp{ldpccc}, a special class of \acp{ldpcbc}.
-\subsubsection{Linear Block Codes}
+\subsection{Linear Block Codes}
 Linear block codes are codes in which a codeword is formed by a linear combination of two or more base vectors that span the codeword space~\cite{proak} and hence the base vectors are also codewords. As a result, a linear combination of any two or more codewords forms another codeword. The codeword space of $2^k$ vectors is a subspace of the space of all $2^n$ vectors. An $(n,k)$ linear block code maps $k$ message bits to $n$ codeword bits. The remaining $n-k$ redundant bits are called parity bits and they are determined by an encoding rule. Linear block codes are classified into two categories: \emph{systematic} and \emph{non-systematic}. Systematic codes have all their message bits transmitted in an unaltered manner whereas the non-systematic codes do not have such formation. Without loss of generality, we assume that a codeword of the systematic linear block code has the following structure: \begin{align}\x^T=(\m^T,\bb^T)\end{align} where $\x\in\mathbb{F}_2^{n\times 1}$ is the codeword vector, $\m\in\mathbb{F}_2^{k\times 1}$ and $\bb\in\mathbb{F}_2^{(n-k)\times 1}$ denote message and parity vectors, respectively. The code rate is given by \begin{align}R=\frac{k}{n}.\end{align}
 
 Codewords of linear block codes are expressed using the linear expression \begin{align}\x=\G\odot\m\end{align} where $\G\in\mathbb{F}_2^{n\times k}$ is called the \ac{gm} and $\odot$ represents multiplication modulo 2. A parity check is described by the expression \begin{align}\H\odot\x=\mathbf{s}\end{align} where $\H\in\mathbb{F}_2^{(n-k)\times n}$ is called the \ac{pcm} and $\mathbf{s}\in\mathbb{F}_2^{(n-k)\times 1}$ is called the syndrome. Each row of the \ac{pcm} represents a parity-check equation. Only when $\mathbf{s}=\mathbf{0}$, the parity checks are fulfilled. The relation between \ac{pcm} and \ac{gm} is given by $\H\odot\G=\mathbf{0}$. With either \ac{gm} or \ac{pcm} given, the other one is not unique. For example, if the \ac{pcm} of a $(7,4)$ hamming code is given by
@@ -50,12 +50,12 @@ The \ac{pcm} can be represented by a bipartite graph, called Tanner graph~\cite{
   \label{fig:tannGraph}
 \end{figure}
 
-\subsubsection{\acl{ldpc} Block Codes}
+\subsection{\acl{ldpc} Block Codes}
 \acp{ldpcbc} are a class of linear block codes which were introduced by Robert Gallager in 1963~\cite{Gallager1963}. As the name specifies, they are defined by a sparse \ac{pcm} containing mostly 0's and relatively few 1's. The sparsity of the \ac{pcm} or its Tanner graph is a key property that allows for the algorithmic efficiency of \acp{ldpcbc}. These codes are divided into two types: regular and irregular codes.
 
 In a regular $(n,q,r)$ code, all \acp{vn} have degree $q$ and all \acp{cn} have degree $r$.
 
-\subsubsection{\acl{ldpc} Convolutional Codes}
+\subsection{\acl{ldpc} Convolutional Codes}
 Convolutional codes in general are codes in which the parity bits are generated by convolving information bits or information and parity bits. The rule for the convolution is expressed by generator-polynomial. This generator-polynomial is similar to the taps of an \ac{fir} filter in case of non-recursive codes and an \ac{iir} filter in case of recursive codes. An example of parity bit generation in a non-recursive systematic convolutional code is shown in Figure~\ref{fig:conv_code}.
 \begin{figure}[htbp]
   \centering
@@ -105,7 +105,7 @@ The equation (\ref{eq:ldpccc_conv}) is a convolution representing the convolutio
 
 The bits in the codeword $\x$ are coupled together over a distance called the \emph{constraint length} which is given by $l_c=(m_s+1)n$ bits.
 
-\subsubsection{Termination of Convolutional Codes}
+\subsection{Termination of Convolutional Codes}
 In general, \acp{ldpccc} have codewords and \acp{pcm} of infinite length. For packet-based communication networks, however, the whole packet has to be retransmitted in case of incorrect information bits in higher layers. Also, in a wireless medium the channel parameters change over time which requires the encoder to change its code rate on the fly. For the aforementioned reasons, terminated codes are a better choice.
 
 Termination is the process of limiting the coupling length, so that the codewords have finite length. This allows the decoder to stop decoding the current received word if a bit cannot be corrected, thus reducing the decoding complexity. The termination process requires adding \emph{termination bits} to the end of the codeword to ensure that the last $m_s$ parity-check equations of the terminated \ac{pcm} are fulfilled. Termination also ensures that the encoder returns to an all-zero state before encoding the next codeword and so termination bits are determined by solving a system of linear equations in $\mathbb{F}_2$. 
@@ -146,7 +146,7 @@ where $L$ is the \emph{coupling length} denoting the number of \acp{cb} in the c
 \end{figure}
 The entire graph in Figure~\ref{fig:tannGraphLdpccc} can be seen as a Tanner graph of an infinitely long \ac{ldpccc}. As a result of termination, only the center part of the graph remains. The dark circles are the \acp{vn} of the terminated \ac{ldpccc} and the solid lines are their corresponding edges.
 
-\subsubsection{\aclp{ldpccc} Used in IEEE 1901}\label{sec:bpl_bg}
+\subsection{\aclp{ldpccc} Used in IEEE 1901}\label{sec:bpl_bg}
 In this thesis, we use the \acp{ldpccc} specified in the \ac{bpl} or IEEE 1901 standard to evaluate our decoder~\cite{Bpl}. From now on, we refer to the \acp{ldpccc} in the IEEE 1901 standard as \emph{\ac{bpl}~codes}. The \ac{bpl} codes are specified as sets of parity-check polynomials for all asymptotic rates $R_\infty=k/n,\ n\in\{2,3,4,5\}$ where $k=n-1$. In other words, the \ac{bpl} codes have only one parity bit in each \ac{cb}. 
 
 The codes are defined as parity-check polynomials expressed as
@@ -173,7 +173,7 @@ R_L=\frac{n_m}{Ln-n_z}.
 \end{align}
 Encoding and termination of \ac{bpl} codes is explained in detail in Chapter~\ref{ch:encode}.
 
-\subsection{Decoding of \acl{ldpc} Codes}\label{sec:decoding_ldpc}
+\section{Decoding of \acl{ldpc} Codes}\label{sec:decoding_ldpc}
 A channel decoder attempts to find the transmitted codeword $\x$ from the received word $\mathbf{y}$. The best decoder in terms of performance is a \ac{map} based decoder. Hence, its complexity grows exponentially with the information word length because it finds among all possible codewords the codeword that has the highest probability given the received word. The estimate of the transmitted codeword from a \ac{map} decoder is given by
 \begin{align}
 \widehat{\x}&=\argmax_{\x_i}\pdf_{X\mid Y}\left(\x_i,\mathbf{y}\right) \nonumber\\
@@ -183,7 +183,7 @@ A channel decoder attempts to find the transmitted codeword $\x$ from the receiv
 where $\x_i$ is a codeword from the set of all codewords, $\mathbf{y}$ is the received word, $Y$ and $X$ are random variables representing received word and transmitted codeword respectively. For equiprobable codewords $\x_i$, a \ac{map} decoder is equivalent to a \ac{ml} decoder.
 
 Due to the high complexity of \ac{map} decoders, \ac{ldpc} codes are usually decoded using iterative \acfp{mpa}.
-\subsubsection{Belief Propagation}
+\subsection{Belief Propagation}
 The \ac{mpa} uses the \ac{bp} technique~\cite{Hagenauer1996} to compute the \emph{a-posteriori} probability of the bits in the transmitted codeword given the received word in an iterative fashion. The idea behind belief propagation is exchanging uncertainties between the bits which are connected as defined by the encoder or \ac{pcm}. Refer to Section~\ref{sec:enc_design} to see how different bits in the codeword are dependent on each other. The algorithm uses \acp{llr} instead of \acp{app} for numerical stability. The \ac{llr} values given by the channel for the received bits are
 \begin{align}\mathcal{L}(y_i)=\log\frac{\prob\left(x_i=1\mid\mathbf{y}\right)}{\prob\left(x_i=0\mid\mathbf{y}\right)}\end{align}
 where $i=0,\dots,n-1$ is the index of bits in the codeword.
@@ -249,7 +249,7 @@ With serial scheduling, the order of \ac{cn} processing can be varied to get var
 
 In our implementation, we use an improved \ac{msa} as proposed in~\cite{Jones2003} which is a combination of (\ref{eq:c2v}) and (\ref{eq:msa}). We do serial scheduling with layer updates starting from top to bottom. We also do a bottom to top layer update which is discussed in Chapter~\ref{ch:dec_improve}.
 
-\subsubsection{Pipeline vs Window Decoding}\label{sec:back_wd}
+\subsection{Pipeline vs Window Decoding}\label{sec:back_wd}
 A decoding technique that was proved to be efficient for \acp{ldpccc} is the \emph{pipeline decoding} introduced in~\cite{Felstrom1999}. The pipeline decoder employs $I$ parallel processing units which is equal to the maximum number of iterations performed in a conventional \ac{bp} decoder. Each processing unit covers $l_c=(m_s+1)n$ \acp{vn}, so that during a single decoding iteration the messages are passed to \acp{vn} within the processing unit. Hence, the whole decoding unit covers a total of $Il_c$ \acp{vn}. In each time instance, $n$ \acp{vn} and $n-k$ \acp{vn} enter the right most processor and $n$ estimated \acp{vn} leave from the left processor. At every time instance, each processor updates the last \ac{cn} inside the processing unit. Hence, at the end of $I$ time instances, all \acp{cn} are processed $I$ times. Figure~\ref{fig:pipeline} illustrates pipeline decoding for a $R_\infty=1/2$ code with $m_s=3$ and $I=3$. The codeword is indicated by the rectangular bar above the \ac{pcm}. The red windows are the three processing units. The green (backhatched) part of the codeword indicates the estimated \acp{vn} and the blue (hatched) part indicates the next available estimated \acp{vn}. The brown (vertically hatched) and red (horizontally hatched) regions indicate the \acp{vn} that are processed currently and \acp{vn} that are not yet processed, respectively. The arrows indicate the \acp{cn} that are processed at the current time instance.
 
 The latency in seconds per bit of a pipeline decoder is given by
@@ -295,7 +295,7 @@ The main benefit of window decoding is that the memory requirements are reduced 
 
 In this thesis, we choose window decoding over pipeline decoding because implementing parallel processing units in software is infeasible. Although window decoder has higher latency, we take the advantage of easy implementation.
 
-\subsection{System Model}\label{sec:sys_mod}
+\section{System Model}\label{sec:sys_mod}
 In this thesis, we consider a digital baseband system model for simulations as shown in Figure \ref{fig:system}. The information bits are generated using a random-number generator with uniform distribution. The sequence of bits $\m$ of the generated random bit is encoded using the \emph{BPL Codes Encoder} block. The details of this block are discussed in Chapter~\ref{ch:encode}. The \emph{\ac{qam} Modulator} block receives the codewords $\x\in\mathbb{F}_2^{Ln\times 1}$ from the encoder and maps them to complex-valued symbols depending on the chosen modulation scheme. The output of the modulator is a vector of symbols given by $\mathbf{u}\in\mathbb{C}^{\frac{Ln}{o}\times 1}$ where $o$ is the order of modulation and lets assume that $Ln=go, g\in\mathbb{Z}_+$. Figure~\ref{fig:qpsk} shows a \ac{qpsk} symbol constellation. It is seen that the adjacent symbols differ by only one bit. This is called \emph{Gray Mapping}~\cite{proak}. In all our simulations we use \ac{qpsk} with gray mapping and no interleaving. Hence, $\mathbf{u}_i,i=0,\dots,\frac{Ln}{o}-1\in\{e^{j\frac{\pi}{4}},e^{j\frac{3\pi}{4}},e^{-j\frac{3\pi}{4}},e^{-j\frac{\pi}{4}}\}$.
 \begin{figure}[htbp]
   \centering

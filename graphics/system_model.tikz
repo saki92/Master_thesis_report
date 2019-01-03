@@ -25,7 +25,7 @@
   \draw [->] (channel) -- node [] {$\mathbf{v}$} (demod);
   \draw [->] (demod) -- node [] {$\mathbf{y}$} (decoder);
   \draw [->] (decoder) -- node [] {$\widehat{\mathbf{m}}$} (sink);
-  \draw [->] (noise) -- node [above] {$\mathbf{n}$} (channel);
+  \draw [->] (noise) -- node [above] {$\mathbf{z}$} (channel);
   \draw ($(source)!0.5!(encoder)$) -- (take);
   \draw [->] (take) -| (sink.north);
 

@@ -1,7 +1,7 @@
-\section{Encoding of the \acl{bpl} Codes}\label{ch:encode}
-In this section, we discuss how the encoder for \ac{bpl} codes is designed and how the termination is handled. In some places of this section, we use examples of \acp{ldpccc} with small $L$ and $m_s$ as the \ac{bpl} codes are too large to be represented on paper.
+\chapter{Encoding of the \acl{bpl} Codes}\label{ch:encode}
+In this chapter, we discuss how the encoder for \ac{bpl} codes is designed and how the termination is handled. In some places of this section, we use examples of \acp{ldpccc} with small $L$ and $m_s$ as the \ac{bpl} codes are too large to be represented on paper.
 
-\subsection{Encoder Design}\label{sec:enc_design}
+\section{Encoder Design}\label{sec:enc_design}
 Encoding algorithms are simpler than decoding algorithms because there exists no uncertainty in the output bits of an encoder. The encoder only generates the parity bits from the information bits and previously generated parity bits. From Section~\ref{sec:bpl_bg}, the parity-check equation of \ac{bpl} codes is given by
 \begin{align}\label{eq:parity_check}
 \sum_{i=0}^{m_s}\mathbf{h}_{M,i}\m(t-i)+\sum_{i=0}^{m_s}h_{B,i}b(t-i) \mod 2.
@@ -51,7 +51,7 @@ The encoding of \ac{bpl} codes is done by generating parity bits as per equation
   \item The termination sequence is appended to the output buffer of the encoder and is discussed in Section~\ref{sec:bpl_termi} in detail.
 \end{enumerate}
 
-\subsection{Termination Sequence}\label{sec:bpl_termi}
+\section{Termination Sequence}\label{sec:bpl_termi}
 The objective of terminating any \ac{ldpccc} is to have a finite codeword length. Termination essentially means truncating the \ac{pcm} to have a finite number of rows and columns. Truncating the \ac{pcm} leads to a condition where there are not enough bits in the end of the codeword to fulfill the last $m_s$ parity-check equations of the \ac{pcm}. To satisfy the last $m_s$ parity-check equations, an appropriate termination sequence $\mathbf{a}$ must be appended to the codeword. This is illustrated in Figure~\ref{fig:term_req} with a \ac{pcm} that has a structure similar to (\ref{eq:bpl_pcm}).
 
 Since \ac{bpl} codes are recursive codes, feeding zero-bits into the encoder after the information bits will not reset the states of the encoder i.e., the output of the encoder will never be all-zeros. Hence, to find a proper termination sequence that brings the encoder to all-zero state, one must solve a system of linear equations.

@@ -1,0 +1,70 @@
+% This file was created by matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\fwidth,
+height=\fheight,
+at={(0\fwidth,0\fheight)},
+scale only axis,
+xmin=2,
+xmax=5,
+xlabel={$\zeta$ (dB)},
+ymode=log,
+ymin=1e-08,
+ymax=0.1,
+ylabel={$P$},
+axis background/.style={fill=white},
+xmajorgrids,
+xminorgrids,
+ymajorgrids,
+yminorgrids,
+legend style={legend cell align=left, align=left, legend plot pos=left, draw=black}
+]
+\addplot [color=mycolor1, mark=x, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+2	0.0617032\\
+2.2	0.05360644\\
+2.4	0.04478501\\
+2.6	0.03504962\\
+2.8	0.02343574\\
+3	0.0110643\\
+3.2	0.003355694\\
+3.4	0.0005993891\\
+3.6	0.0001032268\\
+3.8	2.114662e-05\\
+4	5.521617e-06\\
+4.2	7.83208e-07\\
+4.4	3.524436e-07\\
+4.6	1.174812e-07\\
+4.8	7.83208e-08\\
+5	0\\
+};
+\addlegendentry{LRL Config-\rom{1}}
+
+\addplot [color=mycolor2, mark=o, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+2	0.06161964\\
+2.2	0.05348402\\
+2.4	0.04455612\\
+2.6	0.03472811\\
+2.8	0.02310671\\
+3	0.01087594\\
+3.2	0.003271577\\
+3.4	0.0005891291\\
+3.6	9.363252e-05\\
+3.8	2.608083e-05\\
+4	5.560777e-06\\
+4.2	1.370614e-06\\
+4.4	4.307644e-07\\
+4.6	1.174812e-07\\
+4.8	7.83208e-08\\
+5	0\\
+};
+\addlegendentry{LRL Config-\rom{2}}
+
+\end{axis}
+\end{tikzpicture}%

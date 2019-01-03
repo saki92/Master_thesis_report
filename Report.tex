@@ -1,6 +1,6 @@
-\documentclass[11pt,article,type=msc,colorback,accentcolor=tud1b,twoside,openright]{tudthesis}
+\documentclass[11pt,type=msc,colorback,accentcolor=tud1b,bigchapter,firstlineindent,longdoc,bibliography=totoc,listof=totoc]{tudthesis}
 %\usepackage{ngerman}
-\usepackage[nolist,nohyperlinks]{acronym}
+\usepackage{acronym}
 \usepackage[english]{babel}
 %\usepackage{amsfonts}
 \usepackage{hyperref}
@@ -69,26 +69,23 @@
 	\makethesistitle
 	%\colorlet{tudidentbar}{tud0b} 
 	\affidavit{Sakthivel Velumani}
+  \newpage
   \include{acknowledgment}
-  \onehalfspacing
+  %\onehalfspacing
+  \input{abstract}
 	\tableofcontents
-	\cleardoublepage
-	\input{acronyms}
+	\newpage
+  \listoffigures
+  \newpage
+  \listoftables
+  \input{acronyms}
   \pagenumbering{arabic}
-	\input{abstract}
-	\cleardoublepage
 	\input{introduction}
-  \cleardoublepage
   \input{background}
-  \cleardoublepage
-  \input{encoding}
-  \cleardoublepage
-  \input{decoding_improve}
-  \cleardoublepage
-  \input{simulation}
-  \cleardoublepage
-  \input{implementation}
-  \cleardoublepage
+%  \input{encoding}
+%  \input{decoding_improve}
+%  \input{simulation}
+%  \input{implementation}
   \bibliographystyle{IEEEtran}
   \bibliography{IEEEabrv,references}
 \end{document}

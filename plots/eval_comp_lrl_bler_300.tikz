@@ -12,11 +12,11 @@ at={(0\fwidth,0\fheight)},
 scale only axis,
 xmin=2,
 xmax=5,
-xlabel={$\zeta$(dB)},
+xlabel={$\zeta$ (dB)},
 ymode=log,
-ymin=1000000,
-ymax=100000000,
-ylabel={$\eta$},
+ymin=0.0001,
+ymax=1,
+ylabel={$P_l$},
 axis background/.style={fill=white},
 xmajorgrids,
 xminorgrids,
@@ -26,45 +26,45 @@ legend style={legend cell align=left, align=left, legend plot pos=left, draw=bla
 ]
 \addplot [color=mycolor1, mark=x, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
-2	47538370\\
-2.2	47107480\\
-2.4	46481800\\
-2.6	45490910\\
-2.8	43773900\\
-3	40825750\\
-3.2	35307280\\
-3.4	26515610\\
-3.6	16509200\\
-3.8	9993701\\
-4	6779968\\
-4.2	5558768\\
-4.4	5137799\\
-4.6	4981275\\
-4.8	4910149\\
-5	4880638\\
+2	1\\
+2.2	1\\
+2.4	1\\
+2.6	0.999\\
+2.8	0.975\\
+3	0.775\\
+3.2	0.3905\\
+3.4	0.10175\\
+3.6	0.0195\\
+3.8	0.00425\\
+4	0.001\\
+4.2	0.00025\\
+4.4	0\\
+4.6	0\\
+4.8	0\\
+5	0\\
 };
-\addlegendentry{Checking complete CNs}
+\addlegendentry{LRL Config-\rom{1}}
 
 \addplot [color=mycolor2, mark=o, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
-2	48525070\\
-2.2	48484250\\
-2.4	48383350\\
-2.6	48146140\\
-2.8	47619370\\
-3	46642030\\
-3.2	44848720\\
-3.4	41648310\\
-3.6	36085420\\
-3.8	29288100\\
-4	22510720\\
-4.2	17418580\\
-4.4	13762270\\
-4.6	11137390\\
-4.8	9357525\\
-5	8101157\\
+2	1\\
+2.2	1\\
+2.4	1\\
+2.6	0.999\\
+2.8	0.97475\\
+3	0.7755\\
+3.2	0.387\\
+3.4	0.10325\\
+3.6	0.02175\\
+3.8	0.0045\\
+4	0.00075\\
+4.2	0.00025\\
+4.4	0.00025\\
+4.6	0\\
+4.8	0\\
+5	0\\
 };
-\addlegendentry{Checking target CNs}
+\addlegendentry{LRL Config-\rom{2}}
 
 \end{axis}
 \end{tikzpicture}%
