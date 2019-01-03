@@ -6,14 +6,14 @@
   \item setIdxVar on the fly vs once
 \end{itemize}
 In this chapter, we will discuss how the encoder and decoder are implemented. We start with describing the encoder's implementation and reasoning the chosen method. Then we discuss about the implementation of the decoder and the implications of different implementations on the performance.
-\section{\aclp{vn}' Memory Format}
-The \acp{vn} or the bits in the codeword can be stored in two different ways:
+\section{\acrfull{vn}' Memory Format}
+The \glspl{vn} or the bits in the codeword can be stored in two different ways:
 \begin{enumerate}
-  \item Byte for a bit: Each byte of memory contains eight bits out of which the \ac{lsb} represents one \ac{vn}. An example of such a storage scheme is shown below.
+  \item Byte for a bit: Each byte of memory contains eight bits out of which the \gls{lsb} represents one \gls{vn}. An example of such a storage scheme is shown below.
   \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth, height=\textwidth]{graphics/bit_byte}
-    \caption{Three bits of value 0, 1 and 1 are stored in single byte each. The arrow indicates the position of \ac{lsb} where the bit is stored in each byte. The bits marked with x are unused.}
+    \caption{Three bits of value 0, 1 and 1 are stored in single byte each. The arrow indicates the position of \gls{lsb} where the bit is stored in each byte. The bits marked with x are unused.}
   \end{figure}
   This form of storage allows us to directly access and use each bit as \texttt{uint8}.
   \begin{figure}[htbp]
@@ -21,7 +21,7 @@ The \acp{vn} or the bits in the codeword can be stored in two different ways:
     \includegraphics[width=\textwidth, height=\textwidth]{graphics/bit_byte_sp}
     \caption{Direct access and use of bits.}
   \end{figure}
-  \item Packed byte of bits: Each byte of memory contains eight bits representing eight \acp{vn}. An example of such storage is shown below.
+  \item Packed byte of bits: Each byte of memory contains eight bits representing eight \glspl{vn}. An example of such storage is shown below.
   \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth, height=\textwidth]{graphics/packed_bits}
@@ -37,5 +37,5 @@ The \acp{vn} or the bits in the codeword can be stored in two different ways:
 \end{enumerate}
 In our implementations, we use packed byte of bits format. This format reduces the memory requirements for storing information and codeword bits by a factor of eight.
 
-\section{\aclp{vn} Indexing}
-The \ac{llr} values of \acp{vn} are stored in an array of memory where each element is a 32-bit floating point value. During the belief propagation, these values are accessed and used in the \ac{v2c} message computation. For each layer update, only specific \ac{llr} values from the array are used. This is done by computing and storing the absolute indices 
+\section{\acrfull{vn} Indexing}
+The \gls{llr} values of \glspl{vn} are stored in an array of memory where each element is a 32-bit floating point value. During the belief propagation, these values are accessed and used in the \gls{v2c} message computation. For each layer update, only specific \gls{llr} values from the array are used. This is done by computing and storing the absolute indices 

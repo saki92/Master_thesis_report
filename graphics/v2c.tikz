@@ -5,8 +5,8 @@
 \node at (4,0) (c2) {$c_2$};
 \node at (4,-2) (cL) {$c_{n_c}$};
 
-\draw[->] (llr) -- node[] {$L(y_i)$} (vn.west);
-\draw[->] (vn) -- node[] {$L^{\text{vc}}_{ij_1}$} (c1);
-\draw[->] (c2) -- node[] {$L^{\text{cv}}_{j_2i}$} (vn);
-\draw[->] (cL) -- node[] {$L^{\text{cv}}_{j_{n_c}i}$} (vn);
+\draw[->] (llr) -- node[] {$\mathcal{L}(y_i)$} (vn.west);
+\draw[->] (vn) -- node[] {$\mathcal{L}^{\text{vc}}_{ij_1}$} (c1);
+\draw[->] (c2) -- node[] {$\mathcal{L}^{\text{cv}}_{j_2i}$} (vn);
+\draw[->] (cL) -- node[] {$\mathcal{L}^{\text{cv}}_{j_{n_c}i}$} (vn);
 \end{tikzpicture}

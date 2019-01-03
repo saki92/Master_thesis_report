@@ -29,6 +29,6 @@
   \draw [->] (demod) -- node [above] {$\mathbf{y}$} (decoder);
   \draw [->] (decoder) -- node [above] {$\widehat{\mathbf{m}}$} (sdecoder);
   \draw [->] (sdecoder) -- node [above] {$\widehat{\mathbf{d}}$} (dest);
-  \draw [->] (noise) -- node [above] {$\mathbf{n}$} (channel);
+  \draw [->] (noise) -- node [above] {$\mathbf{z}$} (channel);
 
 \end{tikzpicture}

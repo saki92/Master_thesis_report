@@ -1,47 +1,91 @@
-\chapter*{Acronyms}
-\begin{acronym}[LDPC-CC]
-  \acro{fec}[FEC]{Forward Error Correction}
-  \acro{ldpc}[LDPC]{Low-Density Parity-Check}
-  \acro{ldpcbc}[LDPC-BC]{Low-Density Parity-Check Block Code}
-  \acro{ldpccc}[LDPC-CC]{Low-Density Parity-Check Convolutional Code}
-  \acro{scldpc}[SC-LDPC]{Spatially-Coupled LDPC}
-  \acro{pcm}[PCM]{Parity Check Matrix}
-  \acro{cn}[CN]{Check Node}
-  \acro{vn}[VN]{Variable Node}
-  \acro{bp}[BP]{Belief-Propagation}
-  \acro{cb}[CB]{Code Block}
-  \acro{bpl}[BPL]{Broadband Power Line}
-  \acro{bc}[BC]{Block Code}
-  \acro{gm}[GM]{Generator Matrix}
-  \acro{cw}[CW]{codeword}
-  \acro{awgn}[AWGN]{Additive White Gaussian Noise}
-  \acro{snr}[SNR]{Signal-to-Noise Ratio}
-  \acro{phy}[PHY]{physical}
-  \acro{map}[MAP]{Maximum a posteriori}
-  \acro{ml}[ML]{Maximum-Likelihood}
-  \acro{map}[MAP]{Maximum-A-Posteriore}
-  \acro{mpa}[MPA]{Message-Passing Algorithm}
-  \acro{spa}[SPA]{sum-product algorithm}
-  \acro{llr}[LLR]{Log-likelihood ratio}
-  \acro{v2c}[V2C]{variable-node-to-check-node}
-  \acro{c2v}[C2V]{check-node-to-variable-node}
-  \acro{msa}[MSA]{Min-Sum Algorithm}
-  \acro{wd}[WD]{Windowed Decoding}
-  \acro{qam}[QAM]{Quadrature Amplitude Modulation}
-  \acro{qpsk}[QPSK]{Quadrature Phase Shift Keying}
-  \acro{pdf}[pdf]{probability density function}
-  \acro{ber}[BER]{Bit-Error Rate}
-  \acro{bler}[BLER]{Block-Error Rate}
-  \acro{lsb}[LSB]{Least Significant Bit}
-  \acro{osi}[OSI]{Open System Interconnection}
-  \acro{fir}[FIR]{Finite Impulse Response}
-  \acro{iir}[IIR]{Infinite Impulse Response}
-  \acro{bd}[BD]{Base Decoder}
-  \acro{id}[ID]{Improved Decoder}
-  \acro{psc}[PSC]{Partial-Syndrome-Check}
-  \acro{ipsc}[IPSC]{Improved Partial-Syndrome-Check}
-  \acro{aneu}[ANEU]{Average Number of Edge Updates}
-  \acro{lrl}[LRL]{Left-Right-Left}
-  \acro{app}[APP]{A-Posteriori Probability}
-  \acro{bpsk}[BPSK]{Binary Phase Shift Keying}
-\end{acronym}
+\newglossaryentry{mbm}{name=\ensuremath{\mathbf{m}}, symbol={}, description={Vector of source encoded (information) bits}, type=symbolslist}
+\newglossaryentry{mbd}{name=\ensuremath{\mathbf{d}}, symbol={}, description={Vector of source bits}, type=symbolslist}
+\newglossaryentry{mbx}{name=\ensuremath{\mathbf{x}}, symbol={}, description={Vector of codeword bits}, type=symbolslist}
+\newglossaryentry{mbu}{name=\ensuremath{\mathbf{u}}, symbol={}, description={Vector of modulated symbols}, type=symbolslist}
+\newglossaryentry{mbv}{name=\ensuremath{\mathbf{v}}, symbol={}, description={Vector of received symbols}, type=symbolslist}
+\newglossaryentry{mbz}{name=\ensuremath{\mathbf{z}}, symbol={}, description={Vector of noise samples}, type=symbolslist}
+\newglossaryentry{mby}{name=\ensuremath{\mathbf{y}}, symbol={}, description={Vector of received codeword bits}, type=symbolslist}
+\newglossaryentry{mhbm}{name=\ensuremath{\widehat{\mathbf{m}}}, symbol={}, description={Vector of estimated information bits}, type=symbolslist}
+\newglossaryentry{mhbx}{name=\ensuremath{\widehat{\mathbf{x}}}, symbol={}, description={Vector of estimated codeword bits}, type=symbolslist}
+\newglossaryentry{mhbd}{name=\ensuremath{\widehat{\mathbf{d}}}, symbol={}, description={Vector of estimated source bits}, type=symbolslist}
+\newglossaryentry{mbb}{name=\ensuremath{\mathbf{b}}, symbol={}, description={Vector of parity bits}, type=symbolslist}
+\newglossaryentry{mR}{name=\ensuremath{R}, symbol={}, description={Code Rate}, type=symbolslist}
+\newglossaryentry{mbG}{name=\ensuremath{\mathbf{G}}, symbol={}, description={Generator Matrix}, type=symbolslist}
+\newglossaryentry{mbH}{name=\ensuremath{\mathbf{H}}, symbol={}, description={Parity-Check Matrix}, type=symbolslist}
+\newglossaryentry{mbs}{name=\ensuremath{\mathbf{s}}, symbol={}, description={Syndrome}, type=symbolslist}
+\newglossaryentry{mc}{name=\ensuremath{c_i}, symbol={}, description={$i$-th Check Node}, type=symbolslist}
+\newglossaryentry{mv}{name=\ensuremath{v_i}, symbol={}, description={$i$-th Variable Node}, type=symbolslist}
+\newglossaryentry{mn}{name=\ensuremath{n}, symbol={}, description={Number of bits in a Code Block}, type=symbolslist}
+\newglossaryentry{mk}{name=\ensuremath{k}, symbol={}, description={Number of information bits in a Code Block}, type=symbolslist}
+\newglossaryentry{mq}{name=\ensuremath{q}, symbol={}, description={Variable Node degree}, type=symbolslist}
+\newglossaryentry{mr}{name=\ensuremath{r}, symbol={}, description={Check Node degree}, type=symbolslist}
+\newglossaryentry{mRi}{name=\ensuremath{R_\infty}, symbol={}, description={Asymptotic Code Rate}, type=symbolslist}
+\newglossaryentry{mL}{name=\ensuremath{L}, symbol={}, description={Coupling Length}, type=symbolslist}
+\newglossaryentry{mlc}{name=\ensuremath{l_c}, symbol={}, description={Constraint Length}, type=symbolslist}
+\newglossaryentry{mnz}{name=\ensuremath{n_z}, symbol={}, description={Number of Zero-tail bits in the codeword}, type=symbolslist}
+\newglossaryentry{mnm}{name=\ensuremath{n_m}, symbol={}, description={Number of information bits in the codeword}, type=symbolslist}
+\newglossaryentry{mpdf}{name=\ensuremath{p}, symbol={}, description={\acrlong{pdf}}, type=symbolslist}
+\newglossaryentry{mprob}{name=\ensuremath{P}, symbol={}, description={Actual Probability}, type=symbolslist}
+\newglossaryentry{mllr}{name=\ensuremath{\mathcal{L}}, symbol={}, description={\acrfull{llr}}, type=symbolslist}
+\newglossaryentry{mpsi}{name=\ensuremath{\psi}, symbol={seconds}, description={Time taken to perform one CN Processing}, type=symbolslist}
+\newglossaryentry{mkapa}{name=\ensuremath{\kappa}, symbol={seconds}, description={Latency}, type=symbolslist}
+\newglossaryentry{mrho}{name=\ensuremath{\rho}, symbol={}, description={Window position in a window decoder}, type=symbolslist}
+\newglossaryentry{mms}{name=\ensuremath{m_s}, symbol={}, description={Delay of a convolutional code}, type=symbolslist}
+\newglossaryentry{mW}{name=\ensuremath{W}, symbol={}, description={Window Size}, type=symbolslist}
+\newglossaryentry{mo}{name=\ensuremath{o}, symbol={}, description={Modulation Order}, type=symbolslist}
+\newglossaryentry{mI}{name=\ensuremath{I}, symbol={}, description={Maximum number of iterations allowed within a window}, type=symbolslist}
+\newglossaryentry{msnr}{name=\ensuremath{\zeta}, symbol={}, description={\acrfull{snr} in dB}, type=symbolslist}
+\newglossaryentry{meta}{name=\ensuremath{\eta}, symbol={}, description={\acrfull{aneu}}, type=symbolslist}
+\newglossaryentry{mber}{name=\ensuremath{P_b}, symbol={}, description={Overall \acrfull{ber}}, type=symbolslist}
+\newglossaryentry{mbler}{name=\ensuremath{P_L}, symbol={}, description={\acrfull{bler}}, type=symbolslist}
+
+\newglossaryentry{I0}{name=\ensuremath{\bar I_{\textnormal{0}}}, symbol={kWh/m\ensuremath{^2} per day}, description={Average solar irradiance}, type=symbolslist}
+\newglossaryentry{SC}{name=\ensuremath{SC}, symbol={W/m\ensuremath{^2}}, description={Solar constant}, type=symbolslist}
+\newglossaryentry{n}{name=\ensuremath{n}, symbol={}, description={Day in a year}, type=symbolslist}
+\newglossaryentry{L}{name=\ensuremath{L}, symbol={\ensuremath{^\circ}}, description={Latitude}, type=symbolslist}
+\newglossaryentry{delta}{name=\ensuremath{\delta}, symbol={\ensuremath{^\circ}}, description={Declination of the sun}, type=symbolslist}
+\newglossaryentry{HSR}{name=\ensuremath{H_{\textnormal{SR}}}, symbol={}, description={Hour angle at sunrise (+) and sunset (-)}, type=symbolslist}
+
+\newacronym{fec}{FEC}{Forward Error Correction}
+\newacronym{ldpc}{LDPC}{Low-Density Parity-Check}
+\newacronym{ldpcbc}{LDPC-BC}{Low-Density Parity-Check Block Code}
+\newacronym{ldpccc}{LDPC-CC}{Low-Density Parity-Check Convolutional Code}
+\newacronym{scldpc}{SC-LDPC}{Spatially-Coupled LDPC}
+\newacronym{pcm}{PCM}{Parity Check Matrix}
+\newacronym{cn}{CN}{Check Node}
+\newacronym{vn}{VN}{Variable Node}
+\newacronym{bp}{BP}{Belief-Propagation}
+\newacronym{cb}{CB}{Code Block}
+\newacronym{bpl}{BPL}{Broadband Power Line}
+\newacronym{bc}{BC}{Block Code}
+\newacronym{gm}{GM}{Generator Matrix}
+\newacronym{cw}{CW}{codeword}
+\newacronym{awgn}{AWGN}{Additive White Gaussian Noise}
+\newacronym{snr}{SNR}{Signal-to-Noise Ratio}
+\newacronym{phy}{PHY}{physical}
+\newacronym{ml}{ML}{Maximum-Likelihood}
+\newacronym{map}{MAP}{Maximum-A-Posteriore}
+\newacronym{mpa}{MPA}{Message-Passing Algorithm}
+\newacronym{spa}{SPA}{sum-product algorithm}
+\newacronym{llr}{LLR}{Log-likelihood ratio}
+\newacronym{v2c}{V2C}{variable-node-to-check-node}
+\newacronym{c2v}{C2V}{check-node-to-variable-node}
+\newacronym{msa}{MSA}{Min-Sum Algorithm}
+\newacronym{wd}{WD}{Windowed Decoding}
+\newacronym{qam}{QAM}{Quadrature Amplitude Modulation}
+\newacronym{qpsk}{QPSK}{Quadrature Phase Shift Keying}
+\newacronym{pdf}{pdf}{probability density function}
+\newacronym{ber}{BER}{Bit-Error Rate}
+\newacronym{bler}{BLER}{Block-Error Rate}
+\newacronym{lsb}{LSB}{Least Significant Bit}
+\newacronym{osi}{OSI}{Open System Interconnection}
+\newacronym{fir}{FIR}{Finite Impulse Response}
+\newacronym{iir}{IIR}{Infinite Impulse Response}
+\newacronym{bd}{BD}{Base Decoder}
+\newacronym{id}{ID}{Improved Decoder}
+\newacronym{psc}{PSC}{Partial-Syndrome-Check}
+\newacronym{ipsc}{IPSC}{Improved Partial-Syndrome-Check}
+\newacronym{aneu}{ANEU}{Average Number of Edge Updates}
+\newacronym{lrl}{LRL}{Left-Right-Left}
+\newacronym{app}{APP}{A-Posteriori Probability}
+\newacronym{bpsk}{BPSK}{Binary Phase Shift Keying}

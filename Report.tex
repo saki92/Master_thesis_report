@@ -1,6 +1,5 @@
 \documentclass[11pt,type=msc,colorback,accentcolor=tud1b,bigchapter,firstlineindent,longdoc,bibliography=totoc,listof=totoc]{tudthesis}
 %\usepackage{ngerman}
-\usepackage{acronym}
 \usepackage[english]{babel}
 %\usepackage{amsfonts}
 \usepackage{hyperref}
@@ -21,7 +20,13 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{fit,backgrounds,automata}
 \usepackage[a-1b]{pdfx}
+%\usepackage[bookmarks]{hyperref}
 
+%\usepackage{breakurl}
+\usepackage[acronym,toc,nonumberlist]{glossaries}
+\newglossary[sylg]{symbolslist}{syi}{syo}{Nomenclature}
+\makeglossaries
+\input{acronyms}
 %\tikzexternalize[mode=list and make]{Report}
 %\titleformat{\section}{\normalfont\fontsize{12}{15}\bfseries}{\thesection}{1em}{}
 \newcommand{\getmydate}{%
@@ -43,7 +48,7 @@
 \newcommand{\sdot}{}
 \newcommand{\xs}{0.0001}
 \newcommand*{\pdf}{p}
-\newcommand*{\prob}{\text{Pr}}
+\newcommand*{\prob}{P}
 \newcommand{\mc}{\mathcal{c}}
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator{\arctanh}{atanh}
@@ -78,14 +83,50 @@
   \listoffigures
   \newpage
   \listoftables
-  \input{acronyms}
+  \newpage
+
+\newglossarystyle{mystyle}{%
+  % full stop after every description
+  \renewcommand*{\glspostdescription}{}%
+  % put the glossary in a longtable environment:
+  % left alignment, no white in front und three columns
+  \renewenvironment{theglossary}{\begin{longtable}[l]{@{}lcl}}{\end{longtable}}
+  % have nothing after \begin{theglossary}:
+  \renewcommand*{\glossaryheader}{}%
+  % uncomment following line if you want headings
+  % \renewcommand*{\glossaryheader}{\bfseries Symbol & \bfseries Unit & \bfseries Description \endhead}%
+  % have nothing between glossary groups (next two commands):
+  \renewcommand*{\glsgroupheading}[1]{}%
+  % Suppress the vertical gap at the start of each group
+  \renewcommand*{\glsgroupskip}{}%
+  % set how each entry should appear:
+  \renewcommand*{\glossaryentryfield}[5]{%
+    \glstarget{##1}{##2}	% Name
+    & ##4					        % Symbol
+    & ##3					        % Description
+    % & ##5					      % Page list
+    \\% end of row
+  }%
+  % Sub entries treated the same as level 0 entries:
+  \renewcommand*{\glossarysubentryfield}[6]{%
+    \glossaryentryfield{##2}{##4}{##3}
+  }%
+}
+
+% Print acronyms
+\printglossary[type=acronym, title=Acronyms, toctitle=Acronyms, style=mystyle]
+
+% Print list of symbols
+\printglossary[type=symbolslist, style=mystyle]
+\newpage
+
   \pagenumbering{arabic}
 	\input{introduction}
   \input{background}
-%  \input{encoding}
-%  \input{decoding_improve}
-%  \input{simulation}
-%  \input{implementation}
+  \input{encoding}
+  \input{decoding_improve}
+  \input{simulation}
+  \input{implementation}
   \bibliographystyle{IEEEtran}
   \bibliography{IEEEabrv,references}
 \end{document}

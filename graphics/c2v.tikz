@@ -4,9 +4,9 @@
 \node at (0,2) (v1) {$v_1$};
 \node at (0,-2) (vL) {$v_{n_v}$};
 
-\draw[->] (cn) -- node[above] {$L^{\text{cv}}_{ji_2}$} (v2);
-\draw[->] (v1) -- node[] {$L^{\text{vc}}_{i_1j}$} (cn);
-\draw[->] (vL) -- node[below=2mm] {$L^{\text{vc}}_{i_{n_v}j}$} (cn);
+\draw[->] (cn) -- node[above] {$\mathcal{L}^{\text{cv}}_{ji_2}$} (v2);
+\draw[->] (v1) -- node[] {$\mathcal{L}^{\text{vc}}_{i_1j}$} (cn);
+\draw[->] (vL) -- node[below=2mm] {$\mathcal{L}^{\text{vc}}_{i_{n_v}j}$} (cn);
 \draw (cn.north) -- (cn.south);
 \draw (cn.west) -- (cn.east);
 \end{tikzpicture}
