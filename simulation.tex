@@ -48,7 +48,7 @@ In Chapter~\ref{ch:encode} we concluded that the termination for \gls{bpl} codes
 With all zero-tail terminated \gls{bpl} codes, the zero-tail bits are always knows at the receiver. 
 From Figure~\ref{fig:eval_sat} we can see that when zero-tail bits are know at the receiver, the decoder reduces the $P(i)$ of the information bits and parity bits in the right of the codeword. While, Figure~\ref{fig:eval_no_sat} shows that the lack of knowledge of zero-tail bits at the receiver do not reduce $P(i)$ at the end of the codeword. So, the lack of proper termination does not reduce the $P(i)$ of the bits in the right of the codeword as seen in Figure~\ref{fig:eval_no_sat} but the zero-tail termination reduces the $P(i)$ which is seen in Figure~\ref{fig:eval_sat}. Hence, zero-tail termination is an acceptable alternative to proper termination.
  
-\section{Evaluation of \acrfull{bd}}
+\section{Evaluation of \acrlong{bd}}
 Here, we analyze the performance of our \gls{bd}. First we analyze the performance vs complexity over different window sizes. Figure~\ref{fig:eval_bd_bler} shows the overall \gls{bler} $P_l$ over an \gls{snr} range of $2\leq\zeta\text{ (dB)}\leq 5$ over different window sizes. Figure~\ref{fig:eval_bd_aneu} shows the \gls{aneu} over the same range of \gls{snr}.
 \begin{figure}[htbp]
   \centering
@@ -92,7 +92,7 @@ Figure~\ref{fig:eval_bd_iter_bler_300} and Figure~\ref{fig:eval_bd_iter_aneu_300
   \label{fig:eval_bd_iter_aneu_300}
 \end{figure}
 
-\section{Evaluation of \acrfull{lrl} Decoder}
+\section{Evaluation of \acrlong{lrl} Decoder}
 Now we compare and evaluate the performance of \gls{lrl} decoder configuration-\rom{1} with the \gls{bd}. Figure~\ref{fig:eval_bd_lrl_bler} shows two plots of \gls{bler} for \gls{bd} and \gls{lrl} decoder with window size of $W=300$. Figure~\ref{fig:eval_bd_lrl_aneu} shows two plots of \gls{aneu} for \gls{bd} and \gls{lrl} decoder with window size of $W=300$.
 \begin{figure}[htbp]
   \centering
@@ -150,7 +150,7 @@ Figure~\ref{fig:eval_comp_lrl_bler_300} and Figure~\ref{fig:eval_comp_lrl_aneu_3
   \label{fig:eval_comp_lrl_aneu_300}
 \end{figure}
 
-\section{Evaluation of \acrfull{ipsc} Technique}
+\section{Evaluation of \acrlong{ipsc} Technique}
 Here, we evaluate the performance of our \gls{ipsc} technique. Figure~\ref{fig:eval_ipsc_bler_300} and Figure~\ref{fig:eval_ipsc_aneu_300} compares the performance and complexity between the \gls{bd} with different early-success criteria with $W=300$. Similarly, Figure~\ref{fig:eval_ipsc_bler_600} and Figure~\ref{fig:eval_ipsc_aneu_600} compares for $W=600$.
 \begin{figure}[htbp]
   \centering

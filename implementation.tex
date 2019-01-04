@@ -1,41 +1,115 @@
 \chapter{Implementation Aspects}
-\begin{itemize}
-  \item Compact packed bits vs uint8 bits
-  \item Encoder output buffer format
-  \item In decoder, different approximations and its performance vs complexity
-  \item setIdxVar on the fly vs once
-\end{itemize}
-In this chapter, we will discuss how the encoder and decoder are implemented. We start with describing the encoder's implementation and reasoning the chosen method. Then we discuss about the implementation of the decoder and the implications of different implementations on the performance.
-\section{\acrfull{vn}' Memory Format}
+In this chapter, we will discuss how the encoder and decoder are implemented. We start with describing the encoder's implementation and reasons for the chosen method. Then we discuss about the implementation of the decoder and the implications of different implementations on the execution complexity.
+\section{\acrlong{vn} Storage Memory Format}
 The \glspl{vn} or the bits in the codeword can be stored in two different ways:
 \begin{enumerate}
-  \item Byte for a bit: Each byte of memory contains eight bits out of which the \gls{lsb} represents one \gls{vn}. An example of such a storage scheme is shown below.
+  \item Byte for a bit: Each byte of memory contains eight bits out of which the \gls{lsb} represents one \gls{vn}. An example of such a storage scheme is shown in Figure~\ref{fig:bit_byte}.
   \begin{figure}[htbp]
     \centering
+    \tikzsetnextfilename{bit_byte}
     \includegraphics[width=\textwidth, height=\textwidth]{graphics/bit_byte}
-    \caption{Three bits of value 0, 1 and 1 are stored in single byte each. The arrow indicates the position of \gls{lsb} where the bit is stored in each byte. The bits marked with x are unused.}
+    \caption{Three bits of value 0, 1 and 1 are stored in single byte each. The arrow indicates the position of \gls{lsb} where the bit is stored in each byte. The bits marked with x are unused. Note that the bytes are represented in little-endian format.}
+    \label{fig:bit_byte}
   \end{figure}
-  This form of storage allows us to directly access and use each bit as \texttt{uint8}.
+  This form of storage allows us to directly access each bit as \texttt{uint8} and use them to perform signal processing as shown in Figure~\ref{fig:bit_byte_sp}.
   \begin{figure}[htbp]
     \centering
+    \tikzsetnextfilename{bit_byte_sp}
     \includegraphics[width=\textwidth, height=\textwidth]{graphics/bit_byte_sp}
     \caption{Direct access and use of bits.}
+    \label{fig:bit_byte_sp}
   \end{figure}
-  \item Packed byte of bits: Each byte of memory contains eight bits representing eight \glspl{vn}. An example of such storage is shown below.
+  \item Packed byte of bits: Each byte of memory contains eight bits representing eight \glspl{vn}. An example of such storage is shown in Figure~\ref{fig:packed_bits}.
   \begin{figure}[htbp]
     \centering
+    \tikzsetnextfilename{packed_bits}
     \includegraphics[width=\textwidth, height=\textwidth]{graphics/packed_bits}
     \caption{Packed bits of bytes.}
+    \label{fig:packed_bits}
   \end{figure}
   With this form of storage, additional functions are required to access and store each bit from and to its corresponding position because the minimum quantity of bits that can be accessed from the memory at once is a byte or \texttt{char} or \texttt{uint8}. This is shown in figure~\ref{fig:packed_spb}.
   \begin{figure}[htbp]
     \centering
+    \tikzsetnextfilename{packed_bits_sp}
     \includegraphics[width=\textwidth, height=\textwidth]{graphics/packed_bits_sp}
     \caption{Access and use of bits using helper functions.}
     \label{fig:packed_spb}
   \end{figure}
 \end{enumerate}
-In our implementations, we use packed byte of bits format. This format reduces the memory requirements for storing information and codeword bits by a factor of eight.
+In our implementations, we use packed byte of bits format. This format reduces the memory requirements for storing information and codeword bits by a factor of eight. Table~\ref{tab:mem_req} shows the memory required to store 5000 \glspl{vn}.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|l|l|}
+    \hline
+    \textbf{Storage Format} &\textbf{Memory Required (Bytes)}\\
+    \hline
+    \hline
+    Byte for a bit &5000\\
+    \hline
+    Packed byte of bits &625\\
+    \hline
+  \end{tabular}
+  \caption{Memory required to store 5000 \glspl{vn}}
+  \label{tab:mem_req}
+\end{table}
 
-\section{\acrfull{vn} Indexing}
-The \gls{llr} values of \glspl{vn} are stored in an array of memory where each element is a 32-bit floating point value. During the belief propagation, these values are accessed and used in the \gls{v2c} message computation. For each layer update, only specific \gls{llr} values from the array are used. This is done by computing and storing the absolute indices 
+However, the gain in minimum memory requirement comes with a cost of increased execution complexity. The \emph{Load Bit} blocks performs memory-read and bit-shift operations. The \emph{Store Bit} block performs some arithmetic and logical operations along with memory-read and write operations. Table~\ref{tab:load_store} shows the operations performed in each call of \emph{Load Bit} and \emph{Store Bit}. Note that this is just one way of implementing the functions.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|l|}
+    \hline
+    \textbf{Function called} &\textbf{Reads} &\textbf{Writes} &\textbf{Bit Shift} &\textbf{Arithmetic} &\textbf{Logical}\\
+    \hline
+    \hline
+    Load Bit &1 &0 &2 &0 &0\\
+    \hline
+    Store Bit &1 &1 &1 &1 &2\\
+    \hline
+  \end{tabular}
+  \caption{Number of different operations performed during each call of \emph{Load Bit} and \emph{Store Bit}.}
+  \label{tab:load_store}
+\end{table}
+
+The Table~\ref{tab:summ_mem_req} compares the memory requirement and operations required to encode a codeword with 5000 information bits with $R_\infty=1/2$.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|l|l|}
+    \hline
+    \textbf{Storage Format} &\textbf{Memory Required (Bytes)} &\textbf{Reads} &\textbf{Writes} &\textbf{Bit Shift} &\textbf{Arithmetic} &\textbf{Logical}\\
+    \hline
+    \hline
+    Byte for a bit &15,000 &5,000 &10,000 &0 &0 &0\\
+    \hline
+    Packed byte of bits &1,875 &15,000 &10,000 &30,000 &10,000 &20,000\\
+    \hline
+  \end{tabular}
+  \caption{Memory requirement and operations required to encode a codeword with $5000$ information bits with $R_\infty=1/2$.}
+  \label{tab:summ_mem_req}
+\end{table}
+
+Although the execution complexity of using \emph{Packed byte of bits} format is high compared to the other format, it is very negligible compared to the overall decoding complexity. Hence, the \emph{Packed byte of bits} format is chosen to reduce the memory requirement.
+
+\section{\acrlong{vn} Indexing}
+The \gls{llr} values of \glspl{vn} are stored in an array of memory where each element is a 32-bit floating point value. During each \gls{cn} update, the \gls{bp} algorithm selects the corresponding \gls{vn}'s \gls{llr} to perform the updates. This selection of \glspl{vn} is done via indexing. There are two ways to perform the selection:
+\begin{enumerate}
+  \item \emph{Method 1}: During each \gls{cn} update, compute the indices of the corresponding \glspl{vn} so that the \gls{bp} algorithm selects them.
+  \item \emph{Method 2}: Before start of decode, compute and sore the indices of \glspl{vn} for all \glspl{cn} in the whole \gls{pcm}.
+\end{enumerate}
+
+The method 1 computes the indices on the fly during each \gls{cn} update. So, the complexity of calculating the indices increases linearly with $I$ and $Ln$. While, when the method 2 is used there is no increase in index computation complexity with increasing $I$ or $Ln$. But the memory required to store the indices of all \glspl{cn} increases linearly with number of \glspl{cn}. Table~\ref{tab:idx_com} shows the memory and computation requirements for indices calculation in method 1 and method 2.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{Method} &\textbf{Memory Required (Bytes)} &\textbf{\gls{cn} Index Calculations}\\
+    \hline
+    \hline
+    Method 1 &$3nm_s$ &No. of \gls{cn} $\times I=12,500$\\
+    \hline
+    Method 2 &$3nm_sI$ &No. of \gls{cn} = 2500\\
+    \hline
+  \end{tabular}
+  \caption{Memory requirement and computations required to calculate and store indices for decoding a codeword with $5000$ information bits with $R_\infty=1/2$ and maximum window size $W=2500$.}
+  \label{tab:idx_com}
+\end{table}
+ 

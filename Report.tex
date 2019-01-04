@@ -60,23 +60,23 @@
 \include{settings_tikz}
 \newcommand*{\rom}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
 \begin{document}
-  \pagenumbering{roman}
 	\colorlet{tudidentbar}{tud1b} 
 	\thesistitle{Design and Implementation of Improved Decoding Algorithms for LDPC Convolutional Codes}%
 	{Entwurf und Implementierung von verbesserten Decodieralgorithmen f{\"u}r LDPC-Faltungscodes }
 	\author{Sakthivel Velumani}
 	\birthplace{Salem, India}
-	\referee{Prof. Dr. techn. Heinz Koeppl}{Bastian Alt}[Janik Frenzel]
+	\referee{M.Sc. Janik Frenzel}{M.Sc. Bastian Alt}[Prof. Dr. techn. Heinz Koeppl]
 	\department{Fachbereich Elektrotechnik und Informationstechnik}
 	\group{Bioinspired Communication Systems Lab}
 	\date{\today}
 	\dateofexam{14.01.2019}{14.01.2019}
 	\tuprints{82349}{8234}
 	\makethesistitle
+  \pagenumbering{Roman}
 	%\colorlet{tudidentbar}{tud0b} 
 	\affidavit{Sakthivel Velumani}
   \newpage
-  \include{acknowledgment}
+  \input{acknowledgment}
   %\onehalfspacing
   \input{abstract}
 	\tableofcontents
@@ -86,41 +86,32 @@
   \listoftables
   \newpage
 
-\newglossarystyle{mystyle}{%
-  % full stop after every description
-  \renewcommand*{\glspostdescription}{}%
-  % put the glossary in a longtable environment:
-  % left alignment, no white in front und three columns
-  \renewenvironment{theglossary}{\begin{longtable}[l]{@{}lcl}}{\end{longtable}}
-  % have nothing after \begin{theglossary}:
-  \renewcommand*{\glossaryheader}{}%
-  % uncomment following line if you want headings
-  % \renewcommand*{\glossaryheader}{\bfseries Symbol & \bfseries Unit & \bfseries Description \endhead}%
-  % have nothing between glossary groups (next two commands):
-  \renewcommand*{\glsgroupheading}[1]{}%
-  % Suppress the vertical gap at the start of each group
-  \renewcommand*{\glsgroupskip}{}%
-  % set how each entry should appear:
-  \renewcommand*{\glossaryentryfield}[5]{%
-    \glstarget{##1}{##2}	% Name
-    & ##4					        % Symbol
-    & ##3					        % Description
-    % & ##5					      % Page list
-    \\% end of row
-  }%
-  % Sub entries treated the same as level 0 entries:
-  \renewcommand*{\glossarysubentryfield}[6]{%
-    \glossaryentryfield{##2}{##4}{##3}
-  }%
-}
+  \newglossarystyle{mystyle}{%
+    \renewcommand*{\glspostdescription}{}%
+    \renewenvironment{theglossary}{\begin{longtable}[l]{@{}lcl}}{\end{longtable}}
+    \renewcommand*{\glossaryheader}{}%
+    \renewcommand*{\glsgroupheading}[1]{}%
+    \renewcommand*{\glsgroupskip}{}%
+    \renewcommand*{\glossaryentryfield}[5]{%
+      \glstarget{##1}{##2}	% Name
+      & ##4					        % Symbol
+      & ##3					        % Description
+      % & ##5					      % Page list
+      \\% end of row
+    }%
+    \renewcommand*{\glossarysubentryfield}[6]{%
+      \glossaryentryfield{##2}{##4}{##3}
+    }%
+  }
 
-% Print acronyms
-\printglossary[type=acronym, title=Acronyms, toctitle=Acronyms, style=mystyle]
-
-% Print list of symbols
-\printglossary[type=symbolslist, style=mystyle]
-\newpage
-
+  % Print acronyms
+  \printglossary[type=acronym, title=Acronyms, toctitle=Acronyms, style=mystyle]
+  % Print list of symbols
+  \printglossary[type=symbolslist, style=mystyle]
+  \newpage
+  % Save current value of roman page number
+  \newcounter{romanpagenumbers}
+  \setcounter{romanpagenumbers}{\value{page}}
   \pagenumbering{arabic}
 	\input{introduction}
   \input{background}
@@ -128,6 +119,10 @@
   \input{decoding_improve}
   \input{simulation}
   \input{implementation}
+  \input{conclusion}
+  \newpage
+  \pagenumbering{Roman}
+  \setcounter{page}{\value{romanpagenumbers}}
   \bibliographystyle{IEEEtran}
   \bibliography{IEEEabrv,references}
 \end{document}
