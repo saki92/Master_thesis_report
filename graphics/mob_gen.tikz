@@ -13,5 +13,5 @@
   \node [align=center,text width=2cm] at (6,-4.3) {3G\\1998\\Convolutional Codes,\\Turbo Codes};
   \node [align=center,text width=2cm] at (9,-3.8) {4G\\2008\\Turbo Codes};
   \node [align=center,text width=2cm] at (12,-4) {5G\\2018\\LDPC-BCs,\\Polar Codes};
-  \node [align=center,text width=2cm] at (15,-3.8) {6G\\???\\LDPC-CCs?};
+  \node [align=center,text width=2cm] at (15,-3.8) {6G?\\?\\LDPC-CCs?};
 \end{tikzpicture}

@@ -96,20 +96,20 @@ The \gls{llr} values of \glspl{vn} are stored in an array of memory where each e
   \item \emph{Method 2}: Before start of decode, compute and sore the indices of \glspl{vn} for all \glspl{cn} in the whole \gls{pcm}.
 \end{enumerate}
 
-The method 1 computes the indices on the fly during each \gls{cn} update. So, the complexity of calculating the indices increases linearly with $I$ and $Ln$. While, when the method 2 is used there is no increase in index computation complexity with increasing $I$ or $Ln$. But the memory required to store the indices of all \glspl{cn} increases linearly with number of \glspl{cn}. Table~\ref{tab:idx_com} shows the memory and computation requirements for indices calculation in method 1 and method 2.
+The method 1 computes the indices on the fly during each \gls{cn} update. So, the complexity of calculating the indices increases linearly with $I$ and $Ln$. While, when the method 2 is used there is no increase in index computation complexity with increasing $I$ or $Ln$. But the memory required to store the indices of all \glspl{cn} increases linearly with number of \glspl{cn}. Each index is stored in a \texttt{uint32} Table~\ref{tab:idx_com} shows the memory and computation requirements for indices calculation in method 1 and method 2.
 \begin{table}[htbp]
   \centering
-  \begin{tabular}{|l|l|l|}
+  \begin{tabular}{|l|p{7cm}|l|}
     \hline
     \textbf{Method} &\textbf{Memory Required (Bytes)} &\textbf{\gls{cn} Index Calculations}\\
     \hline
     \hline
-    Method 1 &$3nm_s$ &No. of \gls{cn} $\times I=12,500$\\
+    Method 1 &$3\cdot n\cdot\text{size of \texttt{uint32}}=24$ &No. of \glspl{cn} $\cdot I=12,500$\\
     \hline
-    Method 2 &$3nm_sI$ &No. of \gls{cn} = 2500\\
+    Method 2 &$3\cdot n\cdot\text{size of \texttt{uint32}}=24\cdot\text{No. of CNs}=60,000$ &No. of \glspl{cn} = 2,500\\
     \hline
   \end{tabular}
-  \caption{Memory requirement and computations required to calculate and store indices for decoding a codeword with $5000$ information bits with $R_\infty=1/2$ and maximum window size $W=2500$.}
+  \caption{Memory requirement and computations required to calculate and store indices for decoding a codeword with $5000$ information bits with $R_\infty=1/2$, maximum window size $W=2500$ and $I=5$.}
   \label{tab:idx_com}
 \end{table}
  

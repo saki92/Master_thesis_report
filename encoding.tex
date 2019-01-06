@@ -1,62 +1,67 @@
 \chapter{Encoding of the \acrlong{bpl} Codes}\label{ch:encode}
-In this chapter, we discuss how the encoder for \gls{bpl} codes is designed and how the termination is handled. In some places of this section, we use examples of \glspl{ldpccc} with small $L$ and $m_s$ as the \gls{bpl} codes are too large to be represented on paper.
+In this chapter, we discuss how the encoder for \gls{bpl} codes is designed and how termination is handled. In some places of this section, we use examples of \glspl{ldpccc} with small coupling length $L$ and syndrome-former memory $m_s$ as the \gls{bpl} codes are too large to be represented on paper.
 
 \section{Encoder Design}\label{sec:enc_design}
-Encoding algorithms are simpler than decoding algorithms because there exists no uncertainty in the output bits of an encoder. The encoder only generates the parity bits from the information bits and previously generated parity bits. From Section~\ref{sec:bpl_bg}, the parity-check equation of \gls{bpl} codes is given by
+Encoding algorithms are not as complex as decoding algorithm because decoders need to correct the incorrect bits in the codeword. The encoder for any Convolutional code or \gls{ldpccc} only needs to generate the parity bits from the information bits and previously generated parity bits. From equation (\ref{eq:bpl_poly}), the parity-check term of \gls{bpl} codes is given by
 \begin{align}\label{eq:parity_check}
-\sum_{i=0}^{m_s}\mathbf{h}_{M,i}\m(t-i)+\sum_{i=0}^{m_s}h_{B,i}b(t-i) \mod 2.
+\sum_{i=0}^{m_s}\mathbf{h}_{M,i}\m(t-i)+\sum_{i=0}^{m_s}h_{B,i}b(t-i) \mod 2
 \end{align}
-The encoder generates one parity bit per $n-1$ message bits and the parity bit expression is given by rearranging equation (\ref{eq:parity_check}) as
+where $\m(t)\in\mathbb{F}_2^{k\times 1}$ is a vector of message bits at $t$-th time instance or \gls{cb}, $h_{B,i}\in\mathbb{F}_2$ is the coefficient of polynomial of the parity bit. $\mathbf{h}_{M,i}\in\mathbb{F}_2^{1\times k}$ is a vector of coefficients of polynomials of message bits and is given by (\ref{eq:poly_coef_vec}).
+The encoder generates one parity bit per $n-1$ message bits and the expression for generating the parity bit is given by rearranging (\ref{eq:parity_check}) as
 \begin{align}\label{eq:parity_bit}
 b(t)=\sum_{i=0}^{m_s}\mathbf{h}_{M,i}\m(t-i)+\sum_{i=1}^{m_s}h_{B,i}b(t-i) \mod 2,
 \end{align}
-where $b(t)\in\mathbb{F}_2$ is the parity bit and $\m(t)\in\mathbb{F}_2^{k\times 1}$ is a vector of message bits at $t$-th time instance or \gls{cb}, $h_{B,i}\in\mathbb{F}_2$ is the coefficient of polynomial of the parity bit. $\mathbf{h}_{M,i}\in\mathbb{F}_2^{1\times k}$ is a vector of coefficients of polynomials of message bits and is given by
-\begin{align}
-\mathbf{h}_{M,i}&= \big[[D^i]A_{1,\tau},\dots,[D^i]A_{k,\tau}\big],
+where $b(t)\in\mathbb{F}_2$ is the parity bit.
+\begin{align}\label{eq:poly_coef_vec}
+\mathbf{h}_{M,i}&=
+\begin{bmatrix}
+[D^i]A_{1,\tau} &\dots &[D^i]A_{k,\tau}
+\end{bmatrix},
 \end{align}
 where $[D^i]A_{1,\tau}$ represents the coefficient of $D^i$ in polynomial $A_{1,\tau}(D)$.
 
-The resulting codewords $\x\in\mathbb{F}_2^{Ln\times 1}$ have a systematic structure given by \begin{align}\x^T=(\x(0)^T,\x(1)^T,\dots,\x(L-1)^T).\end{align}
+The resulting codewords $\x\in\mathbb{F}_2^{Ln\times 1}$ have a systematic structure given by \begin{align}\x^T=\begin{bmatrix}\x(0)^T &\x(1)^T &\dots &\x(L-1)^T\end{bmatrix}.\end{align}
 
-Similarly, the \gls{pcm} can be formed using the coefficients of the parity-check polynomials:
+Similarly, the \gls{pcm} can be formed using $\mathbf{h}_{M,i}$ and $h_{B,i}$ for all $i=0,\dots,m_s$:
 \begin{align}\label{eq:bpl_pcm}
 \H=
 \begin{bmatrix}
-\mathbf{h}_{M,0}\\
-\mathbf{h}_{M,1} &\mathbf{h}_{M,0}\\
-\vdots &\mathbf{h}_{M,1} &\ddots\\
-\mathbf{h}_{M,m_s} &\vdots &\ddots &\mathbf{h}_{M,0}\\
-&\mathbf{h}_{M,m_s} &\ddots &\mathbf{h}_{M,1}\\
+[\mathbf{h}_{M,0},h_{B,0}]\\
+[\mathbf{h}_{M,1},h_{B,1}] &[\mathbf{h}_{M,0},h_{B,0}]\\
+\vdots &[\mathbf{h}_{M,1},h_{B,1}] &\ddots\\
+[\mathbf{h}_{M,m_s},h_{B,m_s}] &\vdots &\ddots &[\mathbf{h}_{M,0},h_{B,0}]\\
+&[\mathbf{h}_{M,m_s},h_{B,m_s}] &\ddots &[\mathbf{h}_{M,1},h_{B,1}]\\
 & &\ddots &\vdots\\
-& & &\mathbf{h}_{M,m_s}
+& & &[\mathbf{h}_{M,m_s},h_{B,m_s}]
 \end{bmatrix}.
 \end{align}
 
-The encoding of \gls{bpl} codes is done by generating parity bits as per equation (\ref{eq:parity_bit}). This is performed through following steps:
+Encoding of \gls{bpl} codes is done by generating parity bits as per (\ref{eq:parity_bit}). This is performed through the following steps:
 \begin{enumerate}
-  \item The information bits are divided into several \glspl{cb} and copied into the output buffer of the encoder. An example of this step for a $R_\infty=2/3$ code is shown in Figure~\ref{fig:encode_copy}.
+  \item The information bits are divided into several \glspl{cb} and copied into the output buffer of the encoder. An example of this step for a code with $R_\infty=2/3$ is shown in Figure~\ref{fig:encode_copy}.
   \begin{figure}[htbp]
     \centering
      \tikzsetnextfilename{encoder_copy}
     \includegraphics[width=\textwidth, height=\textwidth]{graphics/encoder_copy}
-    \caption{Copy input bits to output buffer. The red box represents the position of the parity bits.}
+    \caption{Illustration of input and output buffers and its contents. The red boxes represents the position of the parity bits.}
     \label{fig:encode_copy}
   \end{figure}
-  \item The parity bits are generated by performing addition modulo 2 with all bits (both information and parity bits) in the output buffer according to the parity-check equation (\ref{eq:parity_bit}) of the code. An example of the parity-bit generation of a $R_\infty=2/3$ code is shown in Figure~\ref{fig:encoder_paritygen}.
+  \item The parity bits are generated by performing addition modulo 2 with the bits (both information and parity bits) in the output buffer according (\ref{eq:parity_bit}). An example of the parity-bit generation of a code with  $R_\infty=2/3$ is shown in Figure~\ref{fig:encoder_paritygen}.
    \begin{figure}[htbp]
     \centering
     \tikzsetnextfilename{encoder_parity}
     \includegraphics[width=\textwidth, height=\textwidth]{graphics/encoder_parity}
-    \caption{The encoder moves along the output buffer to generate parity bit for each \gls{cb}. Note: An example code.}
+    \caption{Illustration of a parity bit being generated using information and other parity bits in the output buffer. The arrow indicates the direction of movement of the parity-bit generator. Note: An example code.}
     \label{fig:encoder_paritygen}
   \end{figure}
-  \item The termination sequence is appended to the output buffer of the encoder and is discussed in Section~\ref{sec:bpl_termi} in detail.
+  \item The termination sequence is appended to the output buffer of the encoder. The procedure to generate the termination sequence is discussed in Section~\ref{sec:bpl_termi}.
 \end{enumerate}
 
 \section{Termination Sequence}\label{sec:bpl_termi}
-The objective of terminating any \gls{ldpccc} is to have a finite codeword length. Termination essentially means truncating the \gls{pcm} to have a finite number of rows and columns. Truncating the \gls{pcm} leads to a condition where there are not enough bits in the end of the codeword to fulfill the last $m_s$ parity-check equations of the \gls{pcm}. To satisfy the last $m_s$ parity-check equations, an appropriate termination sequence $\mathbf{a}$ must be appended to the codeword. This is illustrated in Figure~\ref{fig:term_req} with a \gls{pcm} that has a structure similar to (\ref{eq:bpl_pcm}).
+The objective of terminating any \gls{ldpccc} is to introduce some low degree \glspl{cn} in the \gls{pcm}. Termination essentially means truncating the \gls{pcm} to have a finite number of rows and columns. Truncating the \gls{pcm} leads to a condition where the last $m_s$ bits of the codeword do not satisfy the last $m_s$ parity-check equations of the \gls{pcm}. To satisfy the last $m_s$ parity-check equations, either the last $m_s$ or lesser bits need to modified or an appropriate termination sequence $\mathbf{a}$ must be appended to the codeword. Since the last $m_s$ bits of the codeword should not be modified as the contain information, the later approach is used. The appending of termination sequence is illustrated in Figure~\ref{fig:term_req} with a \gls{pcm} that has a structure similar to (\ref{eq:bpl_pcm}).
 
-Since \gls{bpl} codes are recursive codes, feeding zero-bits into the encoder after the information bits will not reset the states of the encoder i.e., the output of the encoder will never be all-zeros. Hence, to find a proper termination sequence that brings the encoder to all-zero state, one must solve a system of linear equations.
+\subsection{Proper Termination}
+Since the generator polynomials of the \gls{bpl} codes are recursive, continuously feeding in zero-bits into the encoder after the information bits will not reset the states of the encoder. i.e., the output of the encoder will never be all zeros. Hence, one must solve a system of linear equations to find a proper termination sequence that brings the encoder to all-zero state.
 
 \begin{figure}[htbp]
   \centering
@@ -74,20 +79,20 @@ Since \gls{bpl} codes are recursive codes, feeding zero-bits into the encoder af
   \label{fig:bpl_term}
 \end{figure}
 
-The procedure for calculating a termination sequence is illustrated in Figure~\ref{fig:bpl_term} where $\mathbf{e}\in\mathbb{F}_2^{m_sn\times 1}$ is the last part of the codeword vector. Vector $\mathbf{a}\in\mathbb{F}_2^{l_t\times 1}$ is the termination sequence that should be determined and appended to the end of $\mathbf{e}$. The sub-matrix $\mathbf{P}$ of the \gls{pcm} contains the last $m_s$ \glspl{cn} of the actual \gls{pcm}. The sub-matrix $\gls{mbd}$ (containing the blue edges) is an extension to the actual \gls{pcm} due to the termination sequence $\mathbf{a}$. The codeword combined with a proper termination sequence must fulfill all the parity-check rows in matrix $[\mathbf{P},\gls{mbd}]$. Hence, provided a correct termination sequence $\mathbf{a}$, the following equations from~\cite{Chen2006} hold true.
+The procedure for determining a termination sequence is reproduced here from~\cite{Chen2006}. Figure~\ref{fig:bpl_term} illustrates the different matrices and vectors that are used in determining the termination sequence. $\mathbf{e}\in\mathbb{F}_2^{m_sn\times 1}$ is the last part of the codeword vector, vector $\mathbf{a}\in\mathbb{F}_2^{l_t\times 1}$ is the termination sequence that should be determined and appended to the end of $\mathbf{e}$. The sub-matrix $\mathbf{P}$ of the \gls{pcm} contains the last $m_s$ \glspl{cn} of the actual \gls{pcm}. The sub-matrix $\mathbf{D}$ (containing the blue edges) is an extension to the actual \gls{pcm} due to the termination sequence $\mathbf{a}$. The codeword combined with a proper termination sequence must fulfill all the parity-check rows in matrix $[\mathbf{P},\mathbf{D}]$. Hence, provided a correct termination sequence $\mathbf{a}$, the following equations from~\cite{Chen2006} hold true.
 \begin{align}
-\begin{bmatrix}\mathbf{P} &\gls{mbd}\end{bmatrix}\odot
+\begin{bmatrix}\mathbf{P} &\mathbf{D}\end{bmatrix}\odot
 \begin{bmatrix}
 \mathbf{e}\\
 \mathbf{a}
 \end{bmatrix}&=\mathbf{0}\\
-\mathbf{P}\odot\mathbf{e}&=\gls{mbd}\odot\mathbf{a}
+\mathbf{P}\odot\mathbf{e}+\mathbf{D}\odot\mathbf{a}&=0
 \end{align}
-The termination sequence is given by
+One possible solution under the constraint that $\mathbf{D}$ is square and invertible is given by
 \begin{align}\label{eq:term_sol}
-\mathbf{a}=\gls{mbd}^{-1}\odot\mathbf{P}\odot\mathbf{e}.
+\mathbf{a}=\mathbf{D}^{-1}\odot\mathbf{P}\odot\mathbf{e}.
 \end{align}
-The maximum length $l_t$ of the termination sequence $\mathbf{a}$ should not exceed the one given in the \gls{bpl} standard. However, a shorter termination sequence with $l_t\geq n$ can be chosen such that $\gls{mbd}$ is a square matrix. Once the termination sequence $\mathbf{a}$ is determined from equation (\ref{eq:term_sol}), it is appended to the codeword and the remaining part of the termination sequence (if any) is filled with zeros. These zeros do not contribute to any parity checks. For an encoder that is implemented on hardware, these zeros are required to bring the encoder to an all-zero state. But we omit these zeros since we do software implementation. Hence, the resulting \gls{pcm} and codeword looks like the one shown in Figure~\ref{fig:bpl_term} with no zeros at the end of the codeword and without their corresponding edges in the \gls{pcm}.
+The maximum length $l_t$ of the termination sequence $\mathbf{a}$ should not exceed the one given in the \gls{bpl} standard. However, a shorter termination sequence with $l_t\geq n$ can be chosen such that $\mathbf{D}$ is a square matrix. Once the termination sequence $\mathbf{a}$ is determined from (\ref{eq:term_sol}), it is appended to the codeword and the remaining part of the termination sequence (if any) is filled with zeros. These zeros do not contribute to any parity checks. For an encoder that is implemented with feedback shift registers, these zeros are required to bring the encoder to an all-zero state. But, we omit these zeros since we implement the encoder in software. Hence, the resulting \gls{pcm} and codeword looks like the one shown in Figure~\ref{fig:bpl_term} with no zeros at the end of the codeword and without their corresponding edges in the \gls{pcm}.
 %\begin{figure}[htbp]
 %  \centering
 %  \includegraphics[width=\textwidth, height=\textwidth]{graphics/term_result}
@@ -95,16 +100,17 @@ The maximum length $l_t$ of the termination sequence $\mathbf{a}$ should not exc
 %  \label{fig:term_res}
 %\end{figure}
 
-Unfortunately, we found that a proper termination sequence cannot be computed for \gls{bpl} codes. It is found through numerical evaluations that $\gls{mbd}$ is not full-rank and hence its inverse do not exist. A full rank $\gls{mbd}$ matrix is possible if $\gls{mbd}\in\mathbb{F}_2^{r\times c}$ and $r>c$. But with the help of numerical solvers, we found that the solution for such an overdetermined system do not exist either. Hence, a termination sequence to satisfy the last $m_s$ parity checks cannot be found for \gls{bpl} codes. So we choose to omit the last $m_s$ parity checks from the \gls{pcm} and do the termination by \emph{zero-tailing} as mentioned in the standard.
+\subsection{Zero-Tail Termination}
+Unfortunately, we found that a proper termination sequence cannot be computed for \gls{bpl} codes. It is found through numerical evaluations that $\mathbf{D}$ is not full-rank and hence its inverse do not exist. A full-rank $\mathbf{D}$ matrix is possible if $\mathbf{D}\in\mathbb{F}_2^{r\times c}$ and $r>c$. But, with the help of numerical solvers, we found that the solution for such an overdetermined system does not exist either. Hence, a termination sequence to satisfy the last $m_s$ parity checks cannot be found for \gls{bpl} codes. So, we choose to omit the last $m_s$ parity checks from the \gls{pcm} and do the termination by \emph{zero-tailing} as mentioned in the standard.
 
 The steps for performing zero-tailing termination are as follows.
 \begin{enumerate}
   \item The $n_z$ zero-tail bits are appended to the input buffer of the encoder after the $n_m$ information bits.
-  \item The encoding as mentioned in Section~\ref{sec:enc_design} is performed to all the information bits and zero-tail bits.
+  \item The encoding as mentioned in Section~\ref{sec:enc_design} is performed using all the information bits and zero-tail bits.
 \end{enumerate}
-With the zero-tail-termination, the zero-tail bits are always known at the receiver. Hence, the zero-tail bits are not transmitted in an actual transmission system. Only the parity bits generated from the zero-tail bits are transmitted.
+With the zero-tail termination, the zero-tail bits are always known at the receiver. Hence, the zero-tail bits are not transmitted in an actual system. Only the parity bits generated from the zero-tail bits are transmitted and used during decoding.
 
-The zero-tail-termination does not satisfy the last $m_s$ parity checks of the \gls{pcm}. Hence, the \gls{pcm} of a zero-tail-terminated \gls{bpl} codes looks like the one shown in Figure~\ref{fig:pcm_zero}.
+The zero-tail termination does not satisfy the last $m_s$ parity checks of the \gls{pcm}. Hence, the \gls{pcm} of a zero-tail-terminated \gls{bpl} codes looks like the one shown in Figure~\ref{fig:pcm_zero}.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{term_zero}
@@ -113,13 +119,13 @@ The zero-tail-termination does not satisfy the last $m_s$ parity checks of the \
   \label{fig:pcm_zero}
 \end{figure}
 
-The \gls{pcm} of the zero-tail-terminated codes have the same \gls{cn} degrees in the middle and in the end. But in contrast, properly terminated codes have lower \gls{cn} degrees at the end. This reduces the performance of the codes as lower \gls{cn} degree means better reliability of the variable nodes connected to them. However, since the zero-tail bits are known at the receiver, they improve the reliability of the connected \glspl{vn} during the \gls{bp} decoding process. The structure of a zero-tail-terminated codeword looks like the one shown in Figure~\ref{fig:term_cw}.
+The \gls{pcm} of the zero-tail-terminated codes has the same \gls{cn} degrees in the middle and in the end. By contrast, properly terminated codes have lower \gls{cn} degrees at the end. The lack of low \gls{cn} degrees reduce the performance of the code as lower \gls{cn} degree means better reliability of the variable nodes connected to them. However, the zero-tail bits improve the reliability of the connected \glspl{vn} during the \gls{bp} decoding process since the zero-tail bits are known at the receiver. The structure of a zero-tail-terminated codeword looks like the one shown in Figure~\ref{fig:term_cw}.
 
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{term_cw}
   \includegraphics[width=\textwidth, height=\textwidth]{graphics/term_cw}
-  \caption{Illustration of a zero-tail-terminated codeword of $R_\infty=2/3$ code. Black box represents information bits, blue box for zero-tail bits and red box for parity bits.}
+  \caption{Illustration of a zero-tail-terminated codeword of a code with $R_\infty=2/3$. Black boxes represent information bits, blue boxes represent zero-tail bits and red boxes represent parity bits.}
   \label{fig:term_cw}
 \end{figure}
 
@@ -127,16 +133,16 @@ The \gls{pcm} of the zero-tail-terminated codes have the same \gls{cn} degrees i
   \centering
   \begin{tabular}{|l|p{7cm}|p{7cm}|}
     \hline
-    \textbf{S.No.} &\textbf{Proper Termination} &\textbf{Zero-tail Termination}\\
+    \textbf{No.} &\textbf{Proper Termination} &\textbf{Zero-Tail Termination}\\
     \hline
     \hline
-    1. &All parity-check equations of the \gls{pcm} are satisfied. &Last $m_s$ parity-checks are not satisfied.\\
+    1. &All parity-check equations of the \gls{pcm} are satisfied. &Last $m_s$ parity-checks of the original \gls{pcm} are not satisfied.\\
     \hline
-    2. &Encoder returns to all-zero state. &Encoder do not return to all-zero state.\\
+    2. &Encoder returns to all-zero state. &Encoder does not return to all-zero state.\\
     \hline
-    3. &Predetermined matrices $\mathbf{F}=\gls{mbd}^{-1}\odot\mathbf{P}$ are stored for each $\tau$ and $R_\infty$ to compute $\mathbf{a}=\mathbf{F}\odot\mathbf{e}$. &Termination sequence is determined on the fly using the encoder.\\
+    3. &Predetermined matrices $\mathbf{F}=\mathbf{D}^{-1}\odot\mathbf{P}$ are stored for each $\tau$ and $R_\infty$ to compute $\mathbf{a}=\mathbf{F}\odot\mathbf{e}$. &Termination sequence is determined on the fly using the encoder.\\
     \hline
-    4. &Lower \gls{cn} degree at the end of the codeword than the middle. This enhances decoding performance. &Same \gls{cn} degree at the end of the codeword as the middle.\\
+    4. &Lower \gls{cn} degree at the end of the \gls{pcm} than the middle. This enhances decoding performance. &Same \gls{cn} degree at the end of the \gls{pcm} as the middle.\\
     \hline
     5. &Termination sequence is unknown at the receiver. &Zero-tail bits are known at the receiver. This enhances decoding performance.\\
     \hline
@@ -145,4 +151,4 @@ The \gls{pcm} of the zero-tail-terminated codes have the same \gls{cn} degrees i
   \label{tab:diff_term}
 \end{table}
 
-We conclude this section by summarizing that proper termination for \gls{bpl} codes are not feasible and hence we perform zero-tail termination. The important differences between these two types of terminations are listed in Table~\ref{tab:diff_term}.
+We conclude this section by summarizing that proper termination for \gls{bpl} codes are not feasible because of the nature of the \glspl{pcm} and hence, we perform zero-tail termination. The important differences between these two types of terminations are listed in Table~\ref{tab:diff_term} and we see that both terminations have advantages and disadvantages over the other.

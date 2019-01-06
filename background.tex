@@ -2,9 +2,9 @@
 In this chapter, we provide an overview of channel coding and some selected channel codes. We start by discussing the need for channel coding. We then describe linear block codes, \gls{ldpc} codes and \glspl{ldpccc} which are the main focus of this thesis. Then we go on to discuss \gls{bp} and the sliding-window technique used in decoders for \glspl{ldpccc}. We finish the section describing our system model.
 
 \section{Introduction to Channel Coding}
-The term \emph{coding} is generally associated with the mapping of information to a set of symbols or numbers~\cite{Bossert}. Source coding aims to compress the information whereas channel coding aims to make the information immune to random distortion. A model of a digital communication system is shown in Figure~\ref{fig:chanCoding}. Let us consider that the \emph{source} block produces a sequence of information bits given by the vector $\gls{mbd}$. These bits might stream from any digital information source such as multimedia files, text documents, etc. These vectors of bits are encoded in the \emph{source-encoder} block to produce compressed information bit vectors $\gls{mbm}$ called source codewords. The compression means that the length of $\gls{mbm}$ is at most the length of $\gls{mbd}$. The mapping allow unique reconstruction of the information bits at the receiver. The source encoder is chosen depending on the type of the information source~\cite{proak}.
+The term \emph{coding} is generally associated with the mapping of information to a set of symbols or numbers~\cite{Bossert}. Source coding aims to remove the redundancy in the information whereas channel coding aims to make the information immune to random distortion. A model of a digital communication system is shown in Figure~\ref{fig:chanCoding}. Let us consider that the \emph{source} block produces a sequence of information bits given by the vector $\gls{mbd}$. These bits might stream from any digital information source such as multimedia files, text documents, etc. These vectors of bits are encoded in the \emph{source-encoder} block to produce reduced set of information bit vectors $\gls{mbm}$ called source codewords. The reduction usually means that the length of $\gls{mbm}$ is at most the length of $\gls{mbd}$. The mapping of information bits to a set of reduced information bits allows unique reconstruction of the information bits at the receiver. The source encoder is chosen depending on the type of the information source~\cite{proak}.
 
-The next block in the digital communication model is the \emph{channel encoder}. Whereas the source encoder compresses the information bit vectors, the channel encoder expands them by adding redundant bits in a structured manner. This structured redundancy makes the transmitted information bits less susceptible to distortions such as interference in the channel medium, and receiver noise. A \emph{channel} is a physical medium through which the information is transferred from transmitter to receiver. A \emph{code} is a set of rules that defines the encoding principle of the encoder. The type of code is chosen depending on the channel and the application requirements. In general, the source encoder or decoder is placed at higher layers of the \gls{osi} model, while channel-coding blocks are placed at the \gls{phy} layer. The outputs of the channel encoder are called channel codewords. The codeword vectors $\gls{mbx}$ are then modulated in the \emph{modulator} block where the bits are transformed into symbol vectors $\gls{mbu}$. The symbol vectors are then transmitted as analog signals through the channel. Due to the addition of interference and noise, the channel output is in general not the same as the channel input: $\gls{mbv}\neq\gls{mbu}$. The \emph{demodulator} converts the received symbol vectors $\gls{mbv}$ into vectors of bits $\gls{mby}$ which corresponds to the vector of encoded bits $\gls{mbx}$. The \emph{channel decoder} uses the redundancy in the received codeword to deduce an estimate $\gls{mhbm}$ of the source codeword. The source decoder then deduces an estimate $\gls{mhbd}$ of the information bit vector from $\gls{mhbm}$.
+The next block in the digital communication model is the \emph{channel encoder}. Whereas the source encoder compresses the information bit vectors, the channel encoder expands them by adding redundant bits in a structured manner. This structured redundancy makes the transmitted information bits less susceptible to distortions such as interference in the channel noise. A \emph{channel} is a medium through which the information is transferred from transmitter to receiver. A \emph{code} is a set of rules that defines the encoding principle of the encoder. The type of code is chosen depending on the channel and the application requirements. In general, the source encoder or decoder is placed at higher layers of the \gls{osi} model, while channel-coding blocks are placed at the \gls{phy} layer. The outputs of the channel encoder are called channel codewords. The codeword vectors $\gls{mbx}$ are then modulated in the \emph{modulator} block where the bits are transformed into symbol vectors $\gls{mbu}$. The symbol vectors are then transmitted as analog signals through the channel. Due to the addition of interference and noise, the channel output is in general not the same as the channel input: $\gls{mbv}\neq\gls{mbu}$. The \emph{demodulator} converts the received symbol vectors $\gls{mbv}$ into vectors of bits $\gls{mby}$ which corresponds to the vector of encoded bits $\gls{mbx}$. The \emph{channel decoder} uses the redundancy in the received codeword to deduce an estimate $\gls{mhbm}$ of the source codeword. The source decoder then deduces an estimate $\gls{mhbd}$ of the information bit vector from $\gls{mhbm}$.
 
 \begin{figure}[htbp]
   \centering
@@ -14,14 +14,21 @@ The next block in the digital communication model is the \emph{channel encoder}.
   \label{fig:chanCoding}
 \end{figure}
 
-The addition of redundant bits by the channel encoder enables the mapping between a set of information words and a set of all possible \emph{receive words}. Lets us consider the length of an information word $\gls{mbm}$ to be $k$ bits and the length of a codeword $\gls{mbx}$ to be $n$ bits such that $n>k$. Thus the information word set has $2^k$ words and the receive word set has $2^n$ words. The codeword set of size $2^k$ is a subset of the receive word set. The mapping between different set sizes allows us to detect if the received word is in the codeword set. The information words and codewords contain elements in the binary set $\mathbb{F}_2=\{0,1\}$ as their alphabets. $\mathbb{F}_2$ or GF(2) is called a finite field of order $2$. Hence, all arithmetic operations with information bits and codewords are performed modulo 2.
+The addition of redundant bits by the channel encoder enables the mapping between a set of information words and a set of all possible \emph{receive words}. Let us assume the length of an information word $\gls{mbm}$ to be $k$ bits and the length of a codeword $\gls{mbx}$ to be $n$ bits such that $n>k$. Thus, the information word set has $2^k$ words and the receive word set has $2^n$ words. The codeword set of size $2^k$ is a subset of the receive word set. The mapping between different set sizes allows us to detect if the received word is in the codeword set. The information words and codewords contain elements from the binary set $\mathbb{F}_2=\{0,1\}$. $\mathbb{F}_2$ or GF(2) is called a finite field of order $2$. Hence, all arithmetic operations with information bits and codewords are performed modulo 2.
 
 \section{Channel Codes}
-There are different types of channel codes. The choice of one depends on the application requirements, type of channel medium and resource availability. In this thesis, we focus on \glspl{ldpccc}, a special class of \glspl{ldpcbc}.
+There are different types of channel codes. The choice of one depends on the application requirements, type of channel medium and resource availability. In this thesis, we focus on \glspl{ldpccc}, a special class of \gls{ldpc} codes.
 \subsection{Linear Block Codes}
-Linear block codes are codes in which a codeword is formed by a linear combination of two or more base vectors that span the codeword space~\cite{proak} and hence the base vectors are also codewords. As a result, a linear combination of any two or more codewords forms another codeword. The codeword space of $2^k$ vectors is a subspace of the space of all $2^n$ vectors. An $(n,k)$ linear block code maps $k$ message bits to $n$ codeword bits. The remaining $n-k$ redundant bits are called parity bits and they are determined by an encoding rule. Linear block codes are classified into two categories: \emph{systematic} and \emph{non-systematic}. Systematic codes have all their message bits transmitted in an unaltered manner whereas the non-systematic codes do not have such formation. Without loss of generality, we assume that a codeword of the systematic linear block code has the following structure: \begin{align}\x^T=(\m^T,\gls{mbb}^T)\end{align} where $\x\in\mathbb{F}_2^{n\times 1}$ is the codeword vector, $\m\in\mathbb{F}_2^{k\times 1}$ and $\bb\in\mathbb{F}_2^{(n-k)\times 1}$ denote message and parity vectors, respectively. The code rate is given by \begin{align}\gls{mR}=\frac{k}{n}.\end{align}
+Linear block codes are codes in which a codeword is formed by a linear combination of two or more base vectors that span the codeword space~\cite{proak}. Hence, the base vectors are also codewords. As a result, a linear combination of any two or more codewords forms another codeword. The codeword space of $2^k$ vectors is a subspace of the space of all $2^n$ vectors. An $(n,k)$ linear block code maps $k$ message bits to $n$ codeword bits. The remaining $n-k$ redundant bits are called parity bits and they are determined by an encoding rule. Linear block codes are classified into two categories: \emph{systematic} and \emph{non-systematic}. Systematic codes have all their message bits transmitted in an unaltered manner whereas the non-systematic codes do not have such formation. Without loss of generality, we assume that a codeword of a systematic linear block code has the following structure: 
+\begin{align}
+\x^T=
+\begin{bmatrix}
+\m^T &\gls{mbb}^T
+\end{bmatrix}
+\end{align}
+where $\x\in\mathbb{F}_2^{n\times 1}$ is the codeword vector, $\m\in\mathbb{F}_2^{k\times 1}$ and $\bb\in\mathbb{F}_2^{(n-k)\times 1}$ denote message and parity vectors, respectively. The code rate is given by \begin{align}\gls{mR}=\frac{k}{n}.\end{align}
 
-Codewords of linear block codes are expressed using the linear expression \begin{align}\x=\G\odot\m\end{align} where $\G\in\mathbb{F}_2^{n\times k}$ is called the \gls{gm} and $\odot$ represents multiplication modulo 2. A parity check is described by the expression \begin{align}\H\odot\x=\mathbf{s}\end{align} where $\H\in\mathbb{F}_2^{(n-k)\times n}$ is called the \gls{pcm} and $\mathbf{s}\in\mathbb{F}_2^{(n-k)\times 1}$ is called the syndrome. Each row of the \gls{pcm} represents a parity-check equation. Only when $\mathbf{s}=\mathbf{0}$, the parity checks are fulfilled. The relation between \gls{pcm} and \gls{gm} is given by $\gls{mbH}\odot\gls{mbG}=\mathbf{0}$. With either \gls{gm} or \gls{pcm} given, the other one is not unique. For example, if the \gls{pcm} of a $(7,4)$ hamming code is given by
+Codewords of linear block codes are expressed as \begin{align}\x=\G\odot\m\end{align} where $\G\in\mathbb{F}_2^{n\times k}$ is the \gls{gm} and $\odot$ represents multiplication modulo 2. A parity check is described by the expression \begin{align}\mathbf{s}=\H\odot\x\end{align} where $\H\in\mathbb{F}_2^{(n-k)\times n}$ is called the \gls{pcm} and $\mathbf{s}\in\mathbb{F}_2^{(n-k)\times 1}$ is called the syndrome. Each row of the \gls{pcm} represents a parity-check equation. Only when $\mathbf{s}=\mathbf{0}$, the parity checks are fulfilled. The relation between \gls{pcm} and \gls{gm} is given by $\gls{mbH}\odot\gls{mbG}=\mathbf{0}$. With either \gls{gm} or \gls{pcm} given, the other one is not unique. For example, if the \gls{pcm} of a $(7,4)$ hamming code is given by
 \begin{align} \label{eq:H_ham}
 \H =
 \begin{bmatrix}
@@ -41,46 +48,48 @@ then the \gls{gm} can be formed by combining any 3 rows of null$(\H)$, i.e., the
 \end{bmatrix}
 \end{align}
 
-The \gls{pcm} can be represented by a bipartite graph, called Tanner graph~\cite{Tanner1981}. The Tanner graph has two sets of nodes: \glspl{vn} represent columns and \glspl{cn} represent rows of the \gls{pcm}. Each non-zero entry in the \gls{pcm} is represented by an edge between the respective \gls{vn} and \gls{cn}. The \emph{degree} of a node is the number of edges connected to it. The Tanner graph of the example \gls{pcm} in (\ref{eq:H_ham}) is shown in Figure \ref{fig:tannGraph}.
+The \gls{pcm} can be represented by a bipartite graph called Tanner graph~\cite{Tanner1981}. The Tanner graph has two sets of nodes: \glspl{vn} represent columns and \glspl{cn} represent rows of the \gls{pcm}. Each non-zero entry in the \gls{pcm} is represented by an edge between the respective \gls{vn} and \gls{cn}. The \emph{degree} of a node is the number of edges connected to it. The Tanner graph of the example \gls{pcm} in (\ref{eq:H_ham}) is shown in Figure \ref{fig:tannGraph}.
 
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{tanner_graph}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/tanner_graph}
-  \caption{Tanner graph of the code from (\ref{eq:H_ham}). The dark shaded circles represents \glspl{vn} and the crossed circles \glspl{cn}.}
+  \caption{Tanner graph of the code from (\ref{eq:H_ham}). The dark shaded circles represents \glspl{vn} and the crossed circles \glspl{cn}. All \glspl{cn} have degree 3 whereas the \gls{vn} degrees vary between 1 and 3.}
   \label{fig:tannGraph}
 \end{figure}
 
 \subsection{\acrlong{ldpc} Block Codes}
-\glspl{ldpcbc} are a class of linear block codes which were introduced by Robert Gallager in 1963~\cite{Gallager1963}. As the name specifies, they are defined by a sparse \gls{pcm} containing mostly 0's and relatively few 1's. The sparsity of the \gls{pcm} or its Tanner graph is a key property that allows for the algorithmic efficiency of \glspl{ldpcbc}. These codes are divided into two types: regular and irregular codes.
+\glspl{ldpcbc} are a class of linear block codes which were introduced by Robert Gallager in 1963~\cite{Gallager1963}. As the name specifies, they are defined by a sparse \gls{pcm} containing mostly 0's and relatively few 1's. The sparsity of the \gls{pcm} or its Tanner graph is a key property that allows for the algorithmic efficiency of decoding \glspl{ldpcbc}. These codes are divided into two types: regular and irregular codes.
 
 In a regular $(n,q,r)$ code, all \glspl{vn} have degree \gls{mq} and all \glspl{cn} have degree \gls{mr}.
 
-\subsection{\acrlong{ldpc} Convolutional Codes}
-Convolutional codes in general are codes in which the parity bits are generated by convolving information bits or information and parity bits. The rule for the convolution is expressed by generator-polynomial. This generator-polynomial is similar to the taps of an \gls{fir} filter in case of non-recursive codes and an \gls{iir} filter in case of recursive codes. An example of parity bit generation in a non-recursive systematic convolutional code is shown in Figure~\ref{fig:conv_code}.
+\subsection{Convolutional Codes}
+Convolutional codes in general, are codes in which the parity bits are generated by convolving information bits or information and parity bits. The polynomial coefficients for the convolution is given by the generator polynomial. This generator polynomial is also the taps of an \gls{fir} filter in case of non-recursive codes and an \gls{iir} filter in case of recursive codes. An example of parity-bit generation in a non-recursive systematic convolutional code is shown in Figure~\ref{fig:conv_code}.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{conv_code}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/conv_code}
-  \caption{Example of a non-recursive convolutional code with rate $R=1/2$. $x[k]$ is the input and $y[k]$ is the output.}
+  \caption{Example of a non-recursive convolutional code with rate $R=1/2$. $x[i]$ is the input and $y[i]$ is the output.}
   \label{fig:conv_code}
 \end{figure}
-The generator-polynomials of this example is given by
+
+The generator polynomial of this example is given by
 \begin{align}
 G^{(0)}(D)&=1\\
 G^{(1)}(D)&=1+D^2.
 \end{align}
 The impulse response of the parity-bit generator is given by
-\begin{align}g^{(1)}[k]=\begin{bmatrix}
+\begin{align}g^{(1)}[i]=\begin{bmatrix}
 1 &0 &1
 \end{bmatrix}.\end{align}
 The output is given by the convolution form:
 \begin{align}
-y^{(1)}[k]&=x[k]*g^{(1)}[k]\nonumber\\
-&=\sum_{l=0}^{2}x[l]g^{(1)}[k-l].
+y^{(1)}[i]&=x[i]*g^{(1)}[i]\label{eq:conv_conv}\\
+&=\sum_{l=0}^{2}x[l]g^{(1)}[i-l].
 \end{align}
-The \emph{constraint length} of a convolutional code is $l_c=m_s+1$ where $m_s$ is the largest degree in the generator-polynomial. In the example in Figure~\ref{fig:conv_code}, the constraint length is 3.
+The \emph{constraint length} of a convolutional code is $l_c=m_s+1$ where $m_s$ is the largest degree in $g[i]$. In the example in Figure~\ref{fig:conv_code}, $l_c=3$.
 
+\subsection{\acrlong{ldpc} Convolutional Codes}
 \glspl{ldpccc} or \gls{scldpc} codes are formed by imposing the above mentioned convolutional structure on \glspl{ldpcbc}. They were invented by Alberto Felstr{\"o}m and Kamil Zigangirov~\cite{Felstrom1999}. These codes are characterized by a sparse infinite-length \gls{pcm} which has a diagonal structure. The \gls{pcm} of these codes is constructed by coupling \glspl{pcm} of \glspl{ldpcbc} as given by
 
 \begin{align}\label{eq:H_infty}
@@ -98,20 +107,27 @@ The \emph{constraint length} of a convolutional code is $l_c=m_s+1$ where $m_s$ 
   \mathbf{s}(t+1)\\
   \end{matrix}
 \end{align}
-where the $\H_\mu(t)\in\mathbb{F}_2^{(n-k)\times n},\mu=0,\dots,m_s$ are \glspl{pcm} of different \glspl{ldpcbc} of rate $R=\gls{mk}/\gls{mn}$ for different time instances and $m_s$ is the memory of the code. Hence, the asymptotic rate of the resulting \gls{ldpccc} is $\gls{mRi}=k/n$. $\gls{mbs}(t)\in\mathbb{F}_2^{(n-k)\times 1}$ denotes the syndromes resulting from the parity check equations. The codewords of such a code have the form $\x^T=(\dots,\x(t-1)^T,\x(t)^T,\x(t+1)^T,\dots)$ where each $\x(t)\in\mathbb{F}_2^{n\times 1}$. Given the \gls{pcm} $\H$ and a valid codeword $\x$, the following expression holds:
+where the $\H_\mu(t)\in\mathbb{F}_2^{(n-k)\times n},\mu=0,\dots,m_s$ are \glspl{pcm} of different \glspl{ldpcbc} of rate $R=\gls{mk}/\gls{mn}$ for different time instances and $m_s$ is the memory of the code. Hence, the asymptotic rate of the resulting \gls{ldpccc} is $\gls{mRi}=k/n$. $\gls{mbs}(t)\in\mathbb{F}_2^{(n-k)\times 1}$ denotes the syndromes resulting from the parity check equations. The codewords of such a code have the form 
+\begin{align}
+\x^T=
+\begin{bmatrix}
+\dots &\x(t-1)^T &\x(t)^T &\x(t+1)^T &\dots
+\end{bmatrix}
+\end{align}
+where each $\x(t)\in\mathbb{F}_2^{n\times 1}$. Given the \gls{pcm} $\H$ and a valid codeword $\x$, the following expression holds:
 \begin{align}\label{eq:ldpccc_conv}
 \mathbf{s}(t)=\sum_{\tau=0}^{m_s}\H_\tau(t)\x(t-\tau)\mod 2.
 \end{align}
-The equation (\ref{eq:ldpccc_conv}) is a convolution representing the convolutional structure of $\H$ in (\ref{eq:H_infty}).
+The equation (\ref{eq:ldpccc_conv}) is a convolution representing the convolutional structure of $\H$ in (\ref{eq:H_infty}). Similar to equation (\ref{eq:conv_conv}) for convolutional codes.
 
 The bits in the codeword $\x$ are coupled together over a distance called the \emph{constraint length} which is given by $l_c=(m_s+1)n$ bits.
 
 \subsection{Termination of Convolutional Codes}
 In general, \glspl{ldpccc} have codewords and \glspl{pcm} of infinite length. For packet-based communication networks, however, the whole packet has to be retransmitted in case of incorrect information bits in higher layers. Also, in a wireless medium the channel parameters change over time which requires the encoder to change its code rate on the fly. For the aforementioned reasons, terminated codes are a better choice.
 
-Termination is the process of limiting the coupling length, so that the codewords have finite length. This allows the decoder to stop decoding the current received word if a bit cannot be corrected, thus reducing the decoding complexity. The termination process requires adding \emph{termination bits} to the end of the codeword to ensure that the last $m_s$ parity-check equations of the terminated \gls{pcm} are fulfilled. Termination also ensures that the encoder returns to an all-zero state before encoding the next codeword and so termination bits are determined by solving a system of linear equations in $\mathbb{F}_2$. 
+Termination is the process of limiting the coupling length, so that the codewords have finite length. This allows the decoder to stop decoding the current received word if a bit cannot be corrected, thus reducing the decoding complexity. The termination process requires appending \emph{termination bits} to the end of the codeword to ensure that the last $m_s$ parity-check equations of the terminated \gls{pcm} are fulfilled. Termination also ensures that the encoder returns to an all-zero state before encoding the next codeword. For recursive convolutional codes, the termination bits are determined by solving a system of linear equations in $\mathbb{F}_2$. Whereas for non-recursive convolutional codes, appending a series of bits with value zero is sufficient.
 
-Termination introduces a rate loss because the termination bits are transmitted which are known at the receiver. Hence for the rate calculation of a terminated \gls{ldpccc}, the termination bits are not taken into account. However, the rate loss is compensated by an increase in decoding performance as the termination reduces the \gls{cn} degrees at the end of the codeword and smaller \gls{cn} degrees are better.
+Termination introduces a rate loss because the termination bits do not contain any information. Hence, for the rate calculation of a terminated \gls{ldpccc}, the termination bits are not taken into account. However, the rate loss is compensated by an increase in decoding performance as the termination reduces the \gls{cn} degrees at the end of the codeword and smaller \gls{cn} degrees are better.
 
 The \gls{pcm} of a terminated \gls{ldpccc} is a sub-matrix of the infinitely long \gls{pcm} of the code (\ref{eq:H_infty}). The terminated \gls{pcm} has a structure as given by
 
@@ -150,11 +166,11 @@ The entire graph in Figure~\ref{fig:tannGraphLdpccc} can be seen as a Tanner gra
 \subsection{\acrlong{ldpccc} Used in IEEE 1901}\label{sec:bpl_bg}
 In this thesis, we use the \glspl{ldpccc} specified in the \gls{bpl} or IEEE 1901 standard to evaluate our decoder~\cite{Bpl}. From now on, we refer to the \glspl{ldpccc} in the IEEE 1901 standard as \emph{\gls{bpl}~codes}. The \gls{bpl} codes are specified as sets of parity-check polynomials for all asymptotic rates $R_\infty=k/n,\ n\in\{2,3,4,5\}$ where $k=n-1$. In other words, the \gls{bpl} codes have only one parity bit in each \gls{cb}. 
 
-The codes are defined as parity-check polynomials expressed as
-\begin{align}
-\sum_{i=1}^{k}A_{i,\tau}(D)M_i(D)+\sum_{i=1}^{n-k}C_{i,\tau}(D)B_i(D)=0\mod 2
+The codes are defined as
+\begin{align}\label{eq:bpl_poly}
+\sum_{i=1}^{k}A_{i,\tau}(D)M_i(D)+\sum_{i=1}^{n-k}C_{i,\tau}(D)B_i(D)\equiv 0\mod 2
 \end{align}
-where $k$ is the number of message bits in each \gls{cb}, $\tau \in \{0,\dots,T-1\}$ is the phase of the code that is given by $\tau=(t\ \text{mod}\ T)$, $T$ is the periodicity of the codes, $M_i(D),i=1,\dots,k$ represents message bits and $B_i(D),i=1,\dots,n-k$ represents parity bits, $A_{i,\tau}$ and $C_{i,\tau}$ defines the connection between the bits based on delay $D$.
+where $k$ is the number of message bits in each \gls{cb}, $\tau \in \{0,\dots,T-1\}$ is the phase of the code that is given by $\tau=(t\ \text{mod}\ T)$, $T$ is the periodicity of the codes, $M_i(D),i=1,\dots,k$ represents message bits and $B_i(D),i=1,\dots,n-k$ represents parity bits. $A_{i,\tau}$ and $C_{i,\tau}$ define the connections between the bits based on delay $D$.
 
 The memory $m_s$ of the code is
 \begin{align}
@@ -164,29 +180,45 @@ where $\tau \in \{0,\dots,T-1\}$ and deg$(f(x))$ denotes the set of all degrees 
 
 The \gls{bpl} codes are periodic with $T=3$. Periodic codes have time-varying parity-check polynomials which repeat every $T$ \glspl{cb}. For illustration, the parity-check polynomial of the \gls{bpl} code for $R_\infty=2/3$ and $\tau=0$ is given by
 \begin{align}
-&(D^{214}+D^{185}+1)M_1(D)+(D^{194}+D^{67}+1)M_2(D)+(D^{215}+D^{145}+1)B(D)=0\mod 2.
+&(D^{214}+D^{185}+1)M_1(D)+(D^{194}+D^{67}+1)M_2(D)+(D^{215}+D^{145}+1)B(D)=0\mod 2,
 \end{align}
-$m_s=215$ for $n=2$ and $m_s=226$ for $n\neq2$. All $A_{i,\tau}$ and $C_{i,\tau}$ have three taps for each bit in the \gls{cb}. So there is a maximum of $3n$ taps or edges per \gls{cn}.
+for $\tau=1$ as
+\begin{align}
+&(D^{160}+D^{62}+1)M_1(D)+(D^{226}+D^{209}+1)M_2(D)+(D^{206}+D^{127}+1)B(D)=0\mod 2,
+\end{align}
+and for $\tau=2$ as
+\begin{align}
+&(D^{196}+D^{143}+1)M_1(D)+(D^{115}+D^{104}+1)M_2(D)+(D^{211}+D^{119}+1)B(D)=0\mod 2.
+\end{align}
+$m_s=215$ for $n=2$ and $m_s=226$ for $n\neq2$. All $A_{i,\tau}$ and $C_{i,\tau}$ have three taps for each bit in the \gls{cb}. There is a maximum of $3n$ taps or edges per \gls{cn}.
 
 \cite{Bpl} specifies that termination is achieved by appending bits with value $0$ to the end of the message bits before encoding. These bits are called \emph{zero-tail bits}. The number of zero-tail bits $\gls{mnz}$ depends on the number of message bits $\gls{mnm}$ in the codeword and the asymptotic rate $R_\infty$. The number of \glspl{cb} in the terminated codeword is \begin{align}L=\frac{n_m+n_z}{n-1}.\end{align} Since the zero-tail bits are known at the receiver, they are not transmitted. Only the parity bits generated from the zero-tail bits are transmitted. Hence, the actual rate of the terminated \gls{bpl} code is
 \begin{align}\label{eq:rate_term}
 R_L=\frac{n_m}{Ln-n_z}.
 \end{align}
+The relation between $R_L$ and $R_\infty$ is given by rearranging (\ref{eq:rate_term})
+\begin{align}
+R_L=\nu R_\infty
+\end{align}
+where $\nu=\frac{Ln}{Ln-n_z}$ and $R_\infty=\frac{n_m}{Ln}=\frac{k}{n}$. Hence,
+\begin{align}
+\lim_{L\to\infty}R_L=R_\infty.
+\end{align}
 Encoding and termination of \gls{bpl} codes is explained in detail in Chapter~\ref{ch:encode}.
 
 \section{Decoding of \acrlong{ldpc} Codes}\label{sec:decoding_ldpc}
-A channel decoder attempts to find the transmitted codeword $\x$ from the received word $\gls{mby}$. The best decoder in terms of performance is a \gls{map} based decoder. Hence, its complexity grows exponentially with the information word length because it finds among all possible codewords the codeword that has the highest probability given the received word. The estimate of the transmitted codeword from a \gls{map} decoder is given by
+A channel decoder attempts to find the transmitted codeword $\x$ from the received word $\gls{mby}$. The best decoder in terms of performance is a \gls{map} decoder. Its complexity grows exponentially with the information word length because it finds among all possible codewords the codeword that has the highest probability given the received word. The estimate of the transmitted codeword from a \gls{map} decoder is given by
 \begin{align}
 \gls{mhbx}&=\argmax_{\x_i}\pdf_{X\mid Y}\left(\x_i,\gls{mby}\right) \nonumber\\
 &=\argmax_{\x_i}\frac{\pdf_{Y\mid X}\left(\gls{mby},\x_i\right)\prob(\x_i)}{\prob(\gls{mby})} \nonumber\\
-&=\argmax_{\x_i}\gls{mpdf}_{Y\mid X}\left(\gls{mby},\x_i\right)\prob(\x_i)
+&=\argmax_{\x_i}\gls{mpdf}_{Y\mid X}\left(\gls{mby},\x_i\right)\prob(\x_i)\label{eq:aap}
 \end{align}
 where $\x_i$ is a codeword from the set of all codewords, $\gls{mby}$ is the received word, $Y$ and $X$ are random variables representing received word and transmitted codeword respectively. For equiprobable codewords $\x_i$, a \gls{map} decoder is equivalent to a \gls{ml} decoder.
 
 Due to the high complexity of \gls{map} decoders, \gls{ldpc} codes are usually decoded using iterative \acrlong{mpa}.
 \subsection{Belief Propagation}
-The \gls{mpa} uses the \gls{bp} technique~\cite{Hagenauer1996} to compute the \emph{a-posteriori} probability of the bits in the transmitted codeword given the received word in an iterative fashion. The idea behind belief propagation is exchanging uncertainties between the bits which are connected as defined by the encoder or \gls{pcm}. Refer to Section~\ref{sec:enc_design} to see how different bits in the codeword are dependent on each other. The algorithm uses \glspl{llr} instead of \glspl{app} for numerical stability. The \gls{llr} values given by the channel for the received bits are
-\begin{align}\mathcal{L}(y_i)=\log\frac{\prob\left(x_i=1\mid\gls{mby}\right)}{\prob\left(x_i=0\mid\gls{mby}\right)}\end{align}
+The \gls{mpa} uses the \gls{bp} technique~\cite{Hagenauer1996} to compute the \emph{a-posteriori} probability of the bits in the transmitted codeword given the received word in an iterative fashion. The idea behind belief propagation is exchanging uncertainties between the bits which are connected as defined by the encoder or \gls{pcm}. Refer to Section~\ref{sec:enc_design} to see how different bits in the codeword are dependent on each other. The algorithm uses \glspl{llr} instead of \glspl{app} as in (\ref{eq:aap}) for numerical stability. The \gls{llr} values given by the channel for the received bits are
+\begin{align}\mathcal{L}(y_i)=\log\frac{\prob\left(X_i=1\mid\gls{mby}\right)}{\prob\left(X_i=0\mid\gls{mby}\right)}\end{align}
 where $i=0,\dots,n-1$ is the index of bits in the codeword.
 
 \begin{figure}[htbp]
@@ -197,7 +229,7 @@ where $i=0,\dots,n-1$ is the index of bits in the codeword.
   \label{fig:app_llr}
 \end{figure}
 
-Figure~\ref{fig:app_llr} shows the relation between \gls{app} and \gls{llr}. The \gls{app} values range from 0 to 1 while the \gls{llr} takes values ranging from $-\infty$ to $+\infty$ which makes calculation of messages easier.
+Figure~\ref{fig:app_llr} shows the relation between $\prob\left(X_i=0\mid\gls{mby}\right)$ and $\mathcal{L}(y_i)$. The \gls{app} values range from 0 to 1 while the \gls{llr} takes values ranging from $-\infty$ to $+\infty$ which makes calculation of messages easier.
 
 In a single iteration of the algorithm, the \glspl{llr} of each bits in the codeword are updated through two intermediate message computations: \gls{v2c} message and \gls{c2v} message.
 \begin{itemize}
@@ -241,26 +273,28 @@ The high complexity C2V message computation can be approximated by a low-complex
   \label{fig:flooding}
 \end{figure}
 
-One can perform the edge updates in different sequences. The sequencing is termed as \emph{scheduling}. Two such scheduling methods are \emph{parallel scheduling} and \emph{serial scheduling}. In parallel scheduling which is also referred to as \emph{flooding}, the \glspl{vn} send V2C messages to all \glspl{cn} at once and then C2V messages are computed and passed to all \glspl{vn}. In Figure~\ref{fig:flooding}, the left graph indicates V2C message passing and the right graph indicated C2V message passing. Parallel scheduling is possible and much faster on a parallel computing platform because the edge updates are independent to each other. But compared to its serial counterpart, parallel scheduling lacks performance because the messages are not shared between different \glspl{cn}. In serial scheduling~\cite{Zhang2002}, the \glspl{vn} are updated in a \gls{cn}-by-\gls{cn} or row-by-row (in the \gls{pcm}) manner. Each \gls{cn} processes its incoming V2C messages and sends the corresponding C2V messages to its neighboring \glspl{vn}. This is called a \emph{row update} or a \emph{layer update}. Figure~\ref{fig:serial_sch} shows how message passing is performed in serial scheduling. There is a trade-off between performance and latency with both the scheduling procedures. Serial scheduling yields better performance than parallel scheduling as the \glspl{cn} that are being processed later will have updated \glspl{llr} from the \glspl{vn}. While in parallel scheduling, all \glspl{cn} receive only the original channel \glspl{llr} from the \glspl{vn}. In a conventional \gls{bp} based decoder with any type of scheduling, the entire message passing is repeated for maximum number of $I$ iterations.
+One can perform the edge updates in different sequences. The sequencing of edge updates is termed as scheduling. Two such scheduling methods are \emph{parallel scheduling} and \emph{serial scheduling}. In parallel scheduling which is also referred to as \emph{flooding}, the \glspl{vn} send V2C messages to all \glspl{cn} at once and then C2V messages are computed and passed to all \glspl{vn}. In Figure~\ref{fig:flooding}, the left graph indicates V2C message passing and the right graph indicated C2V message passing. In serial scheduling~\cite{Zhang2002}, the \glspl{vn} are updated in a \gls{cn}-by-\gls{cn} or row-by-row (in the \gls{pcm}) manner. Each \gls{cn} processes its incoming V2C messages and sends the corresponding C2V messages to its neighboring \glspl{vn}. This is called a \emph{row update} or a \emph{layer update}. Figure~\ref{fig:serial_sch} shows how message passing is performed in serial scheduling. Parallel scheduling is much faster on a parallel computing platform because the edge updates are independent to each other. But compared to its serial counterpart, parallel scheduling lacks performance because the edges are updated in parallel and only the original messages from the \glspl{vn} are used. Serial scheduling yields better performance than parallel scheduling as the \glspl{cn} that are being processed later will have updated \glspl{llr} from the \glspl{vn}. In a conventional \gls{bp} decoder with any type of scheduling, the entire message passing is repeated for a maximum of $I$ iterations.
 
-With serial scheduling, the order of \gls{cn} processing can be varied to get varying decoding performance. Figure~\ref{fig:serial_sch} illustrates the serial scheduling with \gls{cn} processing starting from left to right i.e., top to bottom in the \gls{pcm}. For irregular codes, a good choice for \gls{cn} processing order will be starting from \glspl{cn} that has the lowest \gls{vn} degree and moving to higher \gls{vn} degree \glspl{cn}.
+With serial scheduling, different orders of \gls{cn} processing results in decoding performance changes. Figure~\ref{fig:serial_sch} illustrates serial scheduling with \gls{cn} processing from left to right i.e., top to bottom in the \gls{pcm}. For irregular codes, a good choice is to start processing the \gls{cn} that has the lowest \gls{vn} degree and move to higher \gls{vn} degree \glspl{cn}.
 
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{serial_sch}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/serial_sch}
-  \caption{Illustration of serial scheduling with the same Tanner graph from Figure~\ref{fig:flooding}.}
+  \caption{Illustration of serial scheduling with the same Tanner graph as in Figure~\ref{fig:flooding}. The processing starts from the left most \gls{cn} and moves right to the last \gls{cn}.}
   \label{fig:serial_sch}
 \end{figure}
 
 In our implementation, we use an improved \gls{msa} as proposed in~\cite{Jones2003} which is a combination of (\ref{eq:c2v}) and (\ref{eq:msa}). We do serial scheduling with layer updates starting from top to bottom. We also do a bottom to top layer update which is discussed in Chapter~\ref{ch:dec_improve}.
 
-\subsection{Pipeline vs Window Decoding}\label{sec:back_wd}
-A decoding technique that was proved to be efficient for \glspl{ldpccc} is the \emph{pipeline decoding} introduced in~\cite{Felstrom1999}. The pipeline decoder employs $I$ parallel processing units which is equal to the maximum number of iterations performed in a conventional \gls{bp} decoder. Each processing unit covers $\gls{mlc}=(m_s+1)n$ \glspl{vn}, so that during a single decoding iteration the messages are passed to \glspl{vn} within the processing unit. Hence, the whole decoding unit covers a total of $Il_c$ \glspl{vn}. In each time instance, $n$ \glspl{vn} and $n-k$ \glspl{vn} enter the right most processor and $n$ estimated \glspl{vn} leave from the left processor. At every time instance, each processor updates the last \gls{cn} inside the processing unit. Hence, at the end of $I$ time instances, all \glspl{cn} are processed $I$ times. Figure~\ref{fig:pipeline} illustrates pipeline decoding for a $R_\infty=1/2$ code with $\gls{mms}=3$ and $I=3$. The codeword is indicated by the rectangular bar above the \gls{pcm}. The red windows are the three processing units. The green (backhatched) part of the codeword indicates the estimated \glspl{vn} and the blue (hatched) part indicates the next available estimated \glspl{vn}. The brown (vertically hatched) and red (horizontally hatched) regions indicate the \glspl{vn} that are processed currently and \glspl{vn} that are not yet processed, respectively. The arrows indicate the \glspl{cn} that are processed at the current time instance.
+\subsection{LDPC-CC-specific Decoding Techniques}
+The conventional \gls{bp}-based block decoder can be used to decode any \gls{ldpcbc} or terminated \gls{ldpccc} in which the \gls{bp} is performed throughout the whole Tanner graph at once. For \glspl{ldpccc}, the convolutional structure imposes a constraint on the \glspl{vn}: two \glspl{vn} of the \gls{pcm} that are at least $(m_s+1)n$ columns apart cannot be involved in the same parity-check equation. This characteristic can be exploited to perform iterative \gls{bp} decoding only to a part of the codeword at a time. Two of such decoding techniques are \emph{pipeline} and \emph{window} decoding.
+\subsubsection{Pipeline Decoder}
+A decoding technique that was proved to be efficient for \glspl{ldpccc} is the \emph{pipeline decoding} introduced in~\cite{Felstrom1999}. The pipeline decoder employs $I$ parallel processing units. Each processing unit covers $\gls{mlc}=(m_s+1)n$ \glspl{vn}, so that during a single decoding iteration the messages are only passed to other \glspl{vn} within the same processing unit. Hence, all the processing units cover a total of $Il_c$ \glspl{vn}. In each time instance, $n$ \glspl{vn} and $n-k$ \glspl{vn} enter the rightmost processor and $n$ estimated \glspl{vn} leave from the leftmost processor. Hence, at the end of $I$ time instances, all \glspl{cn} are processed $I$ times. Figure~\ref{fig:pipeline} illustrates pipeline decoding of a code with $R_\infty=1/2$, $\gls{mms}=3$ and $I=3$. The codeword is indicated by the rectangular bar above the \gls{pcm}. The red windows are the three processing units. The green (backhatched) part of the codeword indicates the estimated \glspl{vn} and the blue (hatched) part indicates the next available estimated \glspl{vn}. The brown (vertically hatched) and red (horizontally hatched) regions indicate the \glspl{vn} that are currently being processed and \glspl{vn} that are yet to be processed, respectively. The arrows indicate the \glspl{cn} that are processed at the current time instance.
 
-The latency in seconds per bit of a pipeline decoder is given by
+The decoding rate (the output rate of the decoder) of a pipeline decoder is given by
 \begin{align}
-\gls{mkapa}_{\text{pd}}=\frac{\gls{mpsi}}{n}s
+\gls{mkapa}_{\text{pd}}=\frac{n}{\gls{mpsi}}\text{bits}/\text{second}
 \end{align}
 where $\psi$ is the time taken in seconds to perform one \gls{cn} processing.
 
@@ -268,11 +302,12 @@ where $\psi$ is the time taken in seconds to perform one \gls{cn} processing.
   \centering
   \tikzsetnextfilename{pipeline}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/pipeline}
-  \caption{\gls{pcm} illustrating the pipeline decoding technique for $R_\infty=1/2$ codes with $m_s=2$ and $I=3$.}
+  \caption{\gls{pcm} illustrating the pipeline decoding technique for code with $R_\infty=1/2$, $m_s=2$ and $I=3$. The arrows indicate the CNs that are processed at current time instance.}
   \label{fig:pipeline}
 \end{figure}
 
-The conventional \gls{bp}-based block decoder can be used to decode any \gls{ldpcbc} or terminated \gls{ldpccc} in which the belief propagation is performed throughout the whole Tanner graph at once. For \glspl{ldpccc}, the convolutional structure imposes a constraint on the \glspl{vn}: two \glspl{vn} of the \gls{pcm} that are at least $(m_s+1)n$ columns apart cannot be involved in the same parity-check equation. This characteristic can be exploited to perform iterative belief-propagation decoding only to a \emph{window} (part) of the received codeword at once~\cite{Iyengar2012}. This technique is called \emph{\gls{wd}} and is shown in Figure~\ref{fig:wd}.
+\subsubsection{Window Decoder}\label{sec:back_wd}
+Figure~\ref{fig:wd} illustrates a window decoder with window size of $W=4$ and window position $\rho=5$. The solid red box is the current window instance. The blue hatched region of the codeword is the \emph{target \glspl{vn}}, the red vertically hatched region is rest of the \glspl{vn} that are updated inside the current window. The blue colored edges in the \gls{pcm} are the edges that are updated during the current window instance. The red colored edges are outside the window but they are still updated since their corresponding \glspl{cn} are inside the window. The green backhatched region of the codeword are the \glspl{vn} that receive updates from the red colored edges.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{pcm_wd}
@@ -287,22 +322,22 @@ The conventional \gls{bp}-based block decoder can be used to decode any \gls{ldp
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/pcm_wd_last}
   \caption{Target \glspl{vn} for first, middle and the last window positions.}
   \label{fig:wd_last}
-\end{figure}
+\end{figure} 
 
-In Figure~\ref{fig:wd}, the window size is $W=4$ and the window position is $\rho=5$. The solid red box is the current window instance. The blue hatched region of the codeword is the \emph{target \glspl{vn}}, the red vertically hatched region is rest of the \glspl{vn} that are updated inside the current window. The blue colored edges in the \gls{pcm} are the edges that are updated during the current window instance. The red colored edges are outside the window but they are still updated since their corresponding \glspl{cn} are inside the window. The green backhatched region of the codeword are the \glspl{vn} that receive updates from the red colored edges. One may choose to not update the edges that are outside the window. This is to prevent the correctly estimated \glspl{vn} from updating to incorrect values that might propagate from inside the window. Another option might be to only read the \glspl{llr} values from \glspl{vn} connected to the red edges. This prevents the estimated \glspl{vn} from updating to incorrect values while having the advantage of using their \glspl{llr} to update the \glspl{vn} inside the window. In this thesis, we choose to update the \glspl{vn} in the green backhatched region. This has an added advantage of increasing the magnitude of their \glspl{llr} which in turn has a positive influence on the \glspl{vn} in the next window instances. Also, the \glspl{vn} in the left of the window are more reliable than in the right of the window. Hence, the probability that the \glspl{vn} in the green backhatched region flipping signs is low. This motivates us to choose this window configuration. The brown dotted region of the codeword is the \glspl{vn} that are already estimated and no more receive updates from further decoding. The red dashed box indicates the next window instance. 
+One may choose to not update the edges that are outside the window. This is to prevent the correctly estimated \gls{llr} values of the \glspl{vn} from updating to incorrect values that might propagate from inside the window. Another option might be to only read the \glspl{llr} values from \glspl{vn} connected to the red edges. This prevents the estimated \gls{llr} of the \glspl{vn} from updating to incorrect values while having the advantage of using their \glspl{llr} to update the \glspl{vn} inside the window. In this thesis, we choose to update the \glspl{vn} in the green backhatched region. This has an advantage of increasing the magnitude of their \glspl{llr} which in turn has a positive influence on the \glspl{vn} in the next window instances. Also, the \glspl{vn} in the left of the window are more reliable than in the right of the window. Hence, the probability of \gls{llr} of  the \glspl{vn} in the green backhatched region flipping their sign is low. This motivates us to choose this window configuration. The brown dotted region of the codeword is the \glspl{vn} that are already estimated and no longer receive updates from further decoding. The red dashed box indicates the next window instance. 
 
-A window must include $Wn$ \glspl{vn} and $W(n-k)$ \glspl{cn}. Hence, the size of the window should be $\gls{mW}\geq (m_s+1)$ because smaller window size will not include at least one full \glspl{cn} with all its edges. At each window instance, the first $n$ \glspl{vn} are considered to be the target nodes. However, all \glspl{vn} connected to the $W(n-k)$ \glspl{cn} are updated, only the correctness of target nodes are considered as the criteria for moving on to the next window. The \gls{bp} decoding is performed within the current window for a maximum number of $I$ iterations or until the target nodes are decoded (whichever occurs earlier). Then the window shifts forward such that the next $n$ \glspl{vn} become the target nodes. This process continues until all \glspl{vn} in the received word are decoded.
+A window must include $Wn$ \glspl{vn} and $W(n-k)$ \glspl{cn}. Hence, the size of the window should be $\gls{mW}\geq (m_s+1)$ because smaller window sizes will not include at least one full \gls{cn} with all its edges. At each window instance, the first $n$ \glspl{vn} are considered to be the target nodes. However, all \glspl{vn} connected to the $W(n-k)$ \glspl{cn} are updated, only the correctness of target nodes are considered as the criteria for moving on to the next window. The \gls{bp} decoding is performed within the current window for a maximum number of $I$ iterations or until the parity-check equations involving the target nodes are fulfilled (whichever occurs earlier). Then the window shifts forward such that the next $n$ \glspl{vn} become the target nodes. The process continues until all \glspl{vn} in the received word are decoded.
 
-With window decoder, there are several ways to perform the decoding when the window reaches the right most end of the \gls{pcm}. The conventional way is to keep moving the window until the last $n$ \glspl{vn} are the target \glspl{vn}. Another method is when the window touches the right most column of the \gls{pcm}, the window extends its height to include the remaining $m_s$ \glspl{cn} of the \gls{pcm} and considering all the \glspl{vn} inside the last window as target \glspl{vn}. This is illustrated in Figure~\ref{fig:wd_last}. We choose the second method as this reduces the number of iterations compared to the conventional method. As the \gls{cn} in the end of the \gls{pcm} has fewer \gls{cn} degree, this compensates to the reduced decoding performance for having fewer iterations.
+With the window decoder, there are several ways to perform the decoding when the window reaches the rightmost end of the \gls{pcm}. The conventional way is to keep moving the window until the last $n$ \glspl{vn} are the target \glspl{vn}. Another method is when the window touches the rightmost column of the \gls{pcm}, the window extends its height to include the remaining $m_s$ \glspl{cn} of the \gls{pcm}. Also, all the \glspl{vn} inside the last window are considered as target \glspl{vn}. The last window scenario is illustrated in Figure~\ref{fig:wd_last}. We choose the second method as it reduces the number of iterations compared to the conventional method. The lower \gls{cn} degree in the end of the \gls{pcm} compensates to the reduced decoding performance for having fewer iterations.
 
-The latency in seconds per bit of a window decoder is given by
+The decoding rate in bits of a window decoder is given by
 \begin{align}
-\kappa_{\text{wd}}=\frac{W\psi}{n}s.
+\kappa_{\text{wd}}=\frac{n}{\psi\cdot I}\text{bits}/\text{second}.
 \end{align}
 
-The main benefit of window decoding is that the memory requirements are reduced because at any instance the \gls{bp} is performed on a smaller number of \glspl{vn} rather than the whole graph. For non-packet-wise transmissions, the decoding latency is also reduced compared to full-block decoding because the decoded bits can be sent to the higher layer for processing. However, these benefits come with a cost of reduced performance since the \gls{bp} is limited to fewer \glspl{vn} and \glspl{cn}.
+The main benefit of window decoding over full-block decoding is that the memory requirements are reduced because at any instance the \gls{bp} is performed on a smaller number of \glspl{vn} rather than the whole graph. For non-packet-wise transmissions, the decoded bits are sent to higher layer for processing rather than waiting for the whole codeword to be decoded as in a block decoder. However, these benefits come with a cost of reduced performance since the \gls{bp} is limited to fewer \glspl{vn} and \glspl{cn}.
 
-In this thesis, we choose window decoding over pipeline decoding because implementing parallel processing units in software is infeasible. Although window decoder has higher latency, we take the advantage of easy implementation.
+In this thesis, we choose window decoding over pipeline decoding because implementing parallel processing units in software is infeasible.
 
 \section{System Model}\label{sec:sys_mod}
 In this thesis, we consider a digital baseband system model for simulations as shown in Figure \ref{fig:system}. The information bits are generated using a random-number generator with uniform distribution. The sequence of bits $\m$ of the generated random bit is encoded using the \emph{BPL Codes Encoder} block. The details of this block are discussed in Chapter~\ref{ch:encode}. The \emph{\gls{qam} Modulator} block receives the codewords $\x\in\mathbb{F}_2^{Ln\times 1}$ from the encoder and maps them to complex-valued symbols depending on the chosen modulation scheme. The output of the modulator is a vector of symbols given by $\gls{mbu}\in\mathbb{C}^{\frac{Ln}{o}\times 1}$ where \gls{mo} is the order of modulation and lets assume that $Ln=go, g\in\mathbb{Z}_+$. Figure~\ref{fig:qpsk} shows a \gls{qpsk} symbol constellation. It is seen that the adjacent symbols differ by only one bit. This is called \emph{Gray Mapping}~\cite{proak}. In all our simulations we use \gls{qpsk} with gray mapping and no interleaving. Hence, $\gls{mbu}_i,i=0,\dots,\frac{Ln}{o}-1\in\{e^{j\frac{\pi}{4}},e^{j\frac{3\pi}{4}},e^{-j\frac{3\pi}{4}},e^{-j\frac{\pi}{4}}\}$.

@@ -34,5 +34,5 @@ minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=
 \node at (4,-4.5) {$\mathbf{P}$};
 \draw [decorate,decoration={brace,amplitude=10pt}]
 (0,1.2) -- (9,1.2) node [black,midway,yshift=0.3cm] 
-{$\mathbf{w}$};
+{$\mathbf{x}$};
 \end{tikzpicture}

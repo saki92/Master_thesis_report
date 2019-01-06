@@ -29,5 +29,5 @@ minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=
 \draw[->] (0.75,-2.25) -- (2,-2.25);
 \draw[->] (3.75,-3.75) -- (5,-3.75);
 \draw[->] (6.75,-5.25) -- (8,-5.25);
-\node[text width=5cm] at (3.5,-6) {Arrows indicate the CNs that are processed at current time instance};
+%\node[text width=5cm] at (3.5,-6) {Arrows indicate the CNs that are processed at current time instance};
 \end{tikzpicture}
