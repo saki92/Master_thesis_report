@@ -29,7 +29,7 @@ For our simulations, we used the baseband system model described in Section~\ref
 \label{tab:sim_param}
 \end{table}
 
-In most of our results we plot \gls{bler} instead of \gls{ber} because in modern packet based transmission system, the whole block is discarded in physical layer if they are incorrect. So, it is better to evaluate the performance by \gls{bler} than \gls{ber}.
+In most of our results we plot \gls{bler} instead of \gls{ber} because in modern packet based transmission system, the whole block is discarded in physical layer if they are incorrect. So, it is better to evaluate the performance by \gls{bler} than \gls{ber}. All the simulations results are averaged over a number of runs specified in the Table~\ref{tab:sim_param}.
 \section{Effect of Zero-tail Termination}
 In Chapter~\ref{ch:encode} we concluded that the termination for \gls{bpl} codes are performed through zero-tail termination. Here, we evaluate the effect of zero-tail termination on the probability of error of each bit in the codeword. Figure~\ref{fig:eval_no_sat} shows the probability of error of each bit in the codeword when the zero-tail bits are not known at the receiver, i.e., at the decoder the \glspl{llr} of zero-tail bits are saturated to $+\infty$. Figure~\ref{fig:eval_sat} shows the probability of bits in the codeword when zero-tail bits are known at the receiver. The probabilities are calculated using (\ref{eq:indiv_prob}) and are averaged over 4000 runs.  The plots include the information bits and the parity bits but do not include the termination sequence.
 \begin{figure}[htbp]
@@ -112,13 +112,13 @@ Now, we compare the performance of \gls{lrl} decoder configuration-\rom{1} with 
 \end{figure}
 
 From both the figures, we see a significant decrease in \gls{bler} and \gls{aneu} of the \gls{lrl} decoder. It indicates that the second phase of the \gls{lrl} decoder has improved the certainty of the bits through the information from the bits in the right of the codeword. This phenomenon can be seen in Figure~\ref{fig:eval_bd_lrl_iber} which plots the individual bit error probabilities for both decoders. Hence, the proposed \gls{lrl} decoder is better than the \gls{bd} in terms of decoding performance and complexity.
-\begin{figure}[htbp]
-  \centering
-  \tikzsetnextfilename{eval_sat}
-  \includegraphics[width=0.9\linewidth]{plots/eval_sat}
-  \caption{Individual bit error probability for \gls{bd} and \gls{lrl} decoder for $W=500$ and $\zeta=2.4$ dB.}
-  \label{fig:eval_bd_lrl_iber}
-\end{figure}
+%\begin{figure}[htbp]
+%  \centering
+%  \tikzsetnextfilename{eval_bd_lrl_iber}
+%  \includegraphics[width=0.9\linewidth]{plots/eval_bd_lrl_iber}
+%  \caption{Individual bit error probability for \gls{bd} and \gls{lrl} decoder for $W=500$ and $\zeta=2.4$ dB.}
+%  \label{fig:eval_bd_lrl_iber}
+%\end{figure}
 
 Figure~\ref{fig:eval_bd_lrl_bler_700} and Figure~\ref{fig:eval_bd_lrl_aneu_700} compares the performance and complexity between the \gls{bd} and \gls{lrl} decoder configuration-\rom{1} for window size $W=700$. We see that as the window size increases there is an improvement in \gls{bler} but no significant decrease in the complexity. It is because with larger windows, the \gls{bp}'s performance is better as seen in Figure~\ref{fig:eval_bd_bler}. So, as the window size increases the performance of both \gls{bd} and \gls{lrl} decoder approaches the performance of full-block decoder, i.e., a decoder with maximum $W$.
 \begin{figure}[htbp]

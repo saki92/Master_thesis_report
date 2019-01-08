@@ -49,13 +49,13 @@ then the \gls{gm} can be formed by combining any 3 rows of null$(\H)$, i.e., the
 \end{align}
 
 Figure~\ref{fig:intro_ber} shows a simple comparison of \gls{ber} between uncoded transmission, transmission using a $(7,4)$ hamming code and transmission using a \gls{ldpc} with about the same rate as the hamming code.
-%\begin{figure}[htbp]
-%  \centering
-%  \tikzsetnextfilename{intro_ber}
-%  \includegraphics[width=0.9\linewidth]{plots/intro_ber}
-%  \caption{Probability of error for uncoded, hamming coded and \gls{ldpc} coded transmissions.}
-%  \label{fig:intro_ber}
-%\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \tikzsetnextfilename{intro_ber}
+  \includegraphics[width=0.9\linewidth]{plots/intro_ber}
+  \caption{Probability of error for uncoded, hamming coded and \gls{ldpc} coded transmissions.}
+  \label{fig:intro_ber}
+\end{figure}
 
 The \gls{pcm} can be represented by a bipartite graph called Tanner graph~\cite{Tanner1981}. The Tanner graph has two sets of nodes: \glspl{vn} represent columns and \glspl{cn} represent rows of the \gls{pcm}. Each non-zero entry in the \gls{pcm} is represented by an edge between the respective \gls{vn} and \gls{cn}. The \emph{degree} of a node is the number of edges connected to it. The Tanner graph of the example \gls{pcm} in (\ref{eq:H_ham}) is shown in Figure \ref{fig:tannGraph}.
 
@@ -116,7 +116,7 @@ The \emph{constraint length} of a convolutional code is $l_c=m_s+1$ where $m_s$ 
   \mathbf{s}(t+1)\\
   \end{matrix}
 \end{align}
-where the $\H_\mu(t)\in\mathbb{F}_2^{(n-k)\times n},\mu=0,\dots,m_s$ are \glspl{pcm} of different \glspl{ldpcbc} of rate $R_infty=\gls{mk}/\gls{mn}$ for different time instances and $m_s$ is the memory of the code. Hence, the asymptotic rate of the resulting \gls{ldpccc} is $\gls{mRi}=k/n$. $\gls{mbs}(t)\in\mathbb{F}_2^{(n-k)\times 1}$ denotes the syndromes resulting from the parity check equations. The codewords of such a code have the form 
+where the $\H_\mu(t)\in\mathbb{F}_2^{(n-k)\times n},\mu=0,\dots,m_s$ are \glspl{pcm} of different \glspl{ldpcbc} of rate $R_\infty=\gls{mk}/\gls{mn}$ for different time instances and $m_s$ is the memory of the code. Hence, the asymptotic rate of the resulting \gls{ldpccc} is $\gls{mRi}=k/n$. $\gls{mbs}(t)\in\mathbb{F}_2^{(n-k)\times 1}$ denotes the syndromes resulting from the parity check equations. The codewords of such a code have the form 
 \begin{align}
 \x^T=
 \begin{bmatrix}
@@ -286,7 +286,7 @@ The high complexity C2V message computation can be approximated by a low-complex
 
 One can perform the edge updates in different sequences. Two such sequencing methods are \emph{parallel scheduling} and \emph{serial scheduling}. In parallel scheduling which is also referred to as \emph{flooding}, the \glspl{vn} send V2C messages to all \glspl{cn} at once and then C2V messages are computed and passed to all \glspl{vn}. In Figure~\ref{fig:flooding}, the left graph indicates V2C message passing and the right graph indicated C2V message passing. In serial scheduling~\cite{Zhang2002}, the \glspl{vn} are updated in a \gls{cn}-by-\gls{cn} or row-by-row (in the \gls{pcm}) manner. Each \gls{cn} processes its incoming V2C messages and sends the corresponding C2V messages to its neighboring \glspl{vn}. This is called a \emph{row update} or a \emph{layer update}. Figure~\ref{fig:serial_sch} shows how message passing is performed in serial scheduling. Parallel scheduling is much faster on a parallel computing platform because the edge updates are independent to each other. But compared to its serial counterpart, parallel scheduling lacks performance because the edges are updated in parallel and only the original messages from the \glspl{vn} are used. Serial scheduling yields better performance than parallel scheduling as the \glspl{cn} that are being processed later will have updated \glspl{llr} from the \glspl{vn}. In a conventional \gls{bp} decoder with any type of scheduling, the entire message passing is repeated for a maximum of $I$ iterations.
 
-With serial scheduling, different orders of \gls{cn} processing results in decoding performance changes. Figure~\ref{fig:serial_sch} illustrates serial scheduling with \gls{cn} processing from left to right i.e., top to bottom in the \gls{pcm}. For irregular codes, a good choice is to start processing the \gls{cn} that has the lowest \gls{vn} degree and move to higher \gls{vn} degree \glspl{cn}.
+With serial scheduling, different orders of \gls{cn} processing results in decoding performance changes. Figure~\ref{fig:serial_sch} illustrates serial scheduling with \gls{cn} processing from left to right i.e., top to bottom in the \gls{pcm}. For irregular codes, a good choice is to start processing the \gls{cn} that has the lowest \gls{vn} degree and move to higher \gls{vn} degree \glspl{cn}~\cite{Fren1902:Static}.
 
 \begin{figure}[htbp]
   \centering
@@ -432,9 +432,6 @@ P_L&=\prob\{\widehat{\m}\neq \m\}.
 \end{align}
 With \gls{ber} and \gls{bler} being the metrics for measuring decoding performance, \gls{aneu} is the metric for measuring decoding complexity. \gls{aneu} \gls{meta} is given by
 \begin{align}
-\eta&=\frac{1}{\eta_{\text{max}}}\sum_{\rho=0}^{\xi-1}\eta_\rho I_\rho
+\eta&=\sum_{\rho=0}^{\xi-1}\eta_\rho I_\rho
 \end{align}
-where $\xi$ is the total number of window positions, $\eta_\rho$ is the number of edges inside and $\gls{mI}_\rho$ is the number of iterations performed in \gls{mrho}-th window position. $\eta_{\text{max}}$ is the maximum number of edge updates possible and is given by
-\begin{align}
-\eta_{\text{max}}&=I\sum_{\rho=0}^{\xi-1}\eta_\rho.
-\end{align}
+where $\xi$ is the total number of window positions, $\eta_\rho$ is the number of edges inside and $\gls{mI}_\rho$ is the number of iterations performed in \gls{mrho}-th window position.
