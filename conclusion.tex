@@ -1,1 +1,10 @@
 \chapter{Conclusion}\label{ch:conclu}
+The accomplishments of this work is summarized in this chapter. Some advices for future works in window decoding of \gls{ldpccc} are also given.
+
+\section{Accomplishments}
+The scope of this work is to develop and evaluate an improved decoding algorithm for \gls{ldpccc}. Simulation results proved that the developed \acrfull{lrl} decoder performs better than a conventional sliding-window decoder. Simulation results also proved that the \acrfull{ipsc} is better than already existing \acrfull{psc} rule.
+
+We showed why the \gls{bpl} codes cannot be terminated normally and has to be zero-tail terminated. We also proved that the zero-tail termination effectively reduces the \gls{cn} degree and hence the \gls{ber}.
+
+\section{Future Work}
+Several adjustments can be made in the window movement within the \gls{pcm}. One such adjustment could be to move the window once from left to middle and right to middle of the \gls{pcm}. It could arguably give better \gls{ber} performance than just moving the window once from left end to right end of the \gls{pcm}. Another suggestion with regard to convergence criterion is to check the \gls{llr} magnitudes of the target nodes instead of hard values.

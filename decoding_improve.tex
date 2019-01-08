@@ -1,5 +1,5 @@
 \chapter{Decoding Improvements}\label{ch:dec_improve}
-In this Chapter, we discuss the techniques that are developed in this thesis that improve the decoding performance of window decoders. We start with the discussion of already existing techniques that improve the decoding performance and the motivation to develop new techniques. We then discuss the two techniques that are developed in this thesis.
+In this chapter, we discuss the techniques that are developed in this thesis that improve the decoding performance of window decoders. We start with the discussion of already existing techniques that improve the decoding performance and the motivation to develop new techniques. We then discuss the two techniques that are developed in this thesis.
 
 \section{Existing Techniques and Motivation}
 Improvement techniques for window decoding of \gls{ldpccc} are being widely discussed in literatures. An attractive technique that we found in the literature is the \emph{Zigzag decoder} proposed in~\cite{Shadi2015}. In a conventional window decoder (sliding-window decoder), the window moves from left to right of the \gls{pcm}~\cite{Iyengar2012}. So, the information about the probability of the bits flow from left to right of the codeword, i.e., in only one direction. This results in a loss in performance compared to a full-block decoder. The Zigzag decoder moves the window from right to left of the \gls{pcm} within a small part where the windows did not converge (i.e., the maximum number of iterations have reached and the \glspl{cn} inside the window did not fulfill the parity checks). It allows the information about probability of the bits to flow from right to left of the codeword, i.e., in the opposite direction. Hence, the different set of information have a positive effect on the reliability of the whole codeword.
@@ -7,6 +7,13 @@ Improvement techniques for window decoding of \gls{ldpccc} are being widely disc
 The Zigzag decoder performs better than the sliding-window decoder but the decoding complexity in terms of number of iterations is higher. The implementation complexity is also high due to the nature of the decoder. Also, the Zigzag decoder uses flooding scheduling in its windows which is subpar compared to serial scheduling. Hence, the aforementioned factors motivates us to develop a decoder that moves in both directions in the codeword but has similar complexity and better performance than a sliding-window decoder.
 
 Another improvement technique that we found to be interesting is about the condition for convergence of a window. Although its very natural to stop decoding when the target \gls{vn} are correct, one should choose an optimum criterion for deciding whether the target \gls{vn} are correct. A heuristic choice is to check whether the \emph{target-\glspl{cn}}, i.e., the \glspl{cn} connected to the target \glspl{vn} are fulfill their parity checks. A new criterion called \gls{psc} was proposed in~\cite{Kang2018} based on reliable \glspl{vn}. They distinguish the \glspl{vn} inside the window into \emph{complete-\glspl{vn}} and \emph{incomplete-\glspl{vn}}. Complete-\glspl{vn} are \glspl{vn} whose all the connected \glspl{cn} are inside the window. This includes the target \glspl{vn} also. So, the first $W-m_s$ \glspl{vn} inside the window are complete-\glspl{vn}. The remaining \glspl{vn} in the window are the incomplete-\glspl{vn}. This is illustrated in Figure~\ref{fig:comp_vn}. The authors say that the complete-\glspl{vn} are more reliable than the incomplete ones as they get more updates from \glspl{vn} from left of the window which are more reliable that are to the right. Hence, the parity checks of only the complete-\glspl{cn}, i.e., the \glspl{cn} connected to only the complete-\glspl{vn} are considered as convergence criterion.
+\begin{figure}[htbp]
+  \centering
+  \tikzsetnextfilename{comp_vn}
+  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/comp_vn}
+  \caption{\gls{pcm} illustrating complete-\glspl{vn}, incomplete-\glspl{vn} and complete-\glspl{cn}.}
+  \label{fig:comp_vn}
+\end{figure}
 
 Although the \gls{psc} rule proposed in~\cite{Kang2018} reduces the number of iterations with same performance, they are suitable only for small windows where $W<2m_s+1$. For larger windows, the number complete-\glspl{vn} are greater than the number of incomplete-\glspl{vn} which makes the number of complete-\glspl{cn} to be greater than the number of target-\glspl{cn}, i.e., the \glspl{cn} connected to target nodes. So, for larger windows the \gls{psc} rule actually increases the number of iterations. These factors motivates us develop a convergence criterion that depends on the window size.
 
@@ -51,7 +58,7 @@ Within the \gls{lrl} decoder, we propose two different window configurations. Th
   \centering
   \tikzsetnextfilename{win_config_lrl_new}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/win_config_lrl_new}
-  \caption{Different window configurations used in \gls{lrl} decoder. Left image illustrates \gls{lrl} configuration-\rom{1} and right image illustrates \gls{lrl} configuration-\rom{2}.}
+  \caption{Different window configurations used in \gls{lrl} decoder. Left image illustrates \gls{lrl} window configuration-\rom{1} and right image illustrates \gls{lrl} window configuration-\rom{2}.}
   \label{fig:win_config_lrl}
 \end{figure}
 
@@ -59,24 +66,17 @@ We discuss the performance of the \gls{lrl} decoder with both window configurati
 
 \section{\acrlong{ipsc}}
 The next technique we propose is the \gls{ipsc} rule. As mentioned earlier, a \gls{psc} was proposed in~\cite{Kang2018} that uses only complete-\gls{cn} as the convergence criterion. In the \gls{ipsc} rule, we introduce an additional convergence criterion for $W>2m_s+1$. When the window size $W>2m_s+1$ the target \glspl{cn} are considered for convergence criterion because the number of complete-\gls{cn} are greater than the number of target \glspl{cn}. Table~\ref{tab:ipsc} summarizes the \gls{ipsc} technique. The simulation results of the \gls{ipsc} are evaluated in Chapter~\ref{ch:simulation}.
-\begin{figure}[htbp]
-  \centering
-  \tikzsetnextfilename{comp_vn}
-  \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/comp_vn}
-  \caption{\gls{pcm} illustrating complete-\glspl{vn}, incomplete-\glspl{vn} and complete-\glspl{cn}.}
-  \label{fig:comp_vn}
-\end{figure}
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|l|l|}
   \hline
-  \textbf{No.} &\textbf{Window Size} &\textbf{Convergence Criterion}\\
+  \textbf{Window Size} &\textbf{Convergence Criterion}\\
   \hline
   \hline
-  1. &$W\leq2m_s+1$ &Complete-\glspl{vn}.\\
+  $W\leq2m_s+1$ &Complete-\glspl{vn}.\\
   \hline
-  2. &$W>2m_s+1$ &Target \glspl{vn}.\\
+  $W>2m_s+1$ &Target \glspl{vn}.\\
   \hline
 \end{tabular}
 \caption{Early-success criteria for \gls{ipsc}}

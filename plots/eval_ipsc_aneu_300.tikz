@@ -42,7 +42,7 @@ legend style={legend cell align=left, align=left, legend plot pos=left, draw=bla
 4.8	9357525\\
 5	8101157\\
 };
-\addlegendentry{Early Success Criterion - Target CNs}
+\addlegendentry{Convergence Criterion - Target CNs}
 
 \addplot [color=mycolor2, mark=o, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
@@ -63,7 +63,7 @@ legend style={legend cell align=left, align=left, legend plot pos=left, draw=bla
 4.8	4910149\\
 5	4880638\\
 };
-\addlegendentry{Early Success Criterion - Complete CNs}
+\addlegendentry{Convergence Criterion - Complete CNs}
 
 \end{axis}
 \end{tikzpicture}%

@@ -1,5 +1,5 @@
 \chapter{Encoding of the \acrlong{bpl} Codes}\label{ch:encode}
-In this Chapter, we discuss how the encoder for \gls{bpl} codes is designed and how termination is handled. In some places of this section, we use examples of \glspl{ldpccc} with small coupling length $L$ and syndrome-former memory $m_s$ as the \gls{bpl} codes are too large to be represented on paper.
+In this chapter, we discuss how the encoder for \gls{bpl} codes is designed and how termination is handled. In some places of this section, we use examples of \glspl{ldpccc} with small coupling length $L$ and syndrome-former memory $m_s$ as the \gls{bpl} codes are too large to be represented on paper.
 
 \section{Encoder Design}\label{sec:enc_design}
 Encoding algorithms are not as complex as decoding algorithm because decoders need to correct the incorrect bits in the codeword. The encoder for any Convolutional code or \gls{ldpccc} only needs to generate the parity bits from the information bits and previously generated parity bits. From equation (\ref{eq:bpl_poly}), the parity-check term of \gls{bpl} codes is given by
@@ -131,20 +131,20 @@ The \gls{pcm} of the zero-tail-terminated codes has the same \gls{cn} degrees in
 
 \begin{table}[htbp]
   \centering
-  \begin{tabular}{|l|p{7cm}|p{7cm}|}
+  \begin{tabular}{|p{7cm}|p{7cm}|}
     \hline
-    \textbf{No.} &\textbf{Proper Termination} &\textbf{Zero-Tail Termination}\\
+    \textbf{Proper Termination} &\textbf{Zero-Tail Termination}\\
     \hline
     \hline
-    1. &All parity-check equations of the \gls{pcm} are satisfied. &Last $m_s$ parity-checks of the original \gls{pcm} are not satisfied.\\
+    All parity-check equations of the \gls{pcm} are satisfied. &Last $m_s$ parity-checks of the original \gls{pcm} are not satisfied.\\
     \hline
-    2. &Encoder returns to all-zero state. &Encoder does not return to all-zero state.\\
+    Encoder returns to all-zero state. &Encoder does not return to all-zero state.\\
     \hline
-    3. &Predetermined matrices $\mathbf{F}=\mathbf{D}^{-1}\odot\mathbf{P}$ are stored for each $\tau$ and $R_\infty$ to compute $\mathbf{a}=\mathbf{F}\odot\mathbf{e}$. &Termination sequence is determined on the fly using the encoder.\\
+    Predetermined matrices $\mathbf{F}=\mathbf{D}^{-1}\odot\mathbf{P}$ are stored for each $\tau$ and $R_\infty$ to compute $\mathbf{a}=\mathbf{F}\odot\mathbf{e}$. &Termination sequence is determined on the fly using the encoder.\\
     \hline
-    4. &Lower \gls{cn} degree at the end of the \gls{pcm} than the middle. This enhances decoding performance. &Same \gls{cn} degree at the end of the \gls{pcm} as the middle.\\
+    Lower \gls{cn} degree at the end of the \gls{pcm} than the middle. This enhances decoding performance. &Same \gls{cn} degree at the end of the \gls{pcm} as the middle.\\
     \hline
-    5. &Termination sequence is unknown at the receiver. &Zero-tail bits are known at the receiver. This enhances decoding performance.\\
+    Termination sequence is unknown at the receiver. &Zero-tail bits are known at the receiver. This enhances decoding performance.\\
     \hline
   \end{tabular}
   \caption{Difference between proper termination and zero-tail termination.}

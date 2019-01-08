@@ -1,5 +1,5 @@
 \chapter{Background}\label{ch:back}
-In this Chapter, we provide an overview of channel coding and some selected channel codes. We start by discussing the need for channel coding. We then describe linear block codes, \gls{ldpc} codes and \glspl{ldpccc} which are the main focus of this thesis. Then we go on to discuss \gls{bp} and the sliding-window technique used in decoders for \glspl{ldpccc}. We finish the section describing our system model.
+In this chapter, we provide an overview of channel coding and some selected channel codes. We start by discussing the need for channel coding. We then describe linear block codes, \gls{ldpc} codes and \glspl{ldpccc} which are the main focus of this thesis. Then we go on to discuss \gls{bp} and the sliding-window technique used in decoders for \glspl{ldpccc}. We finish the section describing our system model.
 
 \section{Introduction to Channel Coding}
 The term \emph{coding} is generally associated with the mapping of information to a set of symbols or numbers~\cite{Bossert}. Source coding aims to remove the redundancy in the information whereas channel coding aims to make the information immune to random distortion. A model of a digital communication system is shown in Figure~\ref{fig:chanCoding}. Let us consider that the \emph{source} block produces a sequence of information bits given by the vector $\gls{mbd}$. These bits might stream from any digital information source such as multimedia files, text documents, etc. These vectors of bits are encoded in the \emph{source-encoder} block to produce reduced set of information bit vectors $\gls{mbm}$ called source codewords. The reduction usually means that the length of $\gls{mbm}$ is at most the length of $\gls{mbd}$. The mapping of information bits to a set of reduced information bits allows unique reconstruction of the information bits at the receiver. The source encoder is chosen depending on the type of the information source~\cite{proak}.
@@ -273,7 +273,7 @@ The high complexity C2V message computation can be approximated by a low-complex
   \label{fig:flooding}
 \end{figure}
 
-One can perform the edge updates in different sequences. The sequencing of edge updates is termed as scheduling. Two such scheduling methods are \emph{parallel scheduling} and \emph{serial scheduling}. In parallel scheduling which is also referred to as \emph{flooding}, the \glspl{vn} send V2C messages to all \glspl{cn} at once and then C2V messages are computed and passed to all \glspl{vn}. In Figure~\ref{fig:flooding}, the left graph indicates V2C message passing and the right graph indicated C2V message passing. In serial scheduling~\cite{Zhang2002}, the \glspl{vn} are updated in a \gls{cn}-by-\gls{cn} or row-by-row (in the \gls{pcm}) manner. Each \gls{cn} processes its incoming V2C messages and sends the corresponding C2V messages to its neighboring \glspl{vn}. This is called a \emph{row update} or a \emph{layer update}. Figure~\ref{fig:serial_sch} shows how message passing is performed in serial scheduling. Parallel scheduling is much faster on a parallel computing platform because the edge updates are independent to each other. But compared to its serial counterpart, parallel scheduling lacks performance because the edges are updated in parallel and only the original messages from the \glspl{vn} are used. Serial scheduling yields better performance than parallel scheduling as the \glspl{cn} that are being processed later will have updated \glspl{llr} from the \glspl{vn}. In a conventional \gls{bp} decoder with any type of scheduling, the entire message passing is repeated for a maximum of $I$ iterations.
+One can perform the edge updates in different sequences. Two such sequencing methods are \emph{parallel scheduling} and \emph{serial scheduling}. In parallel scheduling which is also referred to as \emph{flooding}, the \glspl{vn} send V2C messages to all \glspl{cn} at once and then C2V messages are computed and passed to all \glspl{vn}. In Figure~\ref{fig:flooding}, the left graph indicates V2C message passing and the right graph indicated C2V message passing. In serial scheduling~\cite{Zhang2002}, the \glspl{vn} are updated in a \gls{cn}-by-\gls{cn} or row-by-row (in the \gls{pcm}) manner. Each \gls{cn} processes its incoming V2C messages and sends the corresponding C2V messages to its neighboring \glspl{vn}. This is called a \emph{row update} or a \emph{layer update}. Figure~\ref{fig:serial_sch} shows how message passing is performed in serial scheduling. Parallel scheduling is much faster on a parallel computing platform because the edge updates are independent to each other. But compared to its serial counterpart, parallel scheduling lacks performance because the edges are updated in parallel and only the original messages from the \glspl{vn} are used. Serial scheduling yields better performance than parallel scheduling as the \glspl{cn} that are being processed later will have updated \glspl{llr} from the \glspl{vn}. In a conventional \gls{bp} decoder with any type of scheduling, the entire message passing is repeated for a maximum of $I$ iterations.
 
 With serial scheduling, different orders of \gls{cn} processing results in decoding performance changes. Figure~\ref{fig:serial_sch} illustrates serial scheduling with \gls{cn} processing from left to right i.e., top to bottom in the \gls{pcm}. For irregular codes, a good choice is to start processing the \gls{cn} that has the lowest \gls{vn} degree and move to higher \gls{vn} degree \glspl{cn}.
 
@@ -409,11 +409,11 @@ Hence, the \glspl{llr} can be written as
 
 After the \glspl{llr} are computed, they are decoded using the \gls{bp} and \gls{wd} techniques used inside the \emph{Window Decoder with BP} block. The decoding-improvement techniques that are used in this block are discussed in Chapter~\ref{ch:dec_improve}. The estimated bits $\widehat{\m}$ are then compared with the output of the random bit generator $\m$ to calculate the \gls{ber} and \gls{bler}. \gls{ber} \gls{mber} is the ratio between the number of error-bits and the total number of bits transmitted. The probability of error for each bit in the codeword is given by
 \begin{align}
-P_b(i)&=\prob\{\widehat{X}_i\neq X_i\}\\
+P_b(i)&=\prob\{\widehat{X}_i\neq X_i\}
 \end{align}
 and the overall probability of bit error is give by
 \begin{align}
-P_b&=\frac{1}{Ln}\sum_{i=0}^{Ln-1}P_b(i)\\
+P_b&=\frac{1}{Ln}\sum_{i=0}^{Ln-1}P_b(i)\label{eq:indiv_prob}
 \end{align}
 \gls{bler} \gls{mbler} is the ratio between the number of error-blocks and the total number of blocks transmitted. A block is considered to be an error-block if at least one information bit is incorrect. The \gls{bler} is given by
 \begin{align}
@@ -421,7 +421,7 @@ P_L&=\prob\{\widehat{\m}\neq \m\}.
 \end{align}
 With \gls{ber} and \gls{bler} being the metrics for measuring decoding performance, \gls{aneu} is the metric for measuring decoding complexity. \gls{aneu} \gls{meta} is given by
 \begin{align}
-\eta&=\frac{1}{\eta_{\text{max}}}\sum_{\rho=0}^{\xi-1}\eta_\rho I_\rho\\
+\eta&=\frac{1}{\eta_{\text{max}}}\sum_{\rho=0}^{\xi-1}\eta_\rho I_\rho
 \end{align}
 where $\xi$ is the total number of window positions, $\eta_\rho$ is the number of edges inside and $\gls{mI}_\rho$ is the number of iterations performed in \gls{mrho}-th window position. $\eta_{\text{max}}$ is the maximum number of edge updates possible and is given by
 \begin{align}
