@@ -29,6 +29,7 @@ For our simulations, we used the baseband system model described in Section~\ref
 \label{tab:sim_param}
 \end{table}
 
+In most of our results we plot \gls{bler} instead of \gls{ber} because in modern packet based transmission system, the whole block is discarded in physical layer if they are incorrect. So, it is better to evaluate the performance by \gls{bler} than \gls{ber}.
 \section{Effect of Zero-tail Termination}
 In Chapter~\ref{ch:encode} we concluded that the termination for \gls{bpl} codes are performed through zero-tail termination. Here, we evaluate the effect of zero-tail termination on the probability of error of each bit in the codeword. Figure~\ref{fig:eval_no_sat} shows the probability of error of each bit in the codeword when the zero-tail bits are not known at the receiver, i.e., at the decoder the \glspl{llr} of zero-tail bits are saturated to $+\infty$. Figure~\ref{fig:eval_sat} shows the probability of bits in the codeword when zero-tail bits are known at the receiver. The probabilities are calculated using (\ref{eq:indiv_prob}) and are averaged over 4000 runs.  The plots include the information bits and the parity bits but do not include the termination sequence.
 \begin{figure}[htbp]
