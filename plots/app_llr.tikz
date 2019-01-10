@@ -3,8 +3,8 @@
 \begin{tikzpicture}
 
 \begin{axis}[%
-width=0.951\fwidth,
-height=\fheight,
+width=\sfwidth,
+height=\sfheight,
 at={(0\fwidth,0\fheight)},
 scale only axis,
 unbounded coords=jump,

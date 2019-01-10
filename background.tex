@@ -52,8 +52,8 @@ Figure~\ref{fig:intro_ber} shows a simple comparison of \gls{ber} between uncode
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{intro_ber}
-  \includegraphics[width=0.9\linewidth]{plots/intro_ber}
-  \caption{Probability of error for uncoded, hamming coded and \gls{ldpc} coded transmissions.}
+  \includegraphics[width=0.75\textwidth]{plots/intro_ber}
+  \caption[Comparison of probability of bit error]{Probability of bit error for uncoded, Hamming coded and \gls{ldpc} coded transmissions.}
   \label{fig:intro_ber}
 \end{figure}
 
@@ -63,11 +63,11 @@ The \gls{pcm} can be represented by a bipartite graph called Tanner graph~\cite{
   \centering
   \tikzsetnextfilename{tanner_graph}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/tanner_graph}
-  \caption{Tanner graph of the code from (\ref{eq:H_ham}). The dark shaded circles represents \glspl{vn} and the crossed circles \glspl{cn}. All \glspl{cn} have degree 3 whereas the \gls{vn} degrees vary between 1 and 3.}
+  \caption[Tanner graph of an example Linear Block code.]{Tanner graph of the code from (\ref{eq:H_ham}). The dark shaded circles represents \glspl{vn} and the crossed circles \glspl{cn}. All \glspl{cn} have degree 3 whereas the \gls{vn} degrees vary between 1 and 3.}
   \label{fig:tannGraph}
 \end{figure}
 
-\subsection{\acrlong{ldpc} Block Codes}
+\subsection{\texorpdfstring{\acrlong{ldpc}}{LDPC} Block Codes}
 \glspl{ldpcbc} are a class of linear block codes which were introduced by Robert Gallager in 1963~\cite{Gallager1963}. As the name specifies, they are defined by a sparse \gls{pcm} containing mostly 0's and relatively few 1's. The sparsity of the \gls{pcm} or its Tanner graph is a key property that allows for the algorithmic efficiency of decoding \glspl{ldpcbc}. These codes are divided into two types: regular and irregular codes.
 
 In a regular $(n,q,r)$ code, all \glspl{vn} have degree \gls{mq} and all \glspl{cn} have degree \gls{mr}.
@@ -78,7 +78,7 @@ Convolutional codes in general, are codes in which the parity bits are generated
   \centering
   \tikzsetnextfilename{conv_code}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/conv_code}
-  \caption{Example of a non-recursive convolutional code with asymptotic rate $R_\infty=1/2$. $x[i]$ is the input and $y[i]$ is the output.}
+  \caption[Example of a non-recursive convolutional code.]{Example of a non-recursive convolutional code with asymptotic rate $R_\infty=1/2$. $x[i]$ is the input and $y[i]$ is the output.}
   \label{fig:conv_code}
 \end{figure}
 
@@ -98,7 +98,7 @@ y^{(1)}[i]&=x[i]*g^{(1)}[i]\label{eq:conv_conv}\\
 \end{align}
 The \emph{constraint length} of a convolutional code is $l_c=m_s+1$ where $m_s$ is the largest degree in $g[i]$. In the example in Figure~\ref{fig:conv_code}, $l_c=3$.
 
-\subsection{\acrlong{ldpc} Convolutional Codes}
+\subsection{\texorpdfstring{\acrlong{ldpc}}{LDPC} Convolutional Codes}
 \glspl{ldpccc} or \gls{scldpc} codes are formed by imposing the above mentioned convolutional structure on \glspl{ldpcbc}. They were invented by Alberto Felstr{\"o}m and Kamil Zigangirov~\cite{Felstrom1999}. These codes are characterized by a sparse infinite-length \gls{pcm} which has a diagonal structure. The \gls{pcm} of these codes is constructed by coupling \glspl{pcm} of \glspl{ldpcbc} as given by
 
 \begin{align}\label{eq:H_infty}
@@ -168,13 +168,13 @@ where \gls{mL} is the \emph{coupling length} denoting the number of \glspl{cb} i
   \centering
   \tikzsetnextfilename{tanner_graph_ldpccc}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/tanner_graph_ldpccc}
-  \caption{Tanner graph of a terminated \gls{ldpccc}. The dark circles and lines are the \glspl{vn} and edges of terminated code, the light circles and dashed lines are the omitted \glspl{vn} and edges as a result of termination.}
+  \caption[Tanner graph of a terminated \gls{ldpccc}.]{Tanner graph of a terminated \gls{ldpccc}. The dark circles and lines are the \glspl{vn} and edges of terminated code, the light circles and dashed lines are the omitted \glspl{vn} and edges as a result of termination.}
   \label{fig:tannGraphLdpccc}
 \end{figure}
 
 The entire graph in Figure~\ref{fig:tannGraphLdpccc} can be seen as a Tanner graph of an infinitely long \gls{ldpccc}. As a result of termination, only the center part of the graph remains. The dark circles are the \glspl{vn} of the terminated \gls{ldpccc} and the solid lines are their corresponding edges.
 
-\subsection{\acrlong{ldpccc} Used in IEEE 1901}\label{sec:bpl_bg}
+\subsection{\texorpdfstring{\acrlong{ldpccc}}{LDPC-CC} Used in IEEE 1901}\label{sec:bpl_bg}
 In this thesis, we use the \glspl{ldpccc} specified in the \gls{bpl} or IEEE 1901 standard to evaluate our decoder~\cite{Bpl}. From now on, we refer to the \glspl{ldpccc} in the IEEE 1901 standard as \emph{\gls{bpl}~codes}. The \gls{bpl} codes are specified as sets of parity-check polynomials for all asymptotic rates $R_\infty=k/n,\ n\in\{2,3,4,5\}$ where $k=n-1$. In other words, the \gls{bpl} codes have only one parity bit in each \gls{cb}. 
 
 The codes are defined as
@@ -217,7 +217,7 @@ where $\nu=\frac{Ln}{Ln-n_z}$ and $R_\infty=\frac{n_m}{Ln}=\frac{k}{n}$. Hence,
 \end{align}
 Encoding and termination of \gls{bpl} codes is explained in detail in Chapter~\ref{ch:encode}.
 
-\section{Decoding of \acrlong{ldpc} Codes}\label{sec:decoding_ldpc}
+\section{Decoding of \texorpdfstring{\acrlong{ldpc}}{LDPC} Codes}\label{sec:decoding_ldpc}
 A channel decoder attempts to find the transmitted codeword $\x$ from the received word $\gls{mby}$. The best decoder in terms of performance is a \gls{map} decoder. Its complexity grows exponentially with the information word length because it finds---among all possible codewords---the codeword that has the highest probability given the received word. The estimate of the transmitted codeword from a \gls{map} decoder is given by
 \begin{align}
 \gls{mhbx}&=\argmax_{\x_i}\pdf_{X\mid Y}\left(\x_i,\gls{mby}\right) \nonumber\\
@@ -235,8 +235,8 @@ where $i=0,\dots,n-1$ is the index of bits in the codeword.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{app_llr}
-  \includegraphics[width=0.9\linewidth]{plots/app_llr}
-  \caption{Relation between \gls{app} and \gls{llr}.}
+  \includegraphics[width=0.75\textwidth]{plots/app_llr}
+  \caption[Relation between \acrshort{app} and \acrshort{llr}.]{Relation between \gls{app} and \gls{llr}.}
   \label{fig:app_llr}
 \end{figure}
 
@@ -252,7 +252,7 @@ In a single iteration of the algorithm, the \glspl{llr} of each bits in the code
     \centering
      \tikzsetnextfilename{v2c}
     \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/v2c}
-    \caption{Example showing that messages from all other \glspl{cn} sum-up with the channel's \gls{llr} to form the V2C message to the first \gls{cn}.}
+    \caption[Representation of V2C message generation.]{Example showing that messages from all other \glspl{cn} sum-up with the channel's \gls{llr} to form the V2C message to the first \gls{cn}.}
     \label{fig:v2c}
   \end{figure}
   where $\mathcal{L}^{\mathrm{vc}}_{ij}$ is the \gls{v2c} message from the $i$-th \gls{vn} to the $j$-th \gls{cn}, $\mathcal{L}^{\mathrm{cv}}_{ji}$ is the C2V message from the $j$-th \gls{cn} to the $i$-th \gls{vn} in the previous iteration and $\mathcal{E}_v(i)$ is the set containing  all $n_c$ \glspl{cn} connected to the $i$-th \gls{vn}.
@@ -264,7 +264,7 @@ In a single iteration of the algorithm, the \glspl{llr} of each bits in the code
     \centering
      \tikzsetnextfilename{c2v}
     \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/c2v}
-    \caption{Example showing that messages from all other \glspl{vn} combine using equation~(\ref{eq:c2v}) to form the C2V message to the second \gls{vn}.}
+    \caption[Representation of C2V message generation.]{Example showing that messages from all other \glspl{vn} combine using equation~(\ref{eq:c2v}) to form the C2V message to the second \gls{vn}.}
     \label{fig:c2v}
   \end{figure}
   where $\mathcal{E}_c(j)$ is the set containing all $n_v$ \glspl{vn} connected to the $j$-th \gls{cn}.
@@ -280,7 +280,7 @@ The high complexity C2V message computation can be approximated by a low-complex
   \centering
    \tikzsetnextfilename{flooding}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/flooding}
-  \caption{Illustration of parallel scheduling with an example Tanner graph.}
+  \caption[Illustration of parallel scheduling.]{Illustration of parallel scheduling with an example Tanner graph.}
   \label{fig:flooding}
 \end{figure}
 
@@ -292,7 +292,7 @@ With serial scheduling, different orders of \gls{cn} processing results in decod
   \centering
   \tikzsetnextfilename{serial_sch}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/serial_sch}
-  \caption{Illustration of serial scheduling with the same Tanner graph as in Figure~\ref{fig:flooding}. The processing starts from the left most \gls{cn} and moves right to the last \gls{cn}.}
+  \caption[Illustration of serial scheduling.]{Illustration of serial scheduling with the same Tanner graph as in Figure~\ref{fig:flooding}. The processing starts from the left most \gls{cn} and moves right to the last \gls{cn}.}
   \label{fig:serial_sch}
 \end{figure}
 
@@ -313,17 +313,17 @@ where $\psi$ is the time taken to perform one \gls{cn} processing.
   \centering
   \tikzsetnextfilename{pipeline}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/pipeline}
-  \caption{\gls{pcm} illustrating the pipeline decoding technique for code with $R_\infty=1/2$, $m_s=2$ and $I=3$. The arrows indicate the CNs that are processed at current time instance.}
+  \caption[Illustration of Pipeline decoder.]{\gls{pcm} illustrating the pipeline decoding technique for code with $R_\infty=1/2$, $m_s=2$ and $I=3$. The arrows indicate the CNs that are processed at current time instance.}
   \label{fig:pipeline}
 \end{figure}
 
-\subsubsection{Window Decoder}\label{sec:back_wd}
-Figure~\ref{fig:wd} illustrates a window decoder with window size of $W=4$ and window position $\rho=5$. The solid red box is the current window instance. The blue hatched region of the codeword is the \emph{target \glspl{vn}}, the red vertically hatched region is rest of the \glspl{vn} that are updated inside the current window. The blue colored edges in the \gls{pcm} are the edges that are updated during the current window instance. The red colored edges are outside the window but they are still updated since their corresponding \glspl{cn} are inside the window. The green backhatched region of the codeword are the \glspl{vn} that receive updates from the red colored edges.
+\subsubsection{Windowed Decoder}\label{sec:back_wd}
+Figure~\ref{fig:wd} illustrates a windowed decoder with window size of $W=4$ and window position $\rho=5$. The solid red box is the current window instance. The blue hatched region of the codeword is the \emph{target \glspl{vn}}, the red vertically hatched region is rest of the \glspl{vn} that are updated inside the current window. The blue colored edges in the \gls{pcm} are the edges that are updated during the current window instance. The red colored edges are outside the window but they are still updated since their corresponding \glspl{cn} are inside the window. The green backhatched region of the codeword are the \glspl{vn} that receive updates from the red colored edges.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{pcm_wd}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/pcm_wd}
-  \caption{\gls{pcm} illustrating the \acrlong{wd} technique for $R_\infty=1/2$ codes and $m_s=2$. The current window position $\rho=5$ is indicated by the solid red box and the next window position is indicated by the dashed red box.}
+  \caption[Illustration of windowed decoder.]{\gls{pcm} illustrating the windowed decoder for code with $R_\infty=1/2$ and $m_s=2$. The current window position $\rho=5$ is indicated by the solid red box and the next window position is indicated by the dashed red box.}
   \label{fig:wd}
 \end{figure}
 
@@ -331,7 +331,7 @@ Figure~\ref{fig:wd} illustrates a window decoder with window size of $W=4$ and w
   \centering
   \tikzsetnextfilename{pcm_wd_last}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/pcm_wd_last}
-  \caption{Target \glspl{vn} for first, middle and the last window positions.}
+  \caption{Target \acrshort{vn} for first, middle and the last window positions.}
   \label{fig:wd_last}
 \end{figure} 
 
@@ -339,9 +339,9 @@ One may choose to not update the edges that are outside the window. This is to p
 
 A window must include $Wn$ \glspl{vn} and $W(n-k)$ \glspl{cn}. Hence, the size of the window should be $\gls{mW}\geq (m_s+1)$ because smaller window sizes will not include at least one full \gls{cn} with all its edges. At each window instance, the first $n$ \glspl{vn} are considered to be the target nodes. However, all \glspl{vn} connected to the $W(n-k)$ \glspl{cn} are updated, only the correctness of target nodes are considered as the criteria for moving on to the next window. The \gls{bp} decoding is performed within the current window for a maximum number of $I$ iterations or until the parity-check equations involving the target nodes are fulfilled (whichever occurs earlier). Then the window shifts forward such that the next $n$ \glspl{vn} become the target nodes. The process continues until all \glspl{vn} in the received word are decoded.
 
-With the window decoder, there are several ways to perform the decoding when the window reaches the rightmost end of the \gls{pcm}. The conventional way is to keep moving the window until the last $n$ \glspl{vn} are the target \glspl{vn}. Another method is when the window touches the rightmost column of the \gls{pcm}, the window extends its height to include the remaining $m_s$ \glspl{cn} of the \gls{pcm}. Also, all the \glspl{vn} inside the last window are considered as target \glspl{vn}. The last window scenario is illustrated in Figure~\ref{fig:wd_last}. We choose the second method as it reduces the number of iterations compared to the conventional method. The lower \gls{cn} degree in the end of the \gls{pcm} compensates to the reduced decoding performance for having fewer iterations.
+With the windowed decoder, there are several ways to perform the decoding when the window reaches the rightmost end of the \gls{pcm}. The conventional way is to keep moving the window until the last $n$ \glspl{vn} are the target \glspl{vn}. Another method is when the window touches the rightmost column of the \gls{pcm}, the window extends its height to include the remaining $m_s$ \glspl{cn} of the \gls{pcm}. Also, all the \glspl{vn} inside the last window are considered as target \glspl{vn}. The last window scenario is illustrated in Figure~\ref{fig:wd_last}. We choose the second method as it reduces the number of iterations compared to the conventional method. The lower \gls{cn} degree in the end of the \gls{pcm} compensates to the reduced decoding performance for having fewer iterations.
 
-The decoding speed in bits of a window decoder is given by
+The decoding speed in bits of a windowed decoder is given by
 \begin{align}
 \kappa_{\text{w}}=\frac{n}{\psi\cdot I}.
 \end{align}
@@ -364,7 +364,7 @@ In this thesis, we consider a digital baseband system model for simulations as s
   \centering
   \tikzsetnextfilename{qpsk}
   \includegraphics[width=\textwidth, height=\textwidth]{graphics/qpsk}
-  \caption{Symbol constellation of \gls{qpsk} modulation with gray mapping.}
+  \caption[\acrshort{qpsk} constellation.]{Symbol constellation of \gls{qpsk} modulation with gray mapping.}
   \label{fig:qpsk}
 \end{figure}
 
@@ -373,7 +373,7 @@ The channel model we consider is a simple \gls{awgn} channel with no fading or m
   \centering
   \tikzsetnextfilename{bpsk_awgn}
   \includegraphics[width=0.9\textwidth,height=0.45\textwidth]{graphics/bpsk_awgn}
-  \caption{Conditional probability density functions of a \gls{bpsk} symbol over \gls{awgn} channel.}
+  \caption[Conditional probability density functions of \acrshort{bpsk}.]{Conditional probability density functions of a \gls{bpsk} symbol over \gls{awgn} channel.}
   \label{fig:bpsk_awgn}
 \end{figure}
 where $\gls{mbz}=\mathcal{CN}(0,2\sigma^2)\in\mathbb{C}^{\frac{Ln}{o}\times 1}$ is a complex random variable of Gaussian distribution with zero mean and variance $2\sigma^2$. Note that only one symbol in $\gls{mbu}$ is transmitted per channel use. The received symbol vector is $\gls{mbv}\in\mathbb{C}^{\frac{Ln}{o}\times 1}$. The output of the \emph{QAM Demodulator} is a vector of \glspl{llr} $\gls{mby}\in\mathbb{R}^{Ln\times 1}$ corresponding to the bits in $\x$. The \glspl{llr} are computed using the symbols in $\gls{mbv}$ and the modulation order. Each \gls{qpsk} symbol is a combination of two \gls{bpsk} symbols that are orthogonal to each other. Hence, the \glspl{llr} of both the bits can be computed separately. The \gls{llr} of the first bit of each received \gls{qpsk} symbol $y$ is computed as
@@ -418,7 +418,7 @@ Hence, the \glspl{llr} can be written as
 \mathcal{L}_{\text{second}}&=2\frac{E_b}{N_0}\im(y).
 \end{align}
 
-After the \glspl{llr} are computed, they are decoded using the \gls{bp} and \gls{wd} techniques used inside the \emph{Window Decoder with BP} block. The decoding-improvement techniques that are used in this block are discussed in Chapter~\ref{ch:dec_improve}. The estimated bits $\widehat{\m}$ are then compared with the output of the random bit generator $\m$ to calculate the \gls{ber} and \gls{bler}. \gls{ber} \gls{mber} is the ratio between the number of error-bits and the total number of bits transmitted. The probability of error for each bit in the codeword is given by
+After the \glspl{llr} are computed, they are decoded using the \gls{bp} and \gls{wd} techniques used inside the \emph{windowed decoder with BP} block. The decoding-improvement techniques that are used in this block are discussed in Chapter~\ref{ch:dec_improve}. The estimated bits $\widehat{\m}$ are then compared with the output of the random bit generator $\m$ to calculate the \gls{ber} and \gls{bler}. \gls{ber} \gls{mber} is the ratio between the number of error-bits and the total number of bits transmitted. The probability of error for each bit in the codeword is given by
 \begin{align}
 P_b(i)&=\prob\{\widehat{X}_i\neq X_i\}
 \end{align}
@@ -434,4 +434,4 @@ With \gls{ber} and \gls{bler} being the metrics for measuring decoding performan
 \begin{align}
 \eta&=\sum_{\rho=0}^{\xi-1}\eta_\rho I_\rho
 \end{align}
-where $\xi$ is the total number of window positions, $\eta_\rho$ is the number of edges inside and $\gls{mI}_\rho$ is the number of iterations performed in \gls{mrho}-th window position.
+where $\xi$ is the total number of window positions, $\eta_\rho$ is the number of edges inside and $\gls{mI}_\rho$ is the number of iterations performed at \gls{mrho}-th window position.

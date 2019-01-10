@@ -11,7 +11,7 @@ Another improvement technique that we found to be interesting is about the condi
   \centering
   \tikzsetnextfilename{comp_vn}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/comp_vn}
-  \caption{\gls{pcm} illustrating complete-\glspl{vn}, incomplete-\glspl{vn} and complete-\glspl{cn}.}
+  \caption[Illustration of different categories.]{\gls{pcm} illustrating complete-\glspl{vn}, incomplete-\glspl{vn} and complete-\glspl{cn}.}
   \label{fig:comp_vn}
 \end{figure}
 
@@ -33,13 +33,13 @@ The configurations of the \gls{bd} is summarized below.
   \item Target \glspl{cn} are considered for convergence criterion.
 \end{enumerate}
 
-\section{\acrlong{lrl} Decoder}
+\section{\texorpdfstring{\acrlong{lrl}}{LRL} Decoder}
 In this thesis, we propose a \emph{\gls{lrl} decoder}. The \gls{lrl} decoder moves the window from left to right and from right to left of the \gls{pcm} unlike the \gls{bd} that moves the window only from left to right. As already mentioned earlier, the bits in the left and right of the codeword are more reliable than the bits in the middle due to the lower \gls{cn} degrees in both the ends of the \gls{pcm}. This characteristic of the codeword can be seen in Figure~\ref{fig:indiv_ber} which plots the probability of error for all the bits in the codeword. We can see that the bits in the left and right of the codeword have lower probability of error than the bits in the middle. During the first decoding phase of the \gls{lrl} decoder, the window moves from the first window position to the last window position of the \gls{pcm}. During the second phase, i.e., after decoding the last window position, the window moves to the left till it reaches the first window position. Figure~\ref{fig:pcm_lrl} illustrates the \gls{lrl} decoder.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{indiv_ber}
   \includegraphics[width=0.9\linewidth]{plots/indiv_ber}
-  \caption{Probability of error for each bit in the codeword of a code with $R_\infty=2/3$, $n_i=3500$. Termination bits are excluded.}
+  \caption[Probability of bit error for \acrshort{bpl} code.]{Probability of error for each bit in the codeword of a code with $R_\infty=2/3$, $n_i=3500$ at $\zeta=2.8$ dB. Termination bits are excluded.}
   \label{fig:indiv_ber}
 \end{figure}
 
@@ -58,13 +58,13 @@ Within the \gls{lrl} decoder, we propose two different window configurations. Th
   \centering
   \tikzsetnextfilename{win_config_lrl_new}
   \includegraphics[width=0.5\textwidth, height=0.2\textwidth]{graphics/win_config_lrl_new}
-  \caption{Different window configurations used in \gls{lrl} decoder. Left image illustrates \gls{lrl} window configuration-\rom{1} and right image illustrates \gls{lrl} window configuration-\rom{2}.}
+  \caption[Different window configurations used in \acrshort{lrl} decoder.]{Different window configurations used in \gls{lrl} decoder. Left image illustrates \gls{lrl} window configuration-\rom{1} and right image illustrates \gls{lrl} window configuration-\rom{2}.}
   \label{fig:win_config_lrl}
 \end{figure}
 
 We discuss the performance of the \gls{lrl} decoder with both window configurations. At first, we use \gls{lrl} decoder with window configuration-\rom{1} in both phases of the \gls{lrl} decoder. Secondly, we use the window configuration-\rom{1} during the first phase and window configuration-\rom{2} during the second phase. During the second phase, the \glspl{cn} are updated from bottom to top so that the information from right of the codeword flows to the left more consistently as the window moves backward. The simulation results of both the configurations are evaluated in Chapter~\ref{ch:simulation}.
 
-\section{\acrlong{ipsc}}
+\section{\texorpdfstring{\acrlong{ipsc}}{IPSC}}
 The next technique we propose is the \gls{ipsc} rule. As mentioned earlier, a \gls{psc} was proposed in~\cite{Kang2018} that uses only complete-\gls{cn} as the convergence criterion. In the \gls{ipsc} rule, we introduce an additional convergence criterion for $W>2m_s+1$. When the window size $W>2m_s+1$ the target \glspl{cn} are considered for convergence criterion because the number of complete-\gls{cn} are greater than the number of target \glspl{cn}. Table~\ref{tab:ipsc} summarizes the \gls{ipsc} technique. The simulation results of the \gls{ipsc} are evaluated in Chapter~\ref{ch:simulation}.
 
 \begin{table}[htbp]
@@ -79,6 +79,6 @@ The next technique we propose is the \gls{ipsc} rule. As mentioned earlier, a \g
   $W>2m_s+1$ &Target \glspl{vn}.\\
   \hline
 \end{tabular}
-\caption{Early-success criteria for \gls{ipsc}}
+\caption{Early-success criteria for \acrshort{ipsc}}
 \label{tab:ipsc}
 \end{table}

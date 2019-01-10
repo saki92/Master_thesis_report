@@ -4,7 +4,7 @@ minimum height=5em, minimum width=7em, node distance=4cm, text width=7em, align=
 \tikzstyle{outer} = [draw=gray,dashed,fill=none,thick,inner sep=0.2cm]
 \tikzstyle{cord} = [coordinate]
 \tikzstyle{sum} = [draw,circle,radius=0.5cm]
-\draw[step=0.5cm,color=yellow,thin] (-1.5,0) grid (7.5,0.5);
+\draw[step=0.5cm,color=black,thick] (-1.5,0) grid (7.5,0.5);
 %\node at (-1.25,+0.25) {0};
 %\node at (-0.75,+0.25) {1};
 %\node at (-0.25,+0.25) {1};

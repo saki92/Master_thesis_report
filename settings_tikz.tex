@@ -1,6 +1,8 @@
 % General scaling (fiddle with value to find ideal setting)
 \newcommand{\plotscale}{1}
 
+\newcommand{\splotscale}{0.7}
+
 % Golden ratio as axes aspect ratio
 \newcommand{\plotratio}{0.618}
 
@@ -49,6 +51,11 @@
 \newlength{\fheight}
 \setlength{\fwidth}{\plotscale\linewidth}
 \setlength{\fheight}{\plotratio\fwidth}
+
+\newlength{\sfwidth}
+\newlength{\sfheight}
+\setlength{\sfwidth}{\splotscale\linewidth}
+\setlength{\sfheight}{\plotratio\sfwidth}
 
 % Scale unscalable tikz figures
 \let\OrgPgfTransformScale\pgftransformscale

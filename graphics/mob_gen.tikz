@@ -7,7 +7,7 @@
   \draw[->] (9,-1.5) -- (9,-3);
   \draw[->] (12,-1.5) -- (12,-3);
   \draw[->] (15,-1.5) -- (15,-3);
-  \node [align=center] at (7.5,0.5) {Mobile Phone Technologies};
+  \node [align=center] at (7.5,0.5) {Mobile Cellular Technologies};
   \node [align=center,text width=2cm] at (0,-4) {1G\\1970s\\Analog System};
   \node [align=center,text width=2cm] at (3,-4) {2G\\1991\\Convolutional Codes};
   \node [align=center,text width=2cm] at (6,-4.3) {3G\\1998\\Convolutional Codes,\\Turbo Codes};
