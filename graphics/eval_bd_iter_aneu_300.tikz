@@ -1,0 +1,91 @@
+% This file was created by matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.835\fwidth,
+height=\fheight,
+at={(0\fwidth,0\fheight)},
+scale only axis,
+xmin=1,
+xmax=5,
+xlabel={$\zeta$ (dB)},
+ymin=0,
+ymax=50000000,
+ylabel={$\eta$},
+axis background/.style={fill=white},
+xmajorgrids,
+xminorgrids,
+ymajorgrids,
+yminorgrids,
+legend style={legend cell align=left, align=left, legend plot pos=left, draw=black}
+]
+\addplot [color=mycolor1, mark=x, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+2	14567880\\
+2.2	14558500\\
+2.4	14536860\\
+2.6	14484590\\
+2.8	14370940\\
+3	14162020\\
+3.2	13770630\\
+3.4	13087250\\
+3.6	11899800\\
+3.8	10427920\\
+4	8945247\\
+4.2	7808529\\
+4.4	6975022\\
+4.6	6370870\\
+4.8	5954989\\
+5	5657058\\
+};
+\addlegendentry{$I=3$}
+
+\addplot [color=mycolor2, mark=o, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+2	24277570\\
+2.2	24259200\\
+2.4	24214660\\
+2.6	24110790\\
+2.8	23873810\\
+3	23445390\\
+3.2	22658800\\
+3.4	21260180\\
+3.6	18816540\\
+3.8	15836080\\
+4	12842270\\
+4.2	10568580\\
+4.4	8926120\\
+4.6	7741075\\
+4.8	6932106\\
+5	6358378\\
+};
+\addlegendentry{$I=5$}
+
+\addplot [color=mycolor3, mark=diamond, mark options={solid, mycolor3}]
+  table[row sep=crcr]{%
+2	48550890\\
+2.2	48508760\\
+2.4	48405730\\
+2.6	48164400\\
+2.8	47632400\\
+3	46650900\\
+3.2	44853890\\
+3.4	41651660\\
+3.6	36088260\\
+3.8	29290850\\
+4	22513430\\
+4.2	17421280\\
+4.4	13764970\\
+4.6	11140090\\
+4.8	9360225\\
+5	8103857\\
+};
+\addlegendentry{$I=10$}
+
+\end{axis}
+\end{tikzpicture}%

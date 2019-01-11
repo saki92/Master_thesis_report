@@ -1,0 +1,92 @@
+% This file was created by matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=\fwidth,
+height=\fheight,
+at={(0\fwidth,0\fheight)},
+scale only axis,
+xmin=2,
+xmax=5,
+xlabel={$\zeta$ (dB)},
+ymode=log,
+ymin=0.0001,
+ymax=1,
+ylabel={$P_L$},
+axis background/.style={fill=white},
+xmajorgrids,
+xminorgrids,
+ymajorgrids,
+yminorgrids,
+legend style={legend cell align=left, align=left, legend plot pos=left, draw=black}
+]
+\addplot [color=mycolor1, mark=x, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+2	1\\
+2.2	1\\
+2.4	1\\
+2.6	0.99975\\
+2.8	0.9835\\
+3	0.8595\\
+3.2	0.56175\\
+3.4	0.256\\
+3.6	0.09125\\
+3.8	0.02625\\
+4	0.00925\\
+4.2	0.00125\\
+4.4	0.00025\\
+4.6	0.00025\\
+4.8	0\\
+5	0\\
+};
+\addlegendentry{BD}
+
+\addplot [color=mycolor2, mark=o, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+2	1\\
+2.2	1\\
+2.4	0.99775\\
+2.6	0.9535\\
+2.8	0.69175\\
+3	0.2615\\
+3.2	0.06125\\
+3.4	0.01125\\
+3.6	0.00275\\
+3.8	0.00125\\
+4	0\\
+4.2	0\\
+4.4	0\\
+4.6	0\\
+4.8	0\\
+5	0\\
+};
+\addlegendentry{LRL Config-\rom{1}}
+
+\addplot [color=mycolor3, mark=diamond, mark options={solid, mycolor3}]
+  table[row sep=crcr]{%
+2	1\\
+2.2	1\\
+2.4	0.99825\\
+2.6	0.9625\\
+2.8	0.71225\\
+3	0.2895\\
+3.2	0.072\\
+3.4	0.011\\
+3.6	0.0035\\
+3.8	0.0015\\
+4	0.0005\\
+4.2	0\\
+4.4	0\\
+4.6	0\\
+4.8	0\\
+5	0\\
+};
+\addlegendentry{LRL Config-\rom{2}}
+
+\end{axis}
+\end{tikzpicture}%
