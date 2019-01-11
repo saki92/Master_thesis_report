@@ -24,7 +24,7 @@ xmajorgrids,
 xminorgrids,
 ymajorgrids,
 yminorgrids,
-legend style={opacity=0.7, legend cell align=left, align=left, legend pos=south west, draw=black}
+legend style={legend cell align=left, align=left, legend pos=south west, draw=black}
 ]
 \addplot [color=mycolor1, mark=x, mark options={solid, mycolor1}]
   table[row sep=crcr]{%

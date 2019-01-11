@@ -2,6 +2,7 @@
 %
 \definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
 \definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
 %
 \begin{tikzpicture}
 
@@ -64,6 +65,27 @@ legend style={legend cell align=left, align=left, legend plot pos=left, draw=bla
 5	8933710\\
 };
 \addlegendentry{LRL Config-\rom{1}}
+
+\addplot [color=mycolor3, mark=diamond, mark options={solid, mycolor3}]
+  table[row sep=crcr]{%
+2	67620730\\
+2.2	67353120\\
+2.4	65955410\\
+2.6	60556600\\
+2.8	45199940\\
+3	24450630\\
+3.2	13524720\\
+3.4	9872795\\
+3.6	9161255\\
+3.8	8976068\\
+4	8943423\\
+4.2	8939257\\
+4.4	8936702\\
+4.6	8935402\\
+4.8	8934432\\
+5	8933710\\
+};
+\addlegendentry{LRL Config-\rom{2}}
 
 \end{axis}
 \end{tikzpicture}%

@@ -40,7 +40,7 @@ In Chapter~\ref{ch:encode} we concluded that the termination for \gls{bpl} codes
   \centering
   \tikzsetnextfilename{eval_no_sat}
   \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_no_sat}
-  \caption[$P_b(i)$ when zero-tail bits are not known at receiver.]{Probability of error for information and parity bits in the codeword for $\frac{E_b}{N_0}=\frac{1}{0.8}$. Zero-tail bits are not known at the receiver.}
+  \caption[$P_b(i)$ when zero-tail bits are not known at receiver.]{Probability of error for information and parity bits in the codeword at $P_b=5\cdot 10^{-2}$. Zero-tail bits are not known at the receiver.}
   \label{fig:eval_no_sat}
 \end{figure}
 
@@ -48,95 +48,99 @@ In Chapter~\ref{ch:encode} we concluded that the termination for \gls{bpl} codes
   \centering
   \tikzsetnextfilename{eval_sat}
   \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_sat}
-  \caption[$P_b(i)$ when zero-tail bits are known at receiver.]{Probability of error for information and parity bits in the codeword for $\frac{E_b}{N_0}=\frac{1}{0.8}$. Zero-tail bits are known at the receiver.}
+  \caption[$P_b(i)$ when zero-tail bits are known at receiver.]{Probability of error for information and parity bits in the codeword for $P_b=5\cdot 10^{-2}$. Zero-tail bits are known at the receiver.}
   \label{fig:eval_sat}
 \end{figure}
  
 From Figure~\ref{fig:eval_sat} we can see that when zero-tail bits are know at the receiver, the decoder reduces the $P_b(i)$ of the information and parity bits in the right of the codeword. Only the rightmost part of the codeword is affected because of the limited window size. With full-block decoder, the effect of having known bits would also improve the leftmost bits of the decoder. On the other hand, Figure~\ref{fig:eval_no_sat} shows that the lack of knowledge of zero-tail bits at the receiver does not reduce $P_b(i)$ at the end of the codeword. So, the knowledge of zero-tail bits at the decoder effectively reduces the \gls{cn} degrees at the right of the \gls{pcm} as in a properly terminated codeword. Hence, zero-tail termination is an acceptable alternative to proper termination.
  
 \section{Evaluation of \texorpdfstring{\acrlong{bd}}{BD}}
-Here, we analyze the performance of our \gls{bd}. At first, we analyze the performance and complexity over different window sizes. Figure~\ref{fig:eval_bd_bler} shows the overall \gls{bler} $P_l$ over an \gls{snr} range of $2\leq\zeta\text{ (dB)}\leq 5$ for different window sizes. Figure~\ref{fig:eval_bd_aneu} shows the \gls{aneu} over the same range of \gls{snr}.
+Here, we analyze the performance and complexity of our \gls{bd} over different window sizes. Figure~\ref{fig:eval_bd_bler} shows the overall \gls{bler} $P_l$ over an \gls{snr} range of $2\leq\zeta\text{ (dB)}\leq 5$ for different window sizes. Figure~\ref{fig:eval_bd_aneu} shows the \gls{aneu} over the same range of \gls{snr}.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{eval_bd_bler}
   \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bd_bler}
-  \caption[\acrshort{bler} vs \acrshort{snr} of the \acrshort{bd} for $W=300$.]{\gls{bler} vs \gls{snr} of the \acrfull{bd}.}
+  \caption[\acrshort{bler} vs \acrshort{snr} of the \acrshort{bd} for $W=300$.]{$P_L$ vs $\zeta$ of the \acrfull{bd}.}
   \label{fig:eval_bd_bler}
 \end{figure}
 \begin{figure}[htbp]
    \centering
    \tikzsetnextfilename{eval_bd_aneu}
   \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bd_aneu}
-  \caption[\acrshort{aneu} vs \acrshort{snr} of the \acrshort{bd} for $W=300$.]{\gls{aneu} vs \gls{snr} of the \acrfull{bd}.}
+  \caption[\acrshort{aneu} vs \acrshort{snr} of the \acrshort{bd} for $W=300$.]{$\eta$ vs $\zeta$ of the \acrfull{bd}.}
   \label{fig:eval_bd_aneu}
 \end{figure}
 
 In Figure~\ref{fig:eval_bd_bler}, we see that the \gls{bler} improves with increasing window size $W$. When the window size is increased, more edges are included in the window enabling information to flow between a larger number of \glspl{vn}. At $P_L=10^{-1}$, the distance between $W=300$ and $W=600$ is about $1.1$ dB. Figure~\ref{fig:eval_bd_aneu} shows that the \gls{aneu} is high for larger window in the low-\gls{snr} region as the windows do not converge and thereby exhausts all iterations. In the waterfall region, i.e., the \gls{snr} domain where the \gls{bler} continuously decreases, larger windows converge quicker. For example at $\zeta=3.4$ dB, there is a $75\%$ decrease in \gls{aneu}. And in the error floor region, i.e., the \gls{snr} domain where there is no further decrease in \gls{bler}, the \gls{aneu} for all $W$ is about the same.
 
-Secondly, we analyze the performance over different code rates. Figure~\ref{fig:eval_bler_rate} shows different \gls{bler} plots for all available rates $R_\infty$ for \gls{bpl} codes. It is well known that codes with lower rate requires lower \gls{snr} to achieve the same \gls{bler} compared to code with higher rates.
+We also plot the performance over different code rates. Figure~\ref{fig:eval_bler_rate} shows different \gls{bler} plots for all available rates $R_\infty$ for \gls{bpl} codes. It is well known that codes with lower rate requires lower \gls{snr} to achieve the same \gls{bler} as the code with higher rates.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{eval_bler_rate}
   \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bler_rate}
-  \caption[\acrshort{bler} vs \acrshort{snr} of the \acrshort{bd} for all $R_\infty$.]{\gls{bler} vs \gls{snr} of the \acrfull{bd} for all available $R_\infty$ with $W=500$.}
+  \caption[\acrshort{bler} vs \acrshort{snr} of the \acrshort{bd} for all $R_\infty$.]{$P_L$ vs $\zeta$ of the \acrfull{bd} for all available $R_\infty$ with $W=500$.}
   \label{fig:eval_bler_rate}
 \end{figure}
 
-Finally, we compare the performance over $I=5,10$. Figure~\ref{fig:eval_bd_iter_bler_300} and Figure~\ref{fig:eval_bd_iter_aneu_300} shows the \gls{bd}'s performance and complexity over different number of iterations $I$ per window. We can see that the complexity is less for fewer $I=5$ but the performance of the decoder remains the same which indicates that the windows converge quicker, not utilizing all 5 iterations.
-\begin{figure}[htbp]
-  \centering
-  \tikzsetnextfilename{eval_bd_iter_bler_300}
-  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bd_iter_bler_300}
-  \caption[Comparison of \acrshort{bler} of the \acrshort{bd} for different $I$.]{Comparison of \gls{bler} of the \acrfull{bd} for different $I$.}
-  \label{fig:eval_bd_iter_bler_300}
-\end{figure}
-\begin{figure}[htbp]
-  \centering
-  \tikzsetnextfilename{eval_bd_iter_aneu_300}
-  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bd_iter_aneu_300}
-  \caption[Comparison of \acrshort{aneu} of the \acrshort{bd} for different $I$.]{Comparison of \gls{aneu} of the \acrfull{bd} for different $I$.}
-  \label{fig:eval_bd_iter_aneu_300}
-\end{figure}
+%Finally, we compare the performance over $I=5,10$. Figure~\ref{fig:eval_bd_iter_bler_300} and Figure~\ref{fig:eval_bd_iter_aneu_300} shows the \gls{bd}'s performance and complexity over different number of iterations $I$ per window. We can see that the complexity is less for fewer $I=5$ but the performance of the decoder remains the same which indicates that the windows converge quicker, not utilizing all 5 iterations.
+%\begin{figure}[htbp]
+%  \centering
+%  \tikzsetnextfilename{eval_bd_iter_bler_300}
+%  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bd_iter_bler_300}
+%  \caption[Comparison of \acrshort{bler} of the \acrshort{bd} for different $I$.]{Comparison of \gls{bler} of the \acrfull{bd} for different $I$.}
+%  \label{fig:eval_bd_iter_bler_300}
+%\end{figure}
+%\begin{figure}[htbp]
+%  \centering
+%  \tikzsetnextfilename{eval_bd_iter_aneu_300}
+%  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bd_iter_aneu_300}
+%  \caption[Comparison of \acrshort{aneu} of the \acrshort{bd} for different $I$.]{Comparison of \gls{aneu} of the \acrfull{bd} for different $I$.}
+%  \label{fig:eval_bd_iter_aneu_300}
+%\end{figure}
 
 \section{Evaluation of \texorpdfstring{\acrlong{lrl}}{LRL} Decoder}
-Now, we compare the performance of \gls{lrl} decoder configuration-\rom{1} with the \gls{bd}. Figure~\ref{fig:eval_bd_lrl_bler} shows the $P_L$ of \gls{bd} and \gls{lrl} decoder with window size $W=300$. Similarly, Figure~\ref{fig:eval_bd_lrl_aneu} the $\eta$ of \gls{bd} and \gls{lrl} decoder with window size of $W=300$.
+Now, we compare the performance of \gls{lrl} decoder configuration-\rom{1}, \gls{lrl} decoder configuration-\rom{2} with the \gls{bd}. Figure~\ref{fig:eval_bd_lrl_bler} shows the $P_L$ of \gls{bd} and \gls{lrl} decoders with window size $W=300$. Similarly, Figure~\ref{fig:eval_bd_lrl_aneu} shows the $\eta$ of \gls{bd} and \gls{lrl} decoders with window size of $W=300$.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{eval_bd_lrl_bler}
   \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bd_lrl_bler}
-  \caption[Comparison of \acrshort{bler} between the Base Decoder and \acrshort{lrl} decoder.]{Comparison of \gls{bler} between the Base Decoder and \gls{lrl} decoder.}
+  \caption[Comparison of \acrshort{bler} between the Base Decoder and \acrshort{lrl} decoder.]{Comparison of $P_L$ between the Base Decoder and \gls{lrl} decoder.}
   \label{fig:eval_bd_lrl_bler}
 \end{figure}
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{eval_bd_lrl_aneu}
   \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bd_lrl_aneu}
-  \caption[Comparison of \acrshort{aneu} between the Base Decoder and \acrshort{lrl} decoder.]{Comparison of \gls{aneu} between the Base Decoder and \gls{lrl} decoder.}
+  \caption[Comparison of \acrshort{aneu} between the Base Decoder and \acrshort{lrl} decoder.]{Comparison of $\eta$ between the Base Decoder and \gls{lrl} decoder.}
   \label{fig:eval_bd_lrl_aneu}
 \end{figure}
 
-From both the figures, we see a significant decrease in \gls{bler} and \gls{aneu} of the \gls{lrl} decoder. It indicates that the second phase of the \gls{lrl} decoder has improved the certainty of the bits through the information from the bits in the right of the codeword. This phenomenon can be seen in Figure~\ref{fig:eval_bd_lrl_iber} which plots the individual bit error probabilities for both decoders. Hence, the proposed \gls{lrl} decoder is better than the \gls{bd} in terms of decoding performance and complexity.
+In Figure~\ref{fig:eval_bd_lrl_bler}, we see a significant decrease in $P_L$ of the \gls{lrl} decoder in both configurations compared to the \gls{bd}. Near the error-floor region where $P_L=1.5\cdot 10^{-4}$, there is a $\zeta$ gain of about $2.4$ dB. In the beginning of water-fall region where $P_L=3\cdot 10^{-1}$, there is a $\zeta$ gain of about $1.1$ dB. The gain in individual \gls{ber} $P_b(i)$ is seen in Figure~\ref{fig:eval_bd_lrl_iber}. We can see the just before the end-termination of the codeword, i.e., from bit 3500 to bit 4000, there is a $P_b(i)$ difference of $2\cdot 10^{-2}$. And in the rest of the codeword, there is a $P_b(i)$ difference of only $1\cdot 10^{-2}$. It indicates that the second phase of the \gls{lrl} decoder has improved the certainty of the bits through the information from the bits in the end-termination of the codeword. Hence, the proposed \gls{lrl} decoder is better than the \gls{bd} in terms of decoding performance.
+
+In Figure~\ref{fig:eval_bd_lrl_aneu}, we see that the overall complexity of both \gls{lrl} are less than the complexity of \gls{bd}. In the water-fall region, i.e., starting from $\zeta=3$ dB there is a $27\%$ decrease in $\eta$ for both \gls{lrl} decoder configurations. The decrease is mainly because the second phase of the decoder propagates the reliable information from the end-termination to rest of the codeword, increasing the convergence speed of the windows. At low-\gls{snr} and water-fall region, we can notice that the \gls{lrl} configuration-\rom{2} decoder converges faster than the configuration-\rom{1} decoder. This faster convergence speed is because the target \gls{vn} are placed at the right side of the window and the \glspl{cn} are processed from bottom to top. On continuing through the water-fall region, the gap between \gls{bd} and \gls{lrl} decoder closes. At the error-floor region, the complexity of all three decoders are the same. At error-floor region, the \gls{snr} is so high that the \gls{bd} windows converges as quick as the \gls{lrl} decoders.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{eval_bd_lrl_iber}
   \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bd_lrl_iber}
-  \caption[Individual \acrshort{ber} of \acrshort{bd} and \acrshort{lrl}.]{Individual bit error probability for \gls{bd} and \gls{lrl} decoder for $W=500$ and $\zeta=2.4$ dB.}
+  \caption[Individual \acrshort{ber} of \acrshort{bd} and \acrshort{lrl}.]{$P_b(i)$ for \gls{bd} and \gls{lrl} decoder for $W=500$ and $P_b=5\cdot 10^{-2}$.}
   \label{fig:eval_bd_lrl_iber}
 \end{figure}
 
-Figure~\ref{fig:eval_bd_lrl_bler_700} and Figure~\ref{fig:eval_bd_lrl_aneu_700} compares the performance and complexity between the \gls{bd} and \gls{lrl} decoder configuration-\rom{1} for window size $W=700$. We see that as the window size increases there is an improvement in \gls{bler} but no significant decrease in the complexity. It is because with larger windows, the \gls{bp}'s performance is better as seen in Figure~\ref{fig:eval_bd_bler}. So, as the window size increases the performance of both \gls{bd} and \gls{lrl} decoder approaches the performance of full-block decoder, i.e., a decoder with maximum $W$.
+Figure~\ref{fig:eval_bd_lrl_bler_700} and Figure~\ref{fig:eval_bd_lrl_aneu_700} compares the performance and complexity between the \gls{bd} and both \gls{lrl} decoder configurations for window size $W=700$. We see that at the water-fall region where $P_L=9\cdot 10^{-2}$, the $\zeta$ gain is about $0.3$ db. This performance gain is very less compared to the gain obtained with $W=300$. The decrease in performance gain is because as the window size increases the \gls{bp}'s performance is better as seen in Figure~\ref{fig:eval_bd_bler}. Thus, further increasing the window size, increases the performance of both \gls{bd} and \gls{lrl} decoders by different steps and finally approaching the performance of a full-block decoder, i.e., a decoder with maximum $W$.
+
+We see that as $W$ increases, there is a slight decrease in performance of \gls{lrl} configuration-\rom{2} decoder compared to configuration-\rom{1}. This difference in performance is because of the less window positions at the left side of the \gls{pcm} for \gls{lrl} configuration-\rom{2}. One could argue that the same factor would affect the performance of \gls{lrl} configuration-\rom{1} at the right side of the \gls{pcm} thus, on average yielding the same performance. But from Section~\ref{sec:bpl_termi}, we know that the start-termination has lower \gls{cn} degree than the zero-tailed end-termination. Hence, the more number of window positions allowed by the \gls{lrl} configuration-\rom{1} decreases the \gls{bler} compared to \gls{lrl} configuration-\rom{2}.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{eval_bd_lrl_bler_700}
   \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bd_lrl_bler_700}
-  \caption[Comparison of \acrshort{bler} between the \acrshort{bd} and \acrshort{lrl} decoder with $W=700$]{Comparison of \gls{bler} between the \gls{bd} and \gls{lrl} decoder with $W=700$.}
+  \caption[Comparison of \acrshort{bler} between the \acrshort{bd} and \acrshort{lrl} decoder with $W=700$]{Comparison of $P_L$ between the \gls{bd} and \gls{lrl} decoder with $W=700$.}
   \label{fig:eval_bd_lrl_bler_700}
 \end{figure}
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{eval_bd_lrl_aneu_700}
   \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_bd_lrl_aneu_700}
-  \caption[Comparison of \acrshort{aneu} between the \acrshort{bd} and \acrshort{lrl} decoder with $W=700$.]{Comparison of \gls{aneu} between the Base Decoder and \gls{lrl} decoder with $W=700$.}
+  \caption[Comparison of \acrshort{aneu} between the \acrshort{bd} and \acrshort{lrl} decoder with $W=700$.]{Comparison of $\eta$ between the Base Decoder and \gls{lrl} decoder with $W=700$.}
   \label{fig:eval_bd_lrl_aneu_700}
 \end{figure}
 
@@ -145,7 +149,7 @@ Next, we compare the performance of both window configurations of \gls{lrl} deco
   \centering
   \begin{tabular}{|l|l|l|}
     \hline
-    \textbf{Simulation Configuration} &\textbf{First Phase} &\text{Second Phase}\\
+    \textbf{Simulation Configuration} &\textbf{First Phase} &\textbf{Second Phase}\\
     \hline
     \hline
     \gls{lrl} configuration-\rom{1} &Window configuration-\rom{1} &Window configuration-\rom{1}\\

@@ -2,6 +2,7 @@
 %
 \definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
 \definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
 %
 \begin{tikzpicture}
 
@@ -10,13 +11,13 @@ width=\fwidth,
 height=\fheight,
 at={(0\fwidth,0\fheight)},
 scale only axis,
-xmin=2,
-xmax=5,
+xmin=3,
+xmax=6,
 xlabel={$\zeta$ (dB)},
 ymode=log,
 ymin=0.0001,
 ymax=1,
-ylabel={$P_l$},
+ylabel={$P_L$},
 axis background/.style={fill=white},
 xmajorgrids,
 xminorgrids,
@@ -42,6 +43,16 @@ legend style={legend cell align=left, align=left, legend plot pos=left, draw=bla
 4.6	0.06525\\
 4.8	0.03125\\
 5	0.01475\\
+5.2	0.00475\\
+5.4	0.00125\\
+5.6	0.001\\
+5.8	0.0005\\
+6	0.00025\\
+6.2	0\\
+6.4	0\\
+6.6	0\\
+6.8	0\\
+7	0\\
 };
 \addlegendentry{BD}
 
@@ -64,7 +75,28 @@ legend style={legend cell align=left, align=left, legend plot pos=left, draw=bla
 4.8	0\\
 5	0\\
 };
-\addlegendentry{LRL Conf-\rom{1}}
+\addlegendentry{LRL Config-\rom{1}}
+
+\addplot [color=mycolor3, mark=diamond, mark options={solid, mycolor3}]
+  table[row sep=crcr]{%
+2	1\\
+2.2	1\\
+2.4	1\\
+2.6	0.999\\
+2.8	0.97475\\
+3	0.7755\\
+3.2	0.387\\
+3.4	0.10325\\
+3.6	0.02175\\
+3.8	0.0045\\
+4	0.00075\\
+4.2	0.00025\\
+4.4	0.00025\\
+4.6	0\\
+4.8	0\\
+5	0\\
+};
+\addlegendentry{LRL Config-\rom{2}}
 
 \end{axis}
 \end{tikzpicture}%
