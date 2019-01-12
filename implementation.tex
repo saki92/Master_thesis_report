@@ -34,7 +34,7 @@ The hard values of the \glspl{vn} or the bits in the codeword can be stored in t
     \label{fig:packed_spb}
   \end{figure}
 \end{enumerate}
-In our implementations, we use the packed-byte-of-bits format. This format reduces the memory requirements for storing information and codeword bits by a factor of eight. Table~\ref{tab:mem_req} shows the memory required to store the hard values of \glspl{vn}.
+In our implementations, we use the packed-byte-of-bits format. This format reduces the memory requirements for storing information and codeword bits by a factor of eight. The algorithms for \emph{Load Bit} an \emph{Store Bit} are shown in Algorithm~\ref{alg:load} and \ref{alg:store}, respectively. Table~\ref{tab:mem_req} shows the memory required to store the hard values of \glspl{vn}.
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|l|c|}
@@ -51,6 +51,35 @@ In our implementations, we use the packed-byte-of-bits format. This format reduc
   \label{tab:mem_req}
 \end{table}
 
+\begin{algorithm}[H]
+  \KwData{$j$ (Bit index in buffer)}
+  \KwResult{$v$ (Corresponding bit value as \texttt{uint8})}
+  $i$ (Calculate byte index from $j$)\;
+  $b$ (Calculate bit index within the byte)\;
+  $v$ (Read the $i$-th byte from buffer)\;
+  Left shift $v$ by $(8-b)$ bits\;
+  Right shift $v$ by $7$\;
+  \caption{Load Bit}
+  \label{alg:load}
+\end{algorithm}
+
+\begin{algorithm}[H]
+  \KwData{$j$ (Bit index in buffer), $c$ (Bit value as \texttt{uint8})}
+  \KwResult{$c$ stored in the right bot position of the buffer}
+  $i$ (Calculate byte index from $j$)\;
+  $b$ (Calculate bit index within the byte)\;
+  $v$ (Read the $i$-th byte from buffer)\;
+  \eIf{$c$ equal to 1}{
+    $v$ bitwise OR with 1 left shifted by $b$ bits\;
+  }{
+    $z$ (NOT of 1 left shifted by $b$ bits)\;
+    $v$ bitwise AND with $z$\;
+  }
+  Store the resulting byte in $i$-th byte position in buffer\;
+  \caption{Store Bit}
+  \label{alg:store}
+\end{algorithm}
+
 However, the gain in minimum memory requirement comes with a cost of increased execution complexity. The \emph{Load Bit} blocks performs memory-read and bit-shift operations. The \emph{Store Bit} block performs some arithmetic and logical operations along with memory-read and write operations. Table~\ref{tab:load_store} shows the operations performed in each call of \emph{Load Bit} and \emph{Store Bit}. Note that this is just one way of implementing the functions.
 \begin{table}[htbp]
   \centering
@@ -59,9 +88,9 @@ However, the gain in minimum memory requirement comes with a cost of increased e
     \textbf{Function called} &\textbf{Reads} &\textbf{Writes} &\textbf{Bit Shift} &\textbf{Arithmetic} &\textbf{Logical}\\
     \hline
     \hline
-    Load Bit &1 &0 &2 &0 &0\\
+    Load Bit &1 &0 &2 &2 &0\\
     \hline
-    Store Bit &1 &1 &1 &1 &2\\
+    Store Bit &1 &1 &1 &2 &2\\
     \hline
   \end{tabular}
   \caption[Operations performed for different storage formats.]{Number of different operations performed during each call of \emph{Load Bit} and \emph{Store Bit}.}
@@ -71,21 +100,21 @@ However, the gain in minimum memory requirement comes with a cost of increased e
 Table~\ref{tab:summ_mem_req} compares the memory requirement and operations required to encode a codeword with $n_m$ information bits with $R_\infty=1/2$.
 \begin{table}[htbp]
   \centering
-  \begin{tabular}{|l|c|c|c|c|c|c|}
+  \begin{tabular}{|p{3cm}|>{\centering\arraybackslash}p{3cm}|c|c|c|c|c|}
     \hline
     \textbf{Storage Format} &\textbf{Memory Required (Bytes)} &\textbf{Reads} &\textbf{Writes} &\textbf{Bit Shift} &\textbf{Arithmetic} &\textbf{Logical}\\
     \hline
     \hline
-    Byte for a bit &$3\cdot n_m$ &$n_m$ &$n\cdot n_m$ &0 &0 &0\\
+    Byte for a bit &$3n_m$ &$n_m$ &$\frac{n_m}{n-1}$ &0 &0 &0\\
     \hline
-    Packed byte of bits &$\ceil{\frac{3\cdot n_m}{8}}$ &$3\cdot n_m$ &$n\cdot n_m$ &$6\cdot n_m$ &$2\cdot n_m$ &$4\cdot n_m$\\
+    Packed byte of bits &$\ceil{\frac{3n_m}{8}}$ &$n_m+\frac{n_m}{n-1}$ &$\frac{n_m}{n-1}$ &$2n_m+\frac{n_m}{n-1}$ &$2\left(n_m+\frac{n_m}{n-1}\right)$ &$2\frac{n_m}{n-1}$\\
     \hline
   \end{tabular}
-  \caption[Memory and complexity of different storage formats.]{Memory requirement and operations required to encode a codeword with $n_m$ information bits and asymptotic code rate $R_\infty$.}
+  \caption[Memory and complexity of different storage formats.]{Memory requirement and operations required to encode a codeword with $n_m$ information bits and asymptotic code rate $R_\infty$. We assume that each bits in the output buffer are accessed only once.}
   \label{tab:summ_mem_req}
 \end{table}
 
-Although the execution complexity of using Packed-byte-of-bits format is high compared to the other format, the Packed-byte-of-bits format's complexity is very negligible compared to the overall decoding complexity. Hence, the Packed-byte-of-bits format is chosen in our implementation to reduce the memory requirement. Standard tools such as MATLAB\textsubscript{TM} uses 64-bit double precision floating point storage for all variable by default.
+Although the execution complexity of using Packed-byte-of-bits format is high compared to the other format, the Packed-byte-of-bits format's complexity is very negligible compared to the overall decoding complexity. Hence, the Packed-byte-of-bits format is chosen in our implementation to reduce the memory requirement. Standard tools such as MATLAB\textsuperscript{TM} uses 64-bit double precision floating point storage for all variable by default.
 
 \section{\acrlong{vn} Indexing}
 The \gls{llr} values of \glspl{vn} are stored in an array of memory where each element is a 32-bit floating point value. During each \gls{cn} update, the \gls{bp} algorithm selects the corresponding \gls{vn}'s \gls{llr} to perform the updates. This selection of \glspl{vn} is done via indexing. There are two ways to perform the selection:
@@ -102,9 +131,9 @@ Method 1 computes the indices on the fly during each \gls{cn} update. The number
     \textbf{Method} &\textbf{Memory Required (Bytes)} &\textbf{\gls{cn} Index Calculations}\\
     \hline
     \hline
-    Method 1 &$3\cdot n\cdot 4$ &$n_c\cdot I$\\
+    Method 1 &$12n$ &$n_c I$\\
     \hline
-    Method 2 &$3\cdot n\cdot 4\cdot n_c$ &$n_c$\\
+    Method 2 &$12n_cn$ &$n_c$\\
     \hline
   \end{tabular}
   \caption[Memory and complexity of different \acrshort{vn} indexing technieqes.]{Memory requirement and computations required to calculate and store indices for decoding a codeword with $n_m$ information bits and $I$ iterations. Let the number of \glspl{cn} be $n_c$ and size of \texttt{uint32} is 4 bytes.}

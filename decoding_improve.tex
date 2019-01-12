@@ -1,12 +1,17 @@
 \chapter{Decoding Improvements}\label{ch:dec_improve}
 In this chapter, we discuss the techniques that are developed in this thesis that improve the decoding performance of window decoders. We start with the discussion of already existing techniques that improve the decoding performance and the motivation to develop new techniques. We then discuss the two techniques that are developed in this thesis.
 
-\section{Existing Techniques and Motivation}
-Improvement techniques for window decoding of \gls{ldpccc} are being widely discussed in literatures. An attractive technique that we found in the literature is the \emph{Zigzag decoder} proposed in~\cite{Shadi2015}. In a conventional window decoder (sliding-window decoder), the window moves from left to right of the \gls{pcm}~\cite{Iyengar2012}. So, the information about the probability of the bits flow from left to right of the codeword, i.e., in only one direction. This results in a loss in performance compared to a full-block decoder. The Zigzag decoder moves the window from right to left of the \gls{pcm} within a small part where the windows did not converge (i.e., the maximum number of iterations have reached and the \glspl{cn} inside the window did not fulfill the parity checks). It allows the information about probability of the bits to flow from right to left of the codeword, i.e., in the opposite direction. Hence, the different set of information have a positive effect on the reliability of the whole codeword.
+\section{Literature Overview}
+There are many aspects used in a windowed decoder and the optimality of each contributes to the increase in decoding efficiency. We choose two of those aspects to analyze and improve them.
+\subsection{Window Direction}
+The direction of movement of window is an important factor to consider when it comes to performance. In a conventional sliding-windowed decoder, the window moves from left to right of the \gls{pcm}. This is the optimal direction for a system with continuous encoding and decoding. Since we deal with packet wise transmissions, we opt to consider the idea of moving the window in the reverse direction. Also, in terminated codewords the window direction matters as they have smaller \gls{cn} degree $r$ at both start and end terminations.
 
-The Zigzag decoder performs better than the sliding-window decoder but the decoding complexity in terms of number of iterations is higher. The implementation complexity is also high due to the nature of the decoder. Also, the Zigzag decoder uses flooding scheduling in its windows which is subpar compared to serial scheduling. Hence, the aforementioned factors motivates us to develop a decoder that moves in both directions in the codeword but has similar complexity and better performance than a sliding-window decoder.
+Improvement techniques involving window direction for decoding \glspl{ldpccc} are rarely discussed in literatures. An attractive technique that we found in the literature is the \emph{Zigzag decoder} proposed in~\cite{Shadi2015}. In a conventional window decoder (sliding-window decoder), the window moves from left to right of the \gls{pcm}~\cite{Iyengar2012}. Thus, the information about the probability of the bits flow from left to right of the codeword, i.e., in only one direction. This results in a loss in performance compared to a full-block decoder. The Zigzag decoder moves the window from right to left of the \gls{pcm} within a small part where the windows did not converge (i.e., the maximum number of iterations have reached and the \glspl{cn} inside the window did not fulfill the parity checks). It allows the information about probability of the bits to flow from right to left of the codeword, i.e., in the opposite direction. Hence, the different set of information have a positive effect on the reliability of the whole codeword.
 
-Another improvement technique that we found to be interesting is about the condition for convergence of a window. Although its very natural to stop decoding when the target \gls{vn} are correct, one should choose an optimum criterion for deciding whether the target \gls{vn} are correct. A heuristic choice is to check whether the \emph{target-\glspl{cn}}, i.e., the \glspl{cn} connected to the target \glspl{vn} are fulfill their parity checks. A new criterion called \gls{psc} was proposed in~\cite{Kang2018} based on reliable \glspl{vn}. They distinguish the \glspl{vn} inside the window into \emph{complete-\glspl{vn}} and \emph{incomplete-\glspl{vn}}. Complete-\glspl{vn} are \glspl{vn} whose all the connected \glspl{cn} are inside the window. This includes the target \glspl{vn} also. So, the first $W-m_s$ \glspl{vn} inside the window are complete-\glspl{vn}. The remaining \glspl{vn} in the window are the incomplete-\glspl{vn}. This is illustrated in Figure~\ref{fig:comp_vn}. The authors say that the complete-\glspl{vn} are more reliable than the incomplete ones as they get more updates from \glspl{vn} from left of the window which are more reliable that are to the right. Hence, the parity checks of only the complete-\glspl{cn}, i.e., the \glspl{cn} connected to only the complete-\glspl{vn} are considered as convergence criterion.
+\subsection{Window Convergence}
+Another improvement technique that we found to be interesting is about the condition for convergence of a window. Although its very natural to stop decoding when the target \gls{vn} are correct, one should choose an optimum criterion for deciding whether the target \gls{vn} are correct. A heuristic choice is to check whether the \emph{target \glspl{cn}}, i.e., the \glspl{cn} connected to the target \glspl{vn} fulfill their parity checks. There are techniques in the literature that uses soft-values of the target \glspl{vn} as convergence criteria. However, we are interested in hard-value based parity checks, because the parity-checks are already available.
+
+A new criterion called \gls{psc} which is based on reliable \glspl{vn} was proposed in~\cite{Kang2018}. The authors distinguish the \glspl{vn} inside the window into \emph{complete \glspl{vn}} and \emph{incomplete \glspl{vn}}. Complete \glspl{vn} are \glspl{vn} whose all the connected \glspl{cn} are inside the window. This includes the target \glspl{vn} as well. So, the first $W-m_s$ \glspl{vn} inside the window are complete \glspl{vn}. The remaining \glspl{vn} in the window are the incomplete \glspl{vn}. This is illustrated in Figure~\ref{fig:comp_vn}. The authors say that the complete \glspl{vn} are more reliable than the incomplete ones as they get more updates from \glspl{vn} from left of the window which are more reliable that are to the right. Hence, the parity checks of only the complete \glspl{cn}, i.e., the \glspl{cn} connected to only the complete \glspl{vn} are considered as convergence criterion.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{comp_vn}
@@ -15,12 +20,10 @@ Another improvement technique that we found to be interesting is about the condi
   \label{fig:comp_vn}
 \end{figure}
 
-Although the \gls{psc} rule proposed in~\cite{Kang2018} reduces the number of iterations with same performance, they are suitable only for small windows where $W<2m_s+1$. For larger windows, the number complete-\glspl{vn} are greater than the number of incomplete-\glspl{vn} which makes the number of complete-\glspl{cn} to be greater than the number of target-\glspl{cn}, i.e., the \glspl{cn} connected to target nodes. So, for larger windows the \gls{psc} rule actually increases the number of iterations. These factors motivates us develop a convergence criterion that depends on the window size.
-
 \section{Base Decoder Configuration}
 Before discussing the details of the techniques that are developed in this work, it is essential to define a decoder configuration on top of which the techniques are intended to apply. This allows better understanding of the techniques and evaluation of the simulation results. Let us call the decoder without our improvements as \gls{bd}. The \gls{bd} uses the sliding-window technique to decoder the \gls{bpl} codes. The window slides from the left end of the \gls{pcm} to the right end. Within each window, serial scheduling is performed by updating the \glspl{cn} from top to bottom for a maximum of $I_{\text{BD}}$ iterations.
 
-In the last window instance, i.e., when the window touches the right most column of the \gls{pcm}, all the \glspl{vn} inside the window are considered as target \glspl{vn}. Hence, the convergence criterion is to check if all \glspl{cn} inside the window fulfill their parity checks. This idea was proposed in~\cite{Ali2018} as Early-Stopping rule. We adapt this technique in our \gls{bd} to minimize the total number to iterations. The convergence criterion for all the window instances in our \gls{bd} is that the target-\glspl{cn} should fulfill their parity checks.
+In the last window position, i.e., when the window touches the right most column of the \gls{pcm}, all the \glspl{vn} inside the window are considered as target \glspl{vn}. Hence, the convergence criterion is to check if all \glspl{cn} inside the window fulfill their parity checks. This idea was proposed in~\cite{Ali2018} as Early-Stopping rule. We adapt this technique in our \gls{bd} to minimize the total number to iterations. The convergence criterion for all the window instances in our \gls{bd} is that the target-\glspl{cn} should fulfill their parity checks.
 
 We now know that the \gls{bpl} codes are terminated using the zero-tail termination. The zero-tail bits and their positions are always known at the receiver. Hence, the \glspl{llr} of the zero-tail bits are made to $+\infty$ which indicate that the value of these bits most certainly 0.
 
@@ -34,6 +37,8 @@ The configurations of the \gls{bd} is summarized below.
 \end{enumerate}
 
 \section{\texorpdfstring{\acrlong{lrl}}{LRL} Decoder}
+The Zigzag decoder performs better than the sliding-window decoder but the decoding complexity in terms of number of iterations is higher. The implementation complexity is also high due to the nature of the decoder. Also, the Zigzag decoder uses flooding scheduling in its windows which is subpar compared to serial scheduling. Hence, the aforementioned factors motivates us to develop a decoder that moves in both directions in the codeword but has similar complexity and better performance than a sliding-window decoder.
+
 In this thesis, we propose a \emph{\gls{lrl} decoder}. The \gls{lrl} decoder moves the window from left to right and from right to left of the \gls{pcm} unlike the \gls{bd} that moves the window only from left to right. As already mentioned earlier, the bits in the left and right of the codeword are more reliable than the bits in the middle due to the lower \gls{cn} degrees in both the ends of the \gls{pcm}. This characteristic of the codeword can be seen in Figure~\ref{fig:indiv_ber} which plots the probability of error for all the bits in the codeword. We can see that the bits in the left and right of the codeword have lower probability of error than the bits in the middle. During the first decoding phase of the \gls{lrl} decoder, the window moves from the first window position to the last window position of the \gls{pcm}. During the second phase, i.e., after decoding the last window position, the window moves to the left till it reaches the first window position. Figure~\ref{fig:pcm_lrl} illustrates the \gls{lrl} decoder.
 \begin{figure}[htbp]
   \centering
@@ -65,7 +70,26 @@ Within the \gls{lrl} decoder, we propose two different window configurations. Th
 We discuss the performance of the \gls{lrl} decoder with both window configurations. At first, we use \gls{lrl} decoder with window configuration-\rom{1} in both phases of the \gls{lrl} decoder. Secondly, we use the window configuration-\rom{1} during the first phase and window configuration-\rom{2} during the second phase. During the second phase, the \glspl{cn} are updated from bottom to top so that the information from right of the codeword flows to the left more consistently as the window moves backward. The simulation results of both the configurations are evaluated in Chapter~\ref{ch:simulation}.
 
 \section{\texorpdfstring{\acrlong{ipsc}}{IPSC}}
-The next technique we propose is the \gls{ipsc} rule. As mentioned earlier, a \gls{psc} was proposed in~\cite{Kang2018} that uses only complete-\gls{cn} as the convergence criterion. In the \gls{ipsc} rule, we introduce an additional convergence criterion for $W>2m_s+1$. When the window size $W>2m_s+1$ the target \glspl{cn} are considered for convergence criterion because the number of complete-\gls{cn} are greater than the number of target \glspl{cn}. Table~\ref{tab:ipsc} summarizes the \gls{ipsc} technique. The simulation results of the \gls{ipsc} are evaluated in Chapter~\ref{ch:simulation}.
+Although the \gls{psc} rule proposed in~\cite{Kang2018} reduces the number of iterations with same performance, they are suitable only for small windows where $W<2m_s+1$. For larger windows, the number complete \glspl{vn} are greater than the number of incomplete \glspl{vn} which makes the number of complete \glspl{cn} to be greater than the number of target \glspl{cn}, i.e., the \glspl{cn} connected to target nodes. So, for larger windows the \gls{psc} rule actually increases the number of iterations. These factors motivates us develop a convergence criterion that depends on the window size.
+
+Thus, we propose a \gls{ipsc} rule. The \gls{psc} uses only complete \gls{cn} as the convergence criterion. In the \gls{ipsc} rule, we introduce an additional convergence criterion that involves target \glspl{cn}. The number of target \glspl{cn} is always the same for a code. It is given by
+\begin{align}
+\Upsilon_t=m_s+1.
+\end{align}
+The number of complete \glspl{cn} is dependent on $W$ and is given by
+\begin{align}
+\Upsilon_c=W-m_s.
+\end{align}
+
+The maximum $W$ for which the number of complete \glspl{cn} is less than or equal to the number of target \glspl{cn} is given by
+\begin{align}
+\Upsilon_c &\leq \Upsilon_t\\
+W-m_s &\leq m_s+1\\
+W &\leq 2m_s+1.
+\end{align}
+When the window size $W>2m_s+1$ the target \glspl{cn} are considered for convergence criterion because the number of complete \gls{cn} are greater than the number of target \glspl{cn}.
+
+Table~\ref{tab:ipsc} summarizes the \gls{ipsc} technique. The simulation results of the \gls{ipsc} are evaluated in Chapter~\ref{ch:simulation}.
 
 \begin{table}[htbp]
 \centering
@@ -74,11 +98,20 @@ The next technique we propose is the \gls{ipsc} rule. As mentioned earlier, a \g
   \textbf{Window Size} &\textbf{Convergence Criterion}\\
   \hline
   \hline
-  $W\leq2m_s+1$ &Complete-\glspl{vn}.\\
+  $W\leq2m_s+1$ &Complete \glspl{vn}.\\
   \hline
   $W>2m_s+1$ &Target \glspl{vn}.\\
   \hline
 \end{tabular}
-\caption{Early-success criteria for \acrshort{ipsc}}
+\caption{Convergence criteria for \acrshort{ipsc}}
 \label{tab:ipsc}
 \end{table}
+
+Figure~\ref{fig:comp_tar_CN} shows $\Upsilon_c$ and $\Upsilon_t$ for \gls{bpl} code with $R_\infty=2/3$ and various window sizes. We see that after the point where $W=2m_s+1$, the $\Upsilon_t<\Upsilon_c$.
+\begin{figure}[htbp]
+  \centering
+  \tikzsetnextfilename{comp_tar_CN}
+  \includegraphics[width=0.75\textwidth]{plots/comp_tar_CN}
+  \caption[Number of complete and target \glspl{cn}.]{Number of complete and target \glspl{cn} for code with $R_\infty=2/3$ and $m_s=226$.}
+  \label{fig:comp_tar_CN}
+\end{figure}

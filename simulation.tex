@@ -71,7 +71,7 @@ Here, we analyze the performance and complexity of our \gls{bd} over different w
   \label{fig:eval_bd_aneu}
 \end{figure}
 
-In Figure~\ref{fig:eval_bd_bler}, we see that the \gls{bler} improves with increasing window size $W$. When the window size is increased, more edges are included in the window enabling information to flow between a larger number of \glspl{vn}. At $P_L=10^{-1}$, the distance between $W=300$ and $W=600$ is about $1.1$ dB. Figure~\ref{fig:eval_bd_aneu} shows that the \gls{aneu} is high for larger window in the low-\gls{snr} region as the windows do not converge and thereby exhausts all iterations. In the waterfall region, i.e., the \gls{snr} domain where the \gls{bler} continuously decreases, larger windows converge quicker. For example at $\zeta=3.4$ dB, there is a $75\%$ decrease in \gls{aneu}. And in the error floor region, i.e., the \gls{snr} domain where there is no further decrease in \gls{bler}, the \gls{aneu} for all $W$ is about the same.
+In Figure~\ref{fig:eval_bd_bler}, we see that the \gls{bler} improves with increasing window size $W$. When the window size is increased, more edges are included in the window enabling information to flow between a larger number of \glspl{vn}. At $P_L=10^{-1}$, the distance between $W=300$ and $W=900$ is about $1.4$ dB. Figure~\ref{fig:eval_bd_aneu} shows that the \gls{aneu} is high for larger window in the low-\gls{snr} region as the windows do not converge and thereby exhausts all iterations. In the waterfall region, i.e., the \gls{snr} domain where the \gls{bler} continuously decreases, larger windows converge quicker. For example at $\zeta=3.5$   dB, there is a $75\%$ decrease in \gls{aneu}. And in the error floor region, i.e., the \gls{snr} domain where there is no further decrease in \gls{bler}, the \gls{aneu} for all $W$ is about the same.
 
 We also plot the performance over different code rates. Figure~\ref{fig:eval_bler_rate} shows different \gls{bler} plots for all available rates $R_\infty$ for \gls{bpl} codes. It is well known that codes with lower rate requires lower \gls{snr} to achieve the same \gls{bler} as the code with higher rates.
 \begin{figure}[htbp]
@@ -99,7 +99,23 @@ We also plot the performance over different code rates. Figure~\ref{fig:eval_ble
 %\end{figure}
 
 \section{Evaluation of \texorpdfstring{\acrlong{lrl}}{LRL} Decoder}
-Now, we compare the performance of \gls{lrl} decoder configuration-\rom{1}, \gls{lrl} decoder configuration-\rom{2} with the \gls{bd}. Figure~\ref{fig:eval_bd_lrl_bler} shows the $P_L$ of \gls{bd} and \gls{lrl} decoders with window size $W=300$. Similarly, Figure~\ref{fig:eval_bd_lrl_aneu} shows the $\eta$ of \gls{bd} and \gls{lrl} decoders with window size of $W=300$.
+Now, we compare the performance of \gls{lrl} decoder configuration-\rom{1}, \gls{lrl} decoder configuration-\rom{2} with the \gls{bd}. Figure~\ref{fig:eval_bd_lrl_bler} shows the $P_L$ of \gls{bd} and \gls{lrl} decoders with window size $W=300$. Similarly, Figure~\ref{fig:eval_bd_lrl_aneu} shows the $\eta$ of \gls{bd} and \gls{lrl} decoders with window size of $W=300$. Table~\ref{tab:wind_conf} shows different window configurations used in simulation.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{Simulation Configuration} &\textbf{First Phase} &\textbf{Second Phase}\\
+    \hline
+    \hline
+    \gls{lrl} configuration-\rom{1} &Window configuration-\rom{1} &Window configuration-\rom{1}\\
+    \hline
+    \gls{lrl} configuration-\rom{2} &Window configuration-\rom{1} &Window configuration-\rom{2}\\
+    \hline
+  \end{tabular}
+  \caption{\gls{lrl} decoder with different window configurations.}
+  \label{tab:wind_conf}
+\end{table}
+
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{eval_bd_lrl_bler}
@@ -144,47 +160,31 @@ We see that as $W$ increases, there is a slight decrease in performance of \gls{
   \label{fig:eval_bd_lrl_aneu_700}
 \end{figure}
 
-Next, we compare the performance of both window configurations of \gls{lrl} decoder. Table~\ref{tab:wind_conf} shows different window configurations used in simulation.
-\begin{table}[htbp]
-  \centering
-  \begin{tabular}{|l|l|l|}
-    \hline
-    \textbf{Simulation Configuration} &\textbf{First Phase} &\textbf{Second Phase}\\
-    \hline
-    \hline
-    \gls{lrl} configuration-\rom{1} &Window configuration-\rom{1} &Window configuration-\rom{1}\\
-    \hline
-    \gls{lrl} configuration-\rom{2} &Window configuration-\rom{1} &Window configuration-\rom{2}\\
-    \hline
-  \end{tabular}
-  \caption{\gls{lrl} decoder with different window configurations.}
-  \label{tab:wind_conf}
-\end{table}
-Figure~\ref{fig:eval_comp_lrl_bler_300} compares the performance and Figure~\ref{fig:eval_comp_lrl_aneu_300} compares the complexity between both \gls{lrl} configurations. We see that the \gls{lrl} decoder with configuration-\rom{2} yields the same \gls{bler} performance as configuration-\rom{1} with a slightly reduced complexity. The \gls{ber} plot from Figure~\ref{fig:eval_comp_lrl_ber_300} also indicates the same. The reduced complexity is mainly because of the bottom to top \gls{cn} update in the second phase of the \gls{lrl} decoder configuration-\rom{2}. Also since the target \gls{vn} are in the right end of the window, the window converges faster than the configuration-\rom{1}.
-\begin{figure}[htbp]
-  \centering
-  \tikzsetnextfilename{eval_comp_lrl_bler_300}
-  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_comp_lrl_bler_300}
-  \caption[Comparison of \acrshort{bler} between the \acrshort{lrl} config-\rom{1} and config-\rom{2}.]{Comparison of \gls{bler} between the \gls{lrl} decoders configuration-\rom{1} and configuration-\rom{2}.}
-  \label{fig:eval_comp_lrl_bler_300}
-\end{figure}
-\begin{figure}[htbp]
-  \centering
-  \tikzsetnextfilename{eval_comp_lrl_ber_300}
-  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_comp_lrl_ber_300}
-  \caption[Comparison of \acrshort{ber} between the \acrshort{lrl} config-\rom{1} and config-\rom{2}.]{Comparison of \gls{ber} between the \gls{lrl} decoders configuration-\rom{1} and configuration-\rom{2}.}
-  \label{fig:eval_comp_lrl_ber_300}
-\end{figure}
-\begin{figure}[htbp]
-  \centering
-  \tikzsetnextfilename{eval_comp_lrl_aneu_300}
-  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_comp_lrl_aneu_300}
-  \caption[Comparison of \acrshort{aneu} between the \acrshort{lrl} config-\rom{1} and config-\rom{2}.]{Comparison of \gls{aneu} between the \gls{lrl} decoders configuration-\rom{1} and configuration-\rom{2}.}
-  \label{fig:eval_comp_lrl_aneu_300}
-\end{figure}
+%Figure~\ref{fig:eval_comp_lrl_bler_300} compares the performance and Figure~\ref{fig:eval_comp_lrl_aneu_300} compares the complexity between both \gls{lrl} configurations. We see that the \gls{lrl} decoder with configuration-\rom{2} yields the same \gls{bler} performance as configuration-\rom{1} with a slightly reduced complexity. The \gls{ber} plot from Figure~\ref{fig:eval_comp_lrl_ber_300} also indicates the same. The reduced complexity is mainly because of the bottom to top \gls{cn} update in the second phase of the \gls{lrl} decoder configuration-\rom{2}. Also since the target \gls{vn} are in the right end of the window, the window converges faster than the configuration-\rom{1}.
+%\begin{figure}[htbp]
+%  \centering
+%  \tikzsetnextfilename{eval_comp_lrl_bler_300}
+%  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_comp_lrl_bler_300}
+%  \caption[Comparison of \acrshort{bler} between the \acrshort{lrl} config-\rom{1} and config-\rom{2}.]{Comparison of \gls{bler} between the \gls{lrl} decoders configuration-\rom{1} and configuration-\rom{2}.}
+%  \label{fig:eval_comp_lrl_bler_300}
+%\end{figure}
+%\begin{figure}[htbp]
+%  \centering
+%  \tikzsetnextfilename{eval_comp_lrl_ber_300}
+%  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_comp_lrl_ber_300}
+%  \caption[Comparison of \acrshort{ber} between the \acrshort{lrl} config-\rom{1} and config-\rom{2}.]{Comparison of \gls{ber} between the \gls{lrl} decoders configuration-\rom{1} and configuration-\rom{2}.}
+%  \label{fig:eval_comp_lrl_ber_300}
+%\end{figure}
+%\begin{figure}[htbp]
+%  \centering
+%  \tikzsetnextfilename{eval_comp_lrl_aneu_300}
+%  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_comp_lrl_aneu_300}
+%  \caption[Comparison of \acrshort{aneu} between the \acrshort{lrl} config-\rom{1} and config-\rom{2}.]{Comparison of \gls{aneu} between the \gls{lrl} decoders configuration-\rom{1} and configuration-\rom{2}.}
+%  \label{fig:eval_comp_lrl_aneu_300}
+%\end{figure}
 
 \section{Evaluation of \texorpdfstring{\acrlong{ipsc}}{IPSC} Technique}
-Here, we evaluate the performance of our \gls{ipsc} technique. Figure~\ref{fig:eval_ipsc_bler_300} and Figure~\ref{fig:eval_ipsc_aneu_300} compares the performance and complexity between the \gls{bd} with different convergence criteria with $W=300$. Similarly, Figure~\ref{fig:eval_ipsc_bler_600} and Figure~\ref{fig:eval_ipsc_aneu_600} compares for $W=600$.
+Here, we evaluate the performance of our \gls{ipsc} technique. Figure~\ref{fig:eval_ipsc_bler} shows the decoding performance of different convergence criteria with $W=300$ and $W=600$. and Figure~\ref{fig:eval_ipsc_aneu_300} compares the performance and complexity between the \gls{bd} with different convergence criteria with $W=300$. Similarly, Figure~\ref{fig:eval_ipsc_bler_600} and Figure~\ref{fig:eval_ipsc_aneu_600} compares for $W=600$.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{eval_ipsc_bler_300}

@@ -53,7 +53,7 @@ Figure~\ref{fig:intro_ber} shows a simple comparison of \gls{ber} between uncode
   \centering
   \tikzsetnextfilename{intro_ber}
   \includegraphics[width=0.75\textwidth]{plots/intro_ber}
-  \caption[Comparison of probability of bit error]{Probability of bit error for uncoded, Hamming coded and \gls{ldpc} coded transmissions.}
+  \caption[Comparison of probability of bit error]{Probability of bit error for uncoded, Hamming coded and \gls{ldpc} coded transmissions. The \gls{ldpc} codes has $R_\infty=0.5$ and $Ln=5000$.}
   \label{fig:intro_ber}
 \end{figure}
 
@@ -255,7 +255,7 @@ In a single iteration of the algorithm, the \glspl{llr} of each bits in the code
     \caption[Representation of V2C message generation.]{Example showing that messages from all other \glspl{cn} sum-up with the channel's \gls{llr} to form the V2C message to the first \gls{cn}.}
     \label{fig:v2c}
   \end{figure}
-  where $\mathcal{L}^{\mathrm{vc}}_{ij}$ is the \gls{v2c} message from the $i$-th \gls{vn} to the $j$-th \gls{cn}, $\mathcal{L}^{\mathrm{cv}}_{ji}$ is the C2V message from the $j$-th \gls{cn} to the $i$-th \gls{vn} in the previous iteration and $\mathcal{E}_v(i)$ is the set containing  all $n_c$ \glspl{cn} connected to the $i$-th \gls{vn}.
+  where $\mathcal{L}^{\mathrm{vc}}_{ij}$ is the \gls{v2c} message from the $i$-th \gls{vn} to the $j$-th \gls{cn}, $\mathcal{L}^{\mathrm{cv}}_{ji}$ is the C2V message from the $j$-th \gls{cn} to the $i$-th \gls{vn} in the previous iteration and $\mathcal{E}_v(i)$ is the set containing  all \glspl{cn} connected to the $i$-th \gls{vn}.
   \item \gls{c2v} message: Each \gls{cn} processes the received \gls{v2c} messages and computes extrinsic information for its neighboring \glspl{vn}. These extrinsic informations contain \gls{v2c} messages from \glspl{vn} other than the destination \gls{vn}. The expression for C2V messages is given by~\cite{Hagenauer1996}
   \begin{align}\label{eq:c2v}
   \mathcal{L}^{\mathrm{cv}}_{ji}=2\arctanh\left(\prod_{i^\prime\in\mathcal{E}_c(j)\backslash i}\tanh\left(\frac{\mathcal{L}^{\mathrm{vc}}_{i^\prime j}}{2}\right)\right)

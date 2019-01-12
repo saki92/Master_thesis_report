@@ -110,7 +110,7 @@ The steps for performing zero-tailing termination are as follows.
 \end{enumerate}
 With the zero-tail termination, the zero-tail bits are always known at the receiver. Hence, the zero-tail bits are not transmitted in an actual system. Only the parity bits generated from the zero-tail bits are transmitted and used during decoding.
 
-The zero-tail termination does not satisfy the last $m_s$ parity checks of the \gls{pcm}. Hence, the \gls{pcm} of a zero-tail-terminated \gls{bpl} codes looks like the one shown in Figure~\ref{fig:pcm_zero}.
+The zero-tail termination does not satisfy the last $m_s$ parity checks of the \gls{pcm}. Hence, the \gls{pcm} of a zero-tail-terminated \gls{bpl} codes looks like the one shown in Figure~\ref{fig:pcm_zero}. The structure of a zero-tail-terminated codeword looks like the one shown in Figure~\ref{fig:term_cw}.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{term_zero}
@@ -119,14 +119,30 @@ The zero-tail termination does not satisfy the last $m_s$ parity checks of the \
   \label{fig:pcm_zero}
 \end{figure}
 
-The \gls{pcm} of the zero-tail-terminated codes has the same \gls{cn} degrees in the middle and in the end. By contrast, properly terminated codes have lower \gls{cn} degrees at the end. The lack of low \gls{cn} degrees reduce the performance of the code as lower \gls{cn} degree means better reliability of the variable nodes connected to them. However, the zero-tail bits improve the reliability of the connected \glspl{vn} during the \gls{bp} decoding process since the zero-tail bits are known at the receiver. The structure of a zero-tail-terminated codeword looks like the one shown in Figure~\ref{fig:term_cw}.
-
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{term_cw}
   \includegraphics[width=\textwidth, height=\textwidth]{graphics/term_cw}
   \caption[Illustration of a zero-tail-terminated codeword.]{Illustration of a zero-tail-terminated codeword of a code with $R_\infty=2/3$. Black boxes represent information bits, blue boxes represent zero-tail bits and red boxes represent parity bits.}
   \label{fig:term_cw}
+\end{figure}
+
+The \gls{pcm} of the zero-tail-terminated codes has the same \gls{cn} degrees in the middle and in the end. By contrast, properly terminated codes have lower \gls{cn} degrees at the end. The lack of low \gls{cn} degrees reduce the performance of the code as lower \gls{cn} degree means better reliability of the variable nodes connected to them. However, the zero-tail bits improve the reliability of the connected \glspl{vn} during the \gls{bp} decoding process since the zero-tail bits are known at the receiver. The knowledge of the zero-tail bits effectively reduce the \gls{cn} degree in the end-termination of the codeword. Figure~\ref{fig:zero_unknown} shows the $r$ degree over for all \glspl{cn} in the \gls{pcm} for code with $R_\infty=2/3$ and $n_m=3500$ when zero-tail bits are not known at the receiver. We can see that in the start-termination region, the $r$ varies from 3 to 9 and it remains at 9 through the rest of the codeword. Figure~\ref{fig:zero_known} shows the $r$ over all \glspl{cn} when zero-tail bits are known at the receiver. We remove the corresponding columns of the zero-tail bits from the \gls{pcm} as they are known. This removal of columns effectively reduces the $r$ in the end-termination of the \gls{pcm}.
+
+\begin{figure}[htbp]
+  \centering
+  \tikzsetnextfilename{zero_unknown}
+  \includegraphics[width=0.75\textwidth]{plots/zero_unknown}
+  \caption[\gls{cn} degrees when zero-tail bits are unknown.]{$r$ of all \glspl{cn} in the \gls{pcm} when zero-tail bits are not known at the receiver.}
+  \label{fig:zero_unknown}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \tikzsetnextfilename{zero_known}
+  \includegraphics[width=0.75\textwidth]{plots/zero_known}
+  \caption[\gls{cn} degrees when zero-tail bits are known.]{$r$ of all \glspl{cn} in the \gls{pcm} when zero-tail bits are known at the receiver.}
+\label{fig:zero_known}
 \end{figure}
 
 \begin{table}[htbp]
@@ -144,7 +160,7 @@ The \gls{pcm} of the zero-tail-terminated codes has the same \gls{cn} degrees in
     \hline
     \gls{cn} degree &Lower \gls{cn} degree at the end of the \gls{pcm} than the middle. This enhances decoding performance. &Same \gls{cn} degree at the end of the \gls{pcm} as the middle.\\
     \hline
-    Knowledge of termination sequence at receiver. &Termination sequence is unknown at the receiver. &Zero-tail bits are known at the receiver. This enhances decoding performance.\\
+    Knowledge of termination sequence at receiver. &Termination sequence is unknown at the receiver. &Zero-tail bits are known at the receiver. This effectively reduces the \gls{cn} degree but not as low as the \gls{cn} degree in the start-termination.\\
     \hline
   \end{tabular}
   \caption{Difference between proper termination and zero-tail termination.}
