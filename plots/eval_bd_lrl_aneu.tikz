@@ -73,6 +73,16 @@ legend style={legend cell align=left, align=left, legend plot pos=left, draw=bla
 4.6	8119010\\
 4.8	7111836\\
 5	6448243\\
+5.2	5969274\\
+5.4	5643313\\
+5.6	5439679\\
+5.8	5278117\\
+6	5164612\\
+6.2	5082115\\
+6.4	5006998\\
+6.6	4965713\\
+6.8	4932482\\
+7	4913124\\
 };
 \addlegendentry{LRL Config-\rom{1}}
 
@@ -94,6 +104,16 @@ legend style={legend cell align=left, align=left, legend plot pos=left, draw=bla
 4.6	8062868\\
 4.8	7085155\\
 5	6434902\\
+5.2	5964586\\
+5.4	5642051\\
+5.6	5438417\\
+5.8	5277576\\
+6	5164252\\
+6.2	5082115\\
+6.4	5006998\\
+6.6	4965713\\
+6.8	4932482\\
+7	4913124\\
 };
 \addlegendentry{LRL Config-\rom{2}}
 

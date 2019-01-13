@@ -114,7 +114,7 @@ Table~\ref{tab:summ_mem_req} compares the memory requirement and operations requ
   \label{tab:summ_mem_req}
 \end{table}
 
-Although the execution complexity of using Packed-byte-of-bits format is high compared to the other format, the Packed-byte-of-bits format's complexity is very negligible compared to the overall decoding complexity. Hence, the Packed-byte-of-bits format is chosen in our implementation to reduce the memory requirement. Standard tools such as MATLAB\textsuperscript{TM} uses 64-bit double precision floating point storage for all variable by default.
+Although the execution complexity of using Packed-byte-of-bits format is high compared to the other format, the Packed-byte-of-bits format's complexity is very negligible compared to the overall decoding complexity. Hence, the Packed-byte-of-bits format is chosen in our implementation to reduce the memory requirement. Standard tools such as MATLAB\textsuperscript{TM} uses 64-bit double-precision floating-point storage for all variable by default.
 
 \section{\acrlong{vn} Indexing}
 The \gls{llr} values of \glspl{vn} are stored in an array of memory where each element is a 32-bit floating point value. During each \gls{cn} update, the \gls{bp} algorithm selects the corresponding \gls{vn}'s \gls{llr} to perform the updates. This selection of \glspl{vn} is done via indexing. There are two ways to perform the selection:

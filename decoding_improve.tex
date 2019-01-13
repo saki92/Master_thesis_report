@@ -70,7 +70,7 @@ Within the \gls{lrl} decoder, we propose two different window configurations. Th
 We discuss the performance of the \gls{lrl} decoder with both window configurations. At first, we use \gls{lrl} decoder with window configuration-\rom{1} in both phases of the \gls{lrl} decoder. Secondly, we use the window configuration-\rom{1} during the first phase and window configuration-\rom{2} during the second phase. During the second phase, the \glspl{cn} are updated from bottom to top so that the information from right of the codeword flows to the left more consistently as the window moves backward. The simulation results of both the configurations are evaluated in Chapter~\ref{ch:simulation}.
 
 \section{\texorpdfstring{\acrlong{ipsc}}{IPSC}}
-Although the \gls{psc} rule proposed in~\cite{Kang2018} reduces the number of iterations with same performance, they are suitable only for small windows where $W<2m_s+1$. For larger windows, the number complete \glspl{vn} are greater than the number of incomplete \glspl{vn} which makes the number of complete \glspl{cn} to be greater than the number of target \glspl{cn}, i.e., the \glspl{cn} connected to target nodes. So, for larger windows the \gls{psc} rule actually increases the number of iterations. These factors motivates us develop a convergence criterion that depends on the window size.
+Although the \gls{psc} rule proposed in~\cite{Kang2018} reduces the number of iterations with same performance, they are suitable only for small windows where $W\leq 2m_s+1$. For larger windows, the number complete \glspl{vn} are greater than the number of incomplete \glspl{vn} which makes the number of complete \glspl{cn} to be greater than the number of target \glspl{cn}, i.e., the \glspl{cn} connected to target nodes. So, for larger windows the \gls{psc} rule actually increases the number of iterations. These factors motivates us develop a convergence criterion that depends on the window size.
 
 Thus, we propose a \gls{ipsc} rule. The \gls{psc} uses only complete \gls{cn} as the convergence criterion. In the \gls{ipsc} rule, we introduce an additional convergence criterion that involves target \glspl{cn}. The number of target \glspl{cn} is always the same for a code. It is given by
 \begin{align}
@@ -87,7 +87,7 @@ The maximum $W$ for which the number of complete \glspl{cn} is less than or equa
 W-m_s &\leq m_s+1\\
 W &\leq 2m_s+1.
 \end{align}
-When the window size $W>2m_s+1$ the target \glspl{cn} are considered for convergence criterion because the number of complete \gls{cn} are greater than the number of target \glspl{cn}.
+When the window size $W>2m_s+1$ the target \glspl{cn} are considered for convergence criterion because the number of complete \glspl{cn} are greater than the number of target \glspl{cn}.
 
 Table~\ref{tab:ipsc} summarizes the \gls{ipsc} technique. The simulation results of the \gls{ipsc} are evaluated in Chapter~\ref{ch:simulation}.
 

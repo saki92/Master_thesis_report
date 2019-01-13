@@ -1,5 +1,5 @@
 \chapter{Background}\label{ch:back}
-In this chapter, we provide an overview of channel coding and some selected channel codes. We start by discussing the need for channel coding. We then describe linear block codes, \gls{ldpc} codes and \glspl{ldpccc} which are the main focus of this thesis. Then we go on to discuss \gls{bp} and the sliding-window technique used in decoders for \glspl{ldpccc}. We finish the section describing our system model.
+In this chapter, we provide an overview of channel coding and some selected channel codes. We start by discussing the need for channel coding. We then describe linear block codes, \gls{ldpc} codes and \glspl{ldpccc} which are the main focus of this thesis. Then we go on to discuss the \gls{bp} and the sliding-window technique used in decoders for \glspl{ldpccc}. We finish the section describing our system model.
 
 \section{Introduction to Channel Coding}
 The term \emph{coding} is generally associated with the mapping of information to a set of symbols or numbers~\cite{Bossert}. Source coding aims to remove the redundancy in the information whereas channel coding aims to make the information immune to random distortion. A model of a digital communication system is shown in Figure~\ref{fig:chanCoding}. Let us consider that the \emph{source} block produces a sequence of information bits given by the vector $\gls{mbd}$. These bits might stream from any digital information source such as multimedia files, text documents, etc. These vectors of bits are encoded in the \emph{source-encoder} block to produce reduced set of information bit vectors $\gls{mbm}$ called source codewords. The reduction usually means that the length of $\gls{mbm}$ is at most the length of $\gls{mbd}$. The mapping of information bits to a set of reduced information bits allows unique reconstruction of the information bits at the receiver. The source encoder is chosen depending on the type of the information source~\cite{proak}.
@@ -45,15 +45,15 @@ then the \gls{gm} can be formed by combining any 3 rows of null$(\H)$, i.e., the
 1 &1 &1 &0 &1 &0 &0 \\
 0 &0 &1 &1 &1 &1 &0 \\
 0 &1 &1 &1 &0 &0 &0
-\end{bmatrix}
+\end{bmatrix}.
 \end{align}
 
-Figure~\ref{fig:intro_ber} shows a simple comparison of \gls{ber} between uncoded transmission, transmission using a $(7,4)$ hamming code and transmission using a \gls{ldpc} with about the same rate as the hamming code.
+Figure~\ref{fig:intro_ber} shows a simple comparison of \gls{ber} between uncoded transmission, transmission using a $(7,4)$ hamming code and transmission using an \gls{ldpc} with about the same rate as the hamming code.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{intro_ber}
   \includegraphics[width=0.75\textwidth]{plots/intro_ber}
-  \caption[Comparison of probability of bit error]{Probability of bit error for uncoded, Hamming coded and \gls{ldpc} coded transmissions. The \gls{ldpc} codes has $R_\infty=0.5$ and $Ln=5000$.}
+  \caption[Comparison of probability of bit error]{Probability of bit error for uncoded, Hamming coded and \gls{ldpc} coded transmissions. The \gls{ldpc} codes has a code rate of 0.5 and codeword length of 5000.}
   \label{fig:intro_ber}
 \end{figure}
 
@@ -93,8 +93,8 @@ The impulse response of the parity-bit generator is given by
 \end{bmatrix}.\end{align}
 The output is given by the convolution form:
 \begin{align}
-y^{(1)}[i]&=x[i]*g^{(1)}[i]\label{eq:conv_conv}\\
-&=\sum_{l=0}^{2}x[l]g^{(1)}[i-l].
+y^{(1)}[i]&=x[i]*g^{(1)}[i]\\
+&=\sum_{l=0}^{2}x[l]g^{(1)}[i-l]\label{eq:conv_conv}.
 \end{align}
 The \emph{constraint length} of a convolutional code is $l_c=m_s+1$ where $m_s$ is the largest degree in $g[i]$. In the example in Figure~\ref{fig:conv_code}, $l_c=3$.
 
@@ -116,7 +116,7 @@ The \emph{constraint length} of a convolutional code is $l_c=m_s+1$ where $m_s$ 
   \mathbf{s}(t+1)\\
   \end{matrix}
 \end{align}
-where the $\H_\mu(t)\in\mathbb{F}_2^{(n-k)\times n},\mu=0,\dots,m_s$ are \glspl{pcm} of different \glspl{ldpcbc} of rate $R_\infty=\gls{mk}/\gls{mn}$ for different time instances and $m_s$ is the memory of the code. Hence, the asymptotic rate of the resulting \gls{ldpccc} is $\gls{mRi}=k/n$. $\gls{mbs}(t)\in\mathbb{F}_2^{(n-k)\times 1}$ denotes the syndromes resulting from the parity check equations. The codewords of such a code have the form 
+where the $\H_\mu(t)\in\mathbb{F}_2^{(n-k)\times n},\mu=0,\dots,m_s$ are \glspl{pcm} of different \glspl{ldpcbc} of rate $R_\infty=\gls{mk}/\gls{mn}$ for different time instances and $m_s$ is the memory of the code. Hence, the asymptotic rate of the resulting \gls{ldpccc} is $\gls{mRi}=k/n$. $\gls{mbs}(t)\in\mathbb{F}_2^{(n-k)\times 1}$ denotes the syndromes resulting from the parity-check equations. The codewords of such a code have the form 
 \begin{align}
 \x^T=
 \begin{bmatrix}

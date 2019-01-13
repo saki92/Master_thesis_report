@@ -24,7 +24,7 @@ For our simulations, we used the baseband system model described in Section~\ref
   \hline
   Window size &$W$ &300\\
   \hline
-  Maximal Number of iterations &$I$ &5\\
+  Maximal Number of iterations &$I$ &10\\
   \hline
   Number of runs &$\Gamma$ &4000\\
   \hline
@@ -33,9 +33,9 @@ For our simulations, we used the baseband system model described in Section~\ref
 \label{tab:sim_param}
 \end{table}
 
-In most of our results we plot the \acrfull{bler} $P_L$ instead of \acrfull{ber} $P_b$ because in modern packet based transmission system, the whole block is discarded in physical layer if they are incorrect. So, it is better to evaluate the performance by \gls{bler} than \gls{ber}. We plot \acrfull{aneu} to measure the decoding complexity. All the simulations results are averaged over a number of runs specified in the Table~\ref{tab:sim_param}.
+In most of our results we plot the \acrfull{bler} $P_L$ instead of \acrfull{ber} $P_b$ because in modern packet based transmission system, the whole block is discarded in physical layer if they are incorrect. Hence, it is better to evaluate the performance by \gls{bler} than \gls{ber}. We plot \acrfull{aneu} to measure the decoding complexity. All the simulations results are averaged over $\Gamma$ runs.
 \section{Effect of Zero-tail Termination}
-In Chapter~\ref{ch:encode} we concluded that the termination for \gls{bpl} codes are performed through zero-tail termination. Here, we evaluate the effect of zero-tail termination on the probability of error of each bit in the codeword. Figure~\ref{fig:eval_no_sat} shows the \gls{ber} $P_b(i)$ of each bit in the codeword when the zero-tail bits are not known at the receiver. Figure~\ref{fig:eval_sat} shows the \gls{ber} of each bit in the codeword when zero-tail bits are known at the receiver, i.e., at the decoder the \glspl{llr} of zero-tail bits are saturated to $+\infty$. The probabilities are calculated using (\ref{eq:indiv_prob}).  The plots include the information bits and the parity bits but do not include the termination sequence.
+In Chapter~\ref{ch:encode}, we concluded that the termination for \gls{bpl} codes are performed through zero-tail termination. Here, we evaluate the effect of zero-tail termination on the probability of error of each bit in the codeword. Figure~\ref{fig:eval_no_sat} shows the \gls{ber} $P_b(i)$ of each bit in the codeword when the zero-tail bits are not known at the receiver. Figure~\ref{fig:eval_sat} shows the \gls{ber} of each bit in the codeword when zero-tail bits are known at the receiver, i.e., at the decoder the \glspl{llr} of zero-tail bits are saturated to $+\infty$. The probabilities are calculated using (\ref{eq:indiv_prob}).  The plots include the information bits and the parity bits but do not include the termination sequence.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{eval_no_sat}
@@ -131,9 +131,9 @@ Now, we compare the performance of \gls{lrl} decoder configuration-\rom{1}, \gls
   \label{fig:eval_bd_lrl_aneu}
 \end{figure}
 
-In Figure~\ref{fig:eval_bd_lrl_bler}, we see a significant decrease in $P_L$ of the \gls{lrl} decoder in both configurations compared to the \gls{bd}. Near the error-floor region where $P_L=1.5\cdot 10^{-4}$, there is a $\zeta$ gain of about $2.4$ dB. In the beginning of water-fall region where $P_L=3\cdot 10^{-1}$, there is a $\zeta$ gain of about $1.1$ dB. The gain in individual \gls{ber} $P_b(i)$ is seen in Figure~\ref{fig:eval_bd_lrl_iber}. We can see the just before the end-termination of the codeword, i.e., from bit 3500 to bit 4000, there is a $P_b(i)$ difference of $2\cdot 10^{-2}$. And in the rest of the codeword, there is a $P_b(i)$ difference of only $1\cdot 10^{-2}$. It indicates that the second phase of the \gls{lrl} decoder has improved the certainty of the bits through the information from the bits in the end-termination of the codeword. Hence, the proposed \gls{lrl} decoder is better than the \gls{bd} in terms of decoding performance.
+In Figure~\ref{fig:eval_bd_lrl_bler}, we see a significant decrease in $P_L$ of the \gls{lrl} decoder in both configurations compared to the \gls{bd}. Near the error-floor region where $P_L=1.5\cdot 10^{-4}$, there is a $\zeta$ gain of about $2.4$ dB. In the beginning of waterfall region where $P_L=3\cdot 10^{-1}$, there is a $\zeta$ gain of about $1.1$ dB. The gain in individual \gls{ber} $P_b(i)$ is seen in Figure~\ref{fig:eval_bd_lrl_iber}. We can see the just before the end-termination of the codeword, i.e., from bit 3500 to bit 4000, there is a $P_b(i)$ difference of $2\cdot 10^{-2}$. And in the rest of the codeword, there is a $P_b(i)$ difference of only $1\cdot 10^{-2}$. It indicates that the second phase of the \gls{lrl} decoder has improved the certainty of the bits through the information from the bits in the end-termination of the codeword. Hence, the proposed \gls{lrl} decoder is better than the \gls{bd} in terms of decoding performance.
 
-In Figure~\ref{fig:eval_bd_lrl_aneu}, we see that the overall complexity of both \gls{lrl} are less than the complexity of \gls{bd}. In the water-fall region, i.e., starting from $\zeta=3$ dB there is a $27\%$ decrease in $\eta$ for both \gls{lrl} decoder configurations. The decrease is mainly because the second phase of the decoder propagates the reliable information from the end-termination to rest of the codeword, increasing the convergence speed of the windows. At low-\gls{snr} and water-fall region, we can notice that the \gls{lrl} configuration-\rom{2} decoder converges faster than the configuration-\rom{1} decoder. This faster convergence speed is because the target \gls{vn} are placed at the right side of the window and the \glspl{cn} are processed from bottom to top. On continuing through the water-fall region, the gap between \gls{bd} and \gls{lrl} decoder closes. At the error-floor region, the complexity of all three decoders are the same. At error-floor region, the \gls{snr} is so high that the \gls{bd} windows converges as quick as the \gls{lrl} decoders.
+In Figure~\ref{fig:eval_bd_lrl_aneu}, we see that the overall complexity of both \gls{lrl} are less than the complexity of \gls{bd}. In the waterfall region, i.e., starting from $\zeta=3$ dB there is a $27\%$ decrease in $\eta$ for both \gls{lrl} decoder configurations. The decrease is mainly because the second phase of the decoder propagates the reliable information from the end-termination to rest of the codeword, increasing the convergence speed of the windows. At low-\gls{snr} and waterfall region, we can notice that the \gls{lrl} configuration-\rom{2} decoder converges faster than the configuration-\rom{1} decoder. This faster convergence speed is because the target \gls{vn} are placed at the right side of the window and the \glspl{cn} are processed from bottom to top. On continuing through the waterfall region, the gap between \gls{bd} and \gls{lrl} decoder closes. At the error-floor region, the complexity of all three decoders are the same. At error-floor region, the \gls{snr} is so high that the \gls{bd} windows converges as quick as the \gls{lrl} decoders.
 \begin{figure}[htbp]
   \centering
   \tikzsetnextfilename{eval_bd_lrl_iber}
@@ -142,7 +142,7 @@ In Figure~\ref{fig:eval_bd_lrl_aneu}, we see that the overall complexity of both
   \label{fig:eval_bd_lrl_iber}
 \end{figure}
 
-Figure~\ref{fig:eval_bd_lrl_bler_700} and Figure~\ref{fig:eval_bd_lrl_aneu_700} compares the performance and complexity between the \gls{bd} and both \gls{lrl} decoder configurations for window size $W=700$. We see that at the water-fall region where $P_L=9\cdot 10^{-2}$, the $\zeta$ gain is about $0.3$ db. This performance gain is very less compared to the gain obtained with $W=300$. The decrease in performance gain is because as the window size increases the \gls{bp}'s performance is better as seen in Figure~\ref{fig:eval_bd_bler}. Thus, further increasing the window size, increases the performance of both \gls{bd} and \gls{lrl} decoders by different steps and finally approaching the performance of a full-block decoder, i.e., a decoder with maximum $W$.
+Figure~\ref{fig:eval_bd_lrl_bler_700} and Figure~\ref{fig:eval_bd_lrl_aneu_700} compares the performance and complexity between the \gls{bd} and both \gls{lrl} decoder configurations for window size $W=700$. We see that at the waterfall region where $P_L=9\cdot 10^{-2}$, the $\zeta$ gain is about $0.3$ db. This performance gain is very less compared to the gain obtained with $W=300$. The decrease in performance gain is because as the window size increases the \gls{bp}'s performance is better as seen in Figure~\ref{fig:eval_bd_bler}. Thus, further increasing the window size, increases the performance of both \gls{bd} and \gls{lrl} decoders by different steps and finally approaching the performance of a full-block decoder, i.e., a decoder with maximum $W$.
 
 We see that as $W$ increases, there is a slight decrease in performance of \gls{lrl} configuration-\rom{2} decoder compared to configuration-\rom{1}. This difference in performance is because of the less window positions at the left side of the \gls{pcm} for \gls{lrl} configuration-\rom{2}. One could argue that the same factor would affect the performance of \gls{lrl} configuration-\rom{1} at the right side of the \gls{pcm} thus, on average yielding the same performance. But from Section~\ref{sec:bpl_termi}, we know that the start-termination has lower \gls{cn} degree than the zero-tailed end-termination. Hence, the more number of window positions allowed by the \gls{lrl} configuration-\rom{1} decreases the \gls{bler} compared to \gls{lrl} configuration-\rom{2}.
 \begin{figure}[htbp]
@@ -184,34 +184,22 @@ We see that as $W$ increases, there is a slight decrease in performance of \gls{
 %\end{figure}
 
 \section{Evaluation of \texorpdfstring{\acrlong{ipsc}}{IPSC} Technique}
-Here, we evaluate the performance of our \gls{ipsc} technique. Figure~\ref{fig:eval_ipsc_bler} shows the decoding performance of different convergence criteria with $W=300$ and $W=600$. and Figure~\ref{fig:eval_ipsc_aneu_300} compares the performance and complexity between the \gls{bd} with different convergence criteria with $W=300$. Similarly, Figure~\ref{fig:eval_ipsc_bler_600} and Figure~\ref{fig:eval_ipsc_aneu_600} compares for $W=600$.
+Here, we evaluate the performance of our \gls{ipsc} technique. Figure~\ref{fig:eval_ipsc_bler} shows the decoding performance of different convergence criteria with $W=300$ and $W=700$. Figure~\ref{fig:eval_ipsc_aneu} shows the complexity of different convergence criteria with $W=300$ and $W=700$.
 \begin{figure}[htbp]
   \centering
-  \tikzsetnextfilename{eval_ipsc_bler_300}
-  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_ipsc_bler_300}
-  \caption[Comparison of \acrshort{bler} between different convergence criteria for $W=300$.]{Comparison of \gls{bler} between different convergence criteria.}
-  \label{fig:eval_ipsc_bler_300}
+  \tikzsetnextfilename{eval_ipsc_bler}
+  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_ipsc_bler}
+  \caption[Comparison of $P_L$ between different convergence criteria.]{Comparison of $P_L$ between different convergence criteria for $W=300$ and $W=700$.}
+  \label{fig:eval_ipsc_bler}
 \end{figure}
 \begin{figure}[htbp]
   \centering
-  \tikzsetnextfilename{eval_ipsc_aneu_300}
-  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_ipsc_aneu_300}
-  \caption[Comparison of \acrshort{aneu} between different convergence criteria for $W=300$.]{Comparison of \gls{aneu} between different convergence criteria.}
-  \label{fig:eval_ipsc_aneu_300}
-\end{figure}
-\begin{figure}[htbp]
-  \centering
-  \tikzsetnextfilename{eval_ipsc_bler_600}
-  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_ipsc_bler_600}
-  \caption[Comparison of \acrshort{bler} between different convergence criteria for $W=600$.]{Comparison of \gls{bler} between different convergence criteria with $W=600$.}
-  \label{fig:eval_ipsc_bler_600}
-\end{figure}
-\begin{figure}[htbp]
-  \centering
-  \tikzsetnextfilename{eval_ipsc_aneu_600}
-  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_ipsc_aneu_600}
-  \caption[Comparison of \acrshort{aneu} between different convergence criteria for $W=600$.]{Comparison of \gls{aneu} between different convergence criteria with $W=600$.}
-  \label{fig:eval_ipsc_aneu_600}
+  \tikzsetnextfilename{eval_ipsc_aneu}
+  \includegraphics[width=\textwidth,height=0.5\textheight]{plots/eval_ipsc_aneu}
+  \caption[Comparison of $\eta$ between different convergence criteria.]{Comparison of $\eta$ between different convergence criteria for $W=300$ and $W=700$.}
+  \label{fig:eval_ipsc_aneu}
 \end{figure}
 
-From the Figures~\ref{fig:eval_ipsc_bler_300}, \ref{fig:eval_ipsc_aneu_300}, \ref{fig:eval_ipsc_bler_600} and \ref{fig:eval_ipsc_aneu_600} we see that for $W\geq2(m_s+1)$, checking only the target \glspl{cn} for convergence decreases the decoding complexity for $W>2m_s+1$. Hence, for convergence criteria it is better to use complete-\glspl{cn} if $W\leq2m_s+1$ and target-\glspl{cn} if $W>2m_s+1$.
+In Figure~\ref{fig:eval_ipsc_bler}, we see that there is no noticeable difference in $P_L$ when complete \glspl{cn} or target \glspl{cn} are considered for convergence criterion. However, Figure~\ref{fig:eval_ipsc_aneu} shows a difference in $\eta$ between both convergence criteria. For $W=300$, i.e., $W\leq 2m_s+1$, there is a decrease in $\eta$ in the waterfall region when complete \glspl{cn} are considered for convergence criteria as promised by \gls{psc} rule.
+
+Now, for $W=700$, ie., $W>2m_s+1$, there is a decrease in $\eta$ in the waterfall region by up to $34\%$ when target \glspl{cn} are considered for convergence criteria. This decrease in decoding complexity with the same performance tells us that the windows converge faster for $W>2m_s+1$ and hence, its sufficient to check the parity-checks of only the target \glspl{cn}.
